@@ -84,3 +84,49 @@ app.controller('studCtrl', function($scope) {
 	}
 	$scope.loadData()
 })
+
+app.controller('tourCtrl', function($scope) {
+	$scope.concertList = []
+	$scope.occList = []
+	$scope.loadData = function() {
+		$scope.concertList = [
+			{id:'meuh',img:'img/concerts/Rossini 43.jpg',name:'Rossini',occs:[
+				{place:'Conservatoire',city:'Paris',date:'2019-02-25',time:'17:25',irUrl:'https://google.com',show:'true'},
+				{place:'Conservatoire',city:'Paris',date:'2018-02-25',time:'17:25',irUrl:'https://google.com'},
+				{place:'Conservatoire',city:'Paris',date:'2017-02-25',time:'17:25',irUrl:'https://google.com',show:'true',cancel:true}
+			],details:{
+				pieces:[{composer:'Johann Bach',title:'Sirène en la majeur'},{composer:'T. Takemitsu',title:'Rain Tree Sketch II'}],
+				artists:[{name:'Luc Besson',instrument:'Trompette'},{name:'Nicolas Dross',instrument:'pianiste'}]
+			}},
+			{id:'meuh',img:'img/concerts/Rossini 43.jpg',name:'Rossini',occs:[{place:'Conservatoire',city:'Paris',date:'2018-02-25',time:'17:25',cancel:true}]},
+			{id:'meuh',img:'img/concerts/Rossini 43.jpg',name:'Rossini',occs:[{place:'Conservatoire',city:'Paris',date:'2019-02-02',time:'17:25',show:'true'}]}
+		]
+	}
+	$scope.state = function(occ) {
+		if (occ.cancel) {
+			return 'cancel'
+		} else if (new Date(occ.date) >= new Date().setHours(0,0,0,0)) {
+			return 'on'
+		} else {
+			return 'off'
+		}
+	}
+	function concertsToOcc() {
+		var res = []
+		$scope.concertList.forEach(function(concert) {
+			var occurences = []
+			concert.occs.forEach(function(o) {
+				if(!o.show) return
+				var occurence = JSON.parse(JSON.stringify(concert))
+				delete occurence.details
+				delete occurence.occs
+				Object.assign(occurence,o)
+				occurences.push(occurence)
+			})
+			res.push(occurences)
+		})
+		$scope.occList = [].concat.apply([], res)
+	}
+	$scope.$watch($scope.concertList, concertsToOcc)
+	$scope.loadData()
+})
