@@ -106,6 +106,15 @@ app.controller('tourCtrl', function($scope, $http) {
 			return 'off'
 		}
 	}
+	$scope.concertIsOn = function (concert) {
+		res = false
+		concert.occs.forEach(function(occ) {
+			if ($scope.state(occ)=='on') {
+				res = true
+			}
+		})
+		return res
+	}
 	function concertsToOcc() {
 		var res = []
 		$scope.concertList.forEach(function(concert) {
