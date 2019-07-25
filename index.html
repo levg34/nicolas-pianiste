@@ -113,7 +113,7 @@
         </div>
       </div>
       
-      <h4>A venir</h4>
+      <h4 ng-show="concertList.filter(concertIsOn).length">A venir</h4>
       <span ng-repeat="concert in concertList | filter: concertIsOn">
       <p id="{{concert.id}}_avenir">
         <b>{{concert.name}}</b>
