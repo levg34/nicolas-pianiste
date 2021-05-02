@@ -557,7 +557,7 @@
     </div>
   </div>
 
-  <div id="contact" class="container">
+  <div id="contact" ng-controller="contactCtrl" class="container">
     <h3 class="text-center">Contact</h3>
     <p class="text-center">
       <em>On adore Nicolas !</em>
@@ -569,7 +569,7 @@
           <strong>Envoyé !</strong> Message envoyé avec succès.
         </div>
         <div id="sendError" class="alert alert-danger" ng-if="sendError">
-          <strong>Erreur !</strong> Le message n'a pas été envoyé.
+          <strong>Erreur !</strong> Le message n'a pas été envoyé : {{sendError}}
         </div>
       </div>
       <div class="col-md-8">
@@ -584,7 +584,7 @@
         <textarea class="form-control" id="message" name="message" placeholder="Commentaire" ng-model="message" rows="5"></textarea>
         <div class="row">
           <div class="col-md-12 form-group">
-            <button disabled id="sendbtn" class="btn pull-right" ng-click="sendMessage()">Envoyer</button>
+            <button id="sendbtn" ng-disabled="!message || loading" class="btn pull-right" ng-click="sendMessage()">Envoyer</button>
           </div>
         </div>
       </div>
