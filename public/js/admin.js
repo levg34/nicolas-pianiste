@@ -1,7 +1,8 @@
-const { Container, Jumbotron, Navbar, Nav, NavDropdown, ListGroup, Row, Col, Card } = ReactBootstrap
+const { Container, Jumbotron, Navbar, Nav, NavDropdown, ListGroup, Row, Col, Card, ButtonGroup, Button } = ReactBootstrap
 const { useState, useEffect } = React
 
 function stringToColour(str) {
+    if (!str) return
     var hash = 0
     for (var i = 0; i < str.length; i++) {
         hash = str.charCodeAt(i) + ((hash << 5) - hash)
@@ -47,32 +48,20 @@ function Message(props) {
     let resJSX = 'Sélectionner d\'abord un message.'
     const _message = props.message
 
-    const deleteMessage = (messageId) => {
-        axios.post(`/admin/message/delete/${messageId}`)
-        .then(function (response) {
-            if (response.data) {
-                console.log(response.data)
-            }
-        })
-        .catch(function (error) {
-            console.log(error)
-        })
-    }
-
     if (_message) {
         const {message,ip,date,_id} = _message
         const formatedDate = formatDate(new Date(date))
-        resJSX = <Card>
-        <Card.Body>
-            <Card.Title><MessageInfo message={_message}/></Card.Title>
-            <Card.Subtitle className="mb-2 text-muted">{`Le ${formatedDate}, depuis ${ip}`}</Card.Subtitle>
-            <Card.Text>
-                <pre style={{whiteSpace: 'pre-wrap'}}>{message}</pre>
-            </Card.Text>
-            <Card.Link onClick={() => deleteMessage(_id)}>Supprimer</Card.Link>
-            <Card.Link href="#">Marquer</Card.Link>
-        </Card.Body>
-    </Card>
+        resJSX = (
+            <Card>
+                <Card.Body>
+                    <Card.Title><MessageInfo message={_message}/></Card.Title>
+                    <Card.Subtitle className="mb-2 text-muted">{`Le ${formatedDate}, depuis ${ip}`}</Card.Subtitle>
+                    <Card.Text as="div">
+                        <pre style={{whiteSpace: 'pre-wrap'}}>{message}</pre>
+                    </Card.Text>
+                </Card.Body>
+            </Card>
+        )
     }
 
     return resJSX
@@ -82,7 +71,8 @@ function Messages() {
     const [messages,setMessages] = useState([])
     const [selectedMessage,selectMessage] = useState()
 
-    useEffect(() => {
+    const getMessages = () => {
+        selectMessage(null)
         axios.get('/admin/messages')
         .then(function (response) {
             if (response.data) {
@@ -94,9 +84,27 @@ function Messages() {
         })
         .then(function () {
         })
-    },[])
+    }
+
+    const deleteMessage = () => {
+        if (!selectedMessage) return
+        const messageId = selectedMessage._id
+        axios.post(`/admin/message/delete/${messageId}`)
+        .then(function (response) {
+            if (response.data) {
+                console.log(response.data)
+                getMessages()
+            }
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
+    }
+
+    useEffect(getMessages,[])
 
     const handleClickMessage = (message) => {
+        message.read = true
         selectMessage(message)
         axios.post(`/admin/message/read/${message._id}`)
         .then(function (response) {
@@ -110,13 +118,17 @@ function Messages() {
     }
 
     return <Container>
+        <ButtonGroup aria-label="Basic example">
+            <Button variant="primary" onClick={getMessages}>Rafraîchir</Button>
+            {selectedMessage && <Button variant="danger" onClick={deleteMessage}>Supprimer</Button>}
+        </ButtonGroup>
         <Row>
-            <Col>
+            <Col lg={4}>
                 <ListGroup>
-                {messages.map(message => <ListGroup.Item onClick={() => handleClickMessage(message)} action key={message._id}><MessageInfo message={message}/></ListGroup.Item>)}
+                {messages.map(message => <ListGroup.Item active={selectedMessage && selectedMessage._id === message._id} variant={message.read ? 'secondary' : 'primary'} onClick={() => handleClickMessage(message)} action key={message._id}><MessageInfo message={message}/></ListGroup.Item>)}
                 </ListGroup>
             </Col>
-            <Col xs={8}>
+            <Col>
                 <Message message={selectedMessage}/>
             </Col>
         </Row>
