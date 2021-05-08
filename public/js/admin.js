@@ -105,7 +105,7 @@ function Messages() {
     const deleteMessage = () => {
         if (!selectedMessage) return
         const messageId = selectedMessage._id
-        axios.post(`/admin/message/delete/${messageId}`)
+        axios.delete(`/admin/message/${messageId}`)
         .then(function (response) {
             if (response.data) {
                 console.log(response.data)
@@ -122,7 +122,7 @@ function Messages() {
     const handleClickMessage = (message) => {
         message.read = true
         selectMessage(message)
-        axios.post(`/admin/message/read/${message._id}`)
+        axios.patch(`/admin/message/read/${message._id}`)
         .then(function (response) {
             if (response.data) {
                 console.log(response.data)
@@ -136,7 +136,7 @@ function Messages() {
     const unreadMessage = () => {
         if (!selectedMessage) return
         const messageId = selectedMessage._id
-        axios.post(`/admin/message/unread/${messageId}`)
+        axios.patch(`/admin/message/unread/${messageId}`)
         .then(function (response) {
             if (response.data) {
                 console.log(response.data)
