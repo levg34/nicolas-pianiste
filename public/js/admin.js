@@ -252,13 +252,16 @@ function Bio() {
             </Form.Group>
             <Form.Group>
                 <Form.Label>Sous-titre</Form.Label>
-                <Form.Control type="text" placeholder="..." value={title.subtitle}/>
+                <Form.Control type="text" placeholder="..." value={title.subtitle} onChange={e => setTitle({
+                    ...title,
+                    subtitle: e.target.value
+                })}/>
             </Form.Group>
             <hr/>
         {paragraphs.map(p => 
-            <Form.Group controlId="exampleForm.ControlTextarea1">
+            <Form.Group key={p._id} controlId="exampleForm.ControlTextarea1">
                 <Form.Label>{`Paragraphe n°${p.index}`}</Form.Label>
-                <Form.Control as="textarea" rows={3} value={p.paragraph}/>
+                <Form.Control as="textarea" rows={3} value={p.paragraph} onChange={e => setParagraphs(paragraphs)}/>
             </Form.Group>
         )}
             <hr/>
