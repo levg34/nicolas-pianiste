@@ -2,7 +2,7 @@ const Datastore = require('nedb')
 const db = {}
 db.users = new Datastore({ filename: 'data/users', autoload: true })
 
-let userData = require('../data/user.json')
+let userData = require('../data/users.json')
 
 if (!(userData instanceof Array)) {
     userData = [userData]
