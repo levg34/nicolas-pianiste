@@ -48,38 +48,43 @@ function Header(props) {
 }
 
 class FeedbackManager {
-    constructor(setAlert,setAlertVariant) {
+    constructor(setAlert) {
         this.setAlert = setAlert
-        this.setAlertVariant = setAlertVariant
     }
 
     treatError(err) {
+        let text = ''
         console.error(err)
         if (err.response) {
-            this.setAlert(err.response.data ? err.response.data : err.response)
+            text = err.response.data ? err.response.data : err.response
             if (err.response.data && (err.response.data.data === 'Login required' || (err.response.data.data && (err.response.data.data.name === 'TokenExpiredError' || err.response.data.data.name === 'JsonWebTokenError')))) {
                 sessionStorage.clear()
                 setTimeout(() => window.location = '/admin',2500)
             }
         } else if (err.request) {
-            this.setAlert(err.request)
+            text = err.request
         } else {
-            this.setAlert(err.message)
+            text = err.message
         }
-        this.setAlertVariant('danger')
+        this.setAlert({
+            text,
+            variant: 'danger'
+        })
     }
 
     treatSuccess(success) {
-        this.setAlert(success)
-        this.setAlertVariant('success')
+        this.setAlert({
+            variant: 'success',
+            text: success
+        })
         setTimeout(() => this.setAlert(null),1500)
     }
 }
 
 function AlertFeedback(props) {
-    const {alert,alertVariant} = props.alert
-    return <div>{alert && <Alert variant={alertVariant}>
-        {alert instanceof Object ? <pre>{JSON.stringify(alert, null, 2) }</pre> : alert}
+    const {text,variant} = props.alert ? props.alert : {}
+    return <div>{text && <Alert variant={variant}>
+        {text instanceof Object ? <pre>{JSON.stringify(text, null, 2) }</pre> : text}
     </Alert>}</div>
 }
 
@@ -135,9 +140,8 @@ function Messages() {
     const [selectedMessage,selectMessage] = useState()
 
     const [alert, setAlert] = useState()
-    const [alertVariant, setAlertVariant] = useState()
 
-    const feedback = new FeedbackManager(setAlert,setAlertVariant)
+    const feedback = new FeedbackManager(setAlert)
 
     const getMessages = (showFeedback) => {
         setAlert(null)
@@ -204,7 +208,7 @@ function Messages() {
     }
 
     return <Container>
-        <AlertFeedback alert={{alert,alertVariant}}/>
+        <AlertFeedback alert={alert}/>
         <ButtonGroup aria-label="Basic example">
             <Button variant="primary" onClick={getMessages.bind(null,true)}>Rafraîchir</Button>
             {(selectedMessage && selectedMessage.read) && <Button variant="info" onClick={unreadMessage}>Non lu</Button>}
@@ -242,8 +246,9 @@ function Bio() {
     })
 
     const [paragraphs,setParagraphs] = useState({})
+    const [alert,setAlert] = useState()
 
-    const feedback = new FeedbackManager(setAlert,setAlertVariant)
+    const feedback = new FeedbackManager(setAlert)
 
     const getBioData = () => {
         axios.get('/biographie').then(res => {
@@ -251,15 +256,16 @@ function Bio() {
             setParagraphs(res.data.filter(o => o.paragraph).reduce((acc, cur) => {
                 return {...acc, [cur._id]: cur}
             },{}))
-        }).catch(err => console.error(err))
+        }).catch(err => feedback.treatError(err))
     }
 
     const setBioData = (biobject) => {
         delete biobject.modified
         axios.post('/admin/biographie',biobject).then(res => {
             console.log(res)
+            feedback.treatSuccess('Modifications effectuées !')
             getBioData()
-        }).catch(err => console.error(err))
+        }).catch(err => feedback.treatError(err))
     }
 
     useEffect(() => {
@@ -277,6 +283,7 @@ function Bio() {
     }
     
     return <Container>
+        <AlertFeedback alert={alert}/>
         <Form onSubmit={submitForm}>
             <Form.Group>
                 <Form.Label>Titre de la section</Form.Label>
