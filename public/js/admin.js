@@ -353,11 +353,44 @@ function Studies(props) {
     const [paragraphs,setParagraphs] = useState({})
     const [awards,setAwards] = useState({})
 
+    const getStudData = () => {
+        axios.get('/studies').then(res => {
+            setTitle(res.data.find(o => o.title))
+            setParagraphs(res.data.filter(o => o.paragraph).reduce((acc, cur) => {
+                return {...acc, [cur._id]: cur}
+            },{}))
+            setAwards(res.data.filter(o => o.award).reduce((acc, cur) => {
+                return {...acc, [cur._id]: cur}
+            },{}))
+        }).catch(err => feedback.treatError(err))
+    }
+
+    const setStudData = (studobject) => {
+        feedback.clear()
+        delete studobject.modified
+        if (studobject._id === 'new') {
+            delete studobject._id
+        }
+        axios.post('/admin/studies',studobject).then(res => {
+            console.log(res)
+            feedback.treatSuccess('Modifications effectuées !')
+            getStudData()
+        }).catch(err => feedback.treatError(err))
+    }
+
+    useEffect(getStudData,[])
+
     const submitForm = e => {
         e.preventDefault()
-        console.log(title)
-        console.log(paragraphs)
-        console.log(awards)
+        if (title.modified) {
+            setStudData(title)
+        }
+        Object.values(paragraphs).filter(p => p.modified).forEach(p => {
+            setStudData(p)
+        })
+        Object.values(awards).filter(a => a.modified).forEach(a => {
+            setStudData(a)
+        })
     }
 
     return <Container>
