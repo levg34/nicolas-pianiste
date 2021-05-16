@@ -242,7 +242,7 @@ function Carousel() {
     </Container>
 }
 
-function Bio(params) {
+function Bio(props) {
     const [title,setTitle] = useState({
         title: '',
         subtitle: ''
@@ -250,7 +250,7 @@ function Bio(params) {
 
     const [paragraphs,setParagraphs] = useState({})
 
-    const feedback = params.feedback
+    const feedback = props.feedback
 
     const getBioData = () => {
         axios.get('/biographie').then(res => {
@@ -308,7 +308,7 @@ function Bio(params) {
             </Form.Group>
             <hr/>
         {Object.values(paragraphs).map(p => 
-            <Form.Group key={p._id ? p._id : 'new'} controlId="exampleForm.ControlTextarea1">
+            <Form.Group key={p._id ? p._id : 'new'}>
                 <Form.Label>{`Paragraphe n°${p.index}`}</Form.Label>
                 <Form.Control as="textarea" rows={3} value={p.paragraph} onChange={e => setParagraphs({
                     ...paragraphs,
@@ -342,9 +342,92 @@ function Links() {
     </Container>
 }
 
-function Studies() {
+function Studies(props) {
+    const feedback = props.feedback
+
+    const [title,setTitle] = useState({
+        title: '',
+        awardsTitle: ''
+    })
+
+    const [paragraphs,setParagraphs] = useState({})
+    const [awards,setAwards] = useState({})
+
+    const submitForm = e => {
+        e.preventDefault()
+        console.log(title)
+        console.log(paragraphs)
+        console.log(awards)
+    }
+
     return <Container>
-        Studies...
+        <Form onSubmit={submitForm}>
+            <Form.Group>
+                <Form.Label>Titre de la section</Form.Label>
+                <Form.Control type="text" placeholder="Études" value={title.title} onChange={e => setTitle({
+                    ...title,
+                    modified: true,
+                    title: e.target.value
+                })}/>
+            </Form.Group>
+            <hr/>
+        {Object.values(paragraphs).map(p => 
+            <Form.Group key={p._id ? p._id : 'new'}>
+                <Form.Label>{`Paragraphe n°${p.index}`}</Form.Label>
+                <Form.Control as="textarea" rows={3} value={p.paragraph} onChange={e => setParagraphs({
+                    ...paragraphs,
+                    [p._id]: {
+                        ...p,
+                        modified: true,
+                        paragraph: e.target.value
+                    }
+                })}/>
+            </Form.Group>
+        )}
+            {(!paragraphs.new) && <Button className="mt-2" variant="outline-success" onClick={e => setParagraphs({
+                ...paragraphs,
+                new: {
+                    _id: 'new',
+                    paragraph: '',
+                    index: Object.keys(paragraphs).length
+                }
+            })}>Ajouter un paragraphe</Button>}
+            <hr/>
+            <Form.Group>
+                <Form.Label>Titre de la section Récompenses</Form.Label>
+                <Form.Control type="text" placeholder="Récompenses" value={title.awardsTitle} onChange={e => setTitle({
+                    ...title,
+                    modified: true,
+                    awardsTitle: e.target.value
+                })}/>
+            </Form.Group>
+            <hr/>
+            {Object.values(awards).map(p => 
+            <Form.Group key={p._id ? p._id : 'new'}>
+                <Form.Label>{`Récompense n°${p.index}`}</Form.Label>
+                <Form.Control type="text" placeholder={`Récompense n°${p.index}`} value={p.award} onChange={e => setAwards({
+                    ...awards,
+                    [p._id]: {
+                        ...p,
+                        modified: true,
+                        award: e.target.value
+                    }
+                })}/>
+            </Form.Group>
+        )}
+            {(!awards.new) && <Button className="mt-2" variant="outline-success" onClick={e => setAwards({
+                ...awards,
+                new: {
+                    _id: 'new',
+                    award: '',
+                    index: Object.keys(awards).length
+                }
+            })}>Ajouter un récompense</Button>}
+            <hr/>
+            <Button variant="primary" type="submit">
+                Valider
+            </Button>
+        </Form>
     </Container>
 }
 
