@@ -14,6 +14,7 @@ db.biographie = new Datastore({ filename: 'data/biographie', autoload: true })
 db.studies = new Datastore({ filename: 'data/studies', autoload: true })
 db.concerts = new Datastore({ filename: 'data/concerts', autoload: true })
 db.videos = new Datastore({ filename: 'data/videos', autoload: true })
+db.repertory = new Datastore({ filename: 'data/repertory', autoload: true })
 
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
@@ -125,7 +126,33 @@ app.get('/videos', (req, res) => {
 })
 
 app.get('/repertory', (req, res) => {
-    res.sendFile(__dirname + '/backup/repertory.json')
+    db.repertory.find({}).sort({index: 1}).exec(function (err, docs) {
+        if (err) res.status(500).json(err)
+        const rep = {}
+        docs.forEach(doc => {
+            if (!rep[doc.title]) rep[doc.title] = {}
+            if (!rep[doc.title][doc.subtitle ? doc.subtitle : 0])  rep[doc.title][doc.subtitle ? doc.subtitle : 0] = []
+            rep[doc.title][doc.subtitle ? doc.subtitle : 0].push(doc.content)
+        })
+        const formattedRep = []
+        Object.keys(rep).forEach(title => {
+            const section = {
+                title,
+                items: []
+            }
+            Object.keys(rep[title]).forEach(subtitle => {
+                const subsection = {
+                    list: rep[title][subtitle]
+                }
+                if (subtitle != 0) {
+                    subsection.title = subtitle
+                }
+                section.items.push(subsection)
+            })
+            formattedRep.push(section)
+        })
+        res.json(formattedRep)
+    })
 })
 
 app.post('/message', (req, res) => {
