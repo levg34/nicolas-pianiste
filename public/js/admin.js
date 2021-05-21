@@ -58,12 +58,22 @@ class FeedbackManager {
 
     treatError(err) {
         let text = ''
+        let jsx
         console.error(err)
         if (err.response) {
             text = err.response.data ? err.response.data : err.response
             if (err.response.data && (err.response.data.data === 'Login required' || (err.response.data.data && (err.response.data.data.name === 'TokenExpiredError' || err.response.data.data.name === 'JsonWebTokenError')))) {
                 sessionStorage.clear()
-                setTimeout(() => window.location.reload(),2500)
+                const warningMessage =
+`Attention à bien sauvegarder toute donnée non enregistrée avant de se reconnecter !
+
+Se reconnecter ?`
+                const handleClickReconnect = () => {
+                    if (window.confirm(warningMessage)) {
+                        window.location.reload()
+                    }
+                }
+                jsx = <Button variant="warning" onClick={handleClickReconnect}>Se reconnecter</Button>
             }
         } else if (err.request) {
             text = err.request
@@ -71,6 +81,7 @@ class FeedbackManager {
             text = err.message
         }
         this.setAlert({
+            jsx,
             text,
             variant: 'danger'
         })
@@ -90,10 +101,11 @@ class FeedbackManager {
 }
 
 function AlertFeedback(props) {
-    const {text,variant} = props.alert ? props.alert : {}
+    const {text,variant,jsx} = props.alert ? props.alert : {}
     return <Container>
         {text && <Alert variant={variant}>
             {text instanceof Object ? <pre>{JSON.stringify(text, null, 2) }</pre> : text}
+            {jsx && <div>{jsx}</div>}
         </Alert>}
     </Container>
 }
@@ -357,10 +369,11 @@ function Bio(props) {
     const setBioData = (biobject) => {
         feedback.clear()
         delete biobject.modified
+        const dbBioObject = {...biobject}
         if (biobject._id === 'new') {
-            delete biobject._id
+            delete dbBioObject._id
         }
-        axios.post('/admin/biographie',biobject).then(res => {
+        axios.post('/admin/biographie',dbBioObject).then(res => {
             console.log(res)
             feedback.treatSuccess('Modifications effectuées !')
             getBioData()
@@ -401,7 +414,7 @@ function Bio(props) {
             </Form.Group>
             <hr/>
         {Object.values(paragraphs).map(p => 
-            <Form.Group key={p._id ? p._id : 'new'}>
+            <Form.Group key={p._id}>
                 <Form.Label>{`Paragraphe n°${p.index}`}</Form.Label>
                 <Form.Control as="textarea" rows={3} value={p.paragraph} onChange={e => setParagraphs({
                     ...paragraphs,
@@ -477,10 +490,11 @@ function Links(props) {
         Object.values(links).filter(l => l.modified).forEach(l => {
             feedback.clear()
             delete l.modified
+            const link = {...l}
             if (l._id.startsWith('new')) {
-                delete l._id
+                delete link._id
             }
-            axios.post('/admin/links',l).then(res => {
+            axios.post('/admin/links',link).then(res => {
                 console.log(res)
                 feedback.treatSuccess('Modifications effectuées !')
                 getLinks()
@@ -492,7 +506,7 @@ function Links(props) {
         <Form onSubmit={submitForm}>
             {linkTypes.map(type => <Form.Group key={type[0]}>
                 <Row><Form.Label>{type[1]}</Form.Label></Row>
-            {Object.values(links).filter(link => link.type === type[0]).map(link => <Row key={link._id ? link._id : `new_${type[0]}_${Object.keys(links).length}`}>
+            {Object.values(links).filter(link => link.type === type[0]).map(link => <Row key={link._id}>
                 <Col xs={4}>
                     <Form.Label>Nom</Form.Label>
                     <Form.Control placeholder="Nom" value={link.name} onChange={e => nameChange(e,link)}/>
@@ -546,10 +560,11 @@ function Studies(props) {
     const setStudData = (studobject) => {
         feedback.clear()
         delete studobject.modified
+        const dbStudObject = {...studobject}
         if (studobject._id === 'new') {
-            delete studobject._id
+            delete dbStudObject._id
         }
-        axios.post('/admin/studies',studobject).then(res => {
+        axios.post('/admin/studies',dbStudObject).then(res => {
             console.log(res)
             feedback.treatSuccess('Modifications effectuées !')
             getStudData()
@@ -583,7 +598,7 @@ function Studies(props) {
             </Form.Group>
             <hr/>
         {Object.values(paragraphs).map(p => 
-            <Form.Group key={p._id ? p._id : 'new'}>
+            <Form.Group key={p._id}>
                 <Form.Label>{`Paragraphe n°${p.index}`}</Form.Label>
                 <Form.Control as="textarea" rows={3} value={p.paragraph} onChange={e => setParagraphs({
                     ...paragraphs,
@@ -614,7 +629,7 @@ function Studies(props) {
             </Form.Group>
             <hr/>
             {Object.values(awards).map(p => 
-            <Form.Group key={p._id ? p._id : 'new'}>
+            <Form.Group key={p._id}>
                 <Form.Label>{`Récompense n°${p.index}`}</Form.Label>
                 <Form.Control type="text" placeholder={`Récompense n°${p.index}`} value={p.award} onChange={e => setAwards({
                     ...awards,
