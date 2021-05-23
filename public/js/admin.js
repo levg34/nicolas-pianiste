@@ -664,10 +664,8 @@ function Repertory() {
 }
 
 function Videos() {
-    const [url, setUrl] = useState('https://vimeo.com/181230350')
-    const [img, setImg] = useState('')
     const [data, setData] = useState({
-        url: '',
+        url: 'https://vimeo.com/181230350',
         title: '',
         subtitle: '',
         img: '',
@@ -680,25 +678,37 @@ function Videos() {
 
     useEffect(() => {
         setNotFound(false)
-        setImg('')
-    },[url])
+        setData({
+            ...data,
+            img: ''
+        })
+    },[data.url])
 
     const getThumbnail = () => {
         setNotFound(false)
-        const parsed = new URL(url)
+        const parsed = new URL(data.url)
         if (parsed.hostname === 'vimeo.com') {
             const id_vimeo = parsed.pathname
-            fetch(`https://vimeo.com/api/v2/video${id_vimeo}.json`).then(res => res.json()).then(res => setImg(res[0].thumbnail_large)).catch(err => {
+            fetch(`https://vimeo.com/api/v2/video${id_vimeo}.json`).then(res => res.json()).then(res => setData({
+                ...data,
+                img: res[0].thumbnail_large
+            })).catch(err => {
                 console.error(err)
                 setNotFound(true)
             })
         } else if (parsed.hostname === 'www.youtube.com') {
-            fetch(`https://www.youtube.com/oembed?url=${url}`).then(res => res.json()).then(res => res.thumbnail_url ? setImg(res.thumbnail_url) : setNotFound(true)).catch(err => {
+            fetch(`https://www.youtube.com/oembed?url=${data.url}`).then(res => res.json()).then(res => res.thumbnail_url ? setData({
+                ...data,
+                img: res.thumbnail_url
+            }) : setNotFound(true)).catch(err => {
                 console.error(err)
                 setNotFound(true)
             })
         } else {
-            fetch(`https://noembed.com/embed?url=${url}`).then(res => res.json()).then(res => res.thumbnail_url ? setImg(res.thumbnail_url) : setNotFound(true)).catch(err => {
+            fetch(`https://noembed.com/embed?url=${data.url}`).then(res => res.json()).then(res => res.thumbnail_url ? setData({
+                ...data,
+                img: res.thumbnail_url
+            }) : setNotFound(true)).catch(err => {
                 console.error(err)
                 setNotFound(true)
             })
@@ -713,7 +723,10 @@ function Videos() {
         }}>
             <Form.Group>
                 <Form.Label>Url</Form.Label>
-                <Form.Control type="url" onChange={e => setUrl(e.target.value)} value={url}/>
+                <Form.Control type="url" onChange={e => setData({
+                    ...data,
+                    url: e.target.value
+                })} value={data.url}/>
             </Form.Group>
             <Form.Group>
                 <Form.Label>Title</Form.Label>
@@ -732,10 +745,13 @@ function Videos() {
             <Form.Group>
                 <Row>
                     <Col><Form.Label>Image</Form.Label></Col>
-                    {!img && <Col><Button onClick={() => getThumbnail()} disabled={!url}>Chercher l'image</Button>{notFound && <Alert variant="warning">Image non trouvée.</Alert>}</Col>}
-                    {img && <Col><Image src={img} thumbnail fluid className="float-right"/></Col>}
+                    {!data.img && <Col><Button onClick={() => getThumbnail()} disabled={!data.url}>Chercher l'image</Button>{notFound && <Alert variant="warning">Image non trouvée.</Alert>}</Col>}
+                    {data.img && <Col><Image src={data.img} thumbnail fluid className="float-right"/></Col>}
                 </Row>
-                <Form.Control type="url" onChange={e => setImg(e.target.value)} value={img} disabled={!notFound}/>
+                <Form.Control type="url" onChange={e => setData({
+                    ...data,
+                    img: e.target.value
+                })} value={data.img} disabled={!notFound}/>
             </Form.Group>
             <Form.Group>
                 <Form.Label>Description</Form.Label>
