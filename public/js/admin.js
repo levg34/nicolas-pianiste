@@ -670,14 +670,6 @@ function VideoFormGroup(props) {
 
     const [notFound,setNotFound] = useState(false)
 
-    useEffect(() => {
-        setNotFound(false)
-        setVideo({
-            ...video,
-            img: ''
-        })
-    },[video.url])
-
     const getThumbnail = () => {
         setNotFound(false)
         const parsed = new URL(video.url)
@@ -719,6 +711,7 @@ function VideoFormGroup(props) {
                 ...video,
                 url: e.target.value
             })} value={video.url}/>
+            {!video.img && <div><Button onClick={() => getThumbnail()} disabled={!video.url}>Remplir automatiquement</Button>{notFound && <Alert variant="warning">Impossible de remplir automatiquement.</Alert>}</div>}
         </Form.Group>
         <Form.Group>
             <Form.Label>Titre</Form.Label>
@@ -737,13 +730,12 @@ function VideoFormGroup(props) {
         <Form.Group>
             <Row>
                 <Col><Form.Label>Image</Form.Label></Col>
-                {!video.img && <Col><Button onClick={() => getThumbnail()} disabled={!video.url}>Chercher l'image</Button>{notFound && <Alert variant="warning">Image non trouvée.</Alert>}</Col>}
                 {video.img && <Col><Image src={video.img} thumbnail fluid className="float-right"/></Col>}
             </Row>
             <Form.Control type="url" onChange={e => setVideo({
                 ...video,
                 img: e.target.value
-            })} value={video.img} disabled={!notFound}/>
+            })} value={video.img}/>
         </Form.Group>
         <Form.Group>
             <Form.Label>Description</Form.Label>
