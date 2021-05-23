@@ -798,6 +798,15 @@ function Videos(props) {
         }).catch(err => feedback.treatError(err))
     }
 
+    const [updated,setUpdated] = useState({})
+
+    const markUpdated = index => {
+        setUpdated({
+            ...updated,
+            [index]: (updated[index] !== undefined) ? (updated[index]+1) : 0
+        })
+    }
+
     const setVideo = (index,video) => {
         const modifsVideo = [...videos]
         if (!video.alt && video.title) {
@@ -805,6 +814,7 @@ function Videos(props) {
         }
         modifsVideo[index] = video
         setVideos(modifsVideo)
+        markUpdated(index)
     }
 
     useEffect(getVideos,[])
@@ -813,6 +823,9 @@ function Videos(props) {
         <Form onSubmit={e => {
             e.preventDefault()
             console.log(videos)
+            Object.entries(updated).filter(e => e[1]).forEach(e => {
+                console.log(videos[e[0]])
+            })
         }}>
             {videos.map((video, index) => <VideoFormGroup key={video._id ? video._id : index} video={video} setVideo={setVideo.bind(null,index)}/>)}
             <Button className="mt-2" variant="outline-info" onClick={e => {
