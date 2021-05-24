@@ -670,6 +670,10 @@ function VideoFormGroup(props) {
 
     const [notFound,setNotFound] = useState(false)
 
+    useEffect(() => {
+        setNotFound(false)
+    },[video.url])
+
     const getThumbnail = () => {
         setNotFound(false)
         const parsed = new URL(video.url)
@@ -677,6 +681,8 @@ function VideoFormGroup(props) {
             const id_vimeo = parsed.pathname
             fetch(`https://vimeo.com/api/v2/video${id_vimeo}.json`).then(res => res.json()).then(res => setVideo({
                 ...video,
+                title:(!video.title && res[0].title) ? res[0].title : video.title,
+                description:(!video.description && res[0].description) ? res[0].description : video.description,
                 img: res[0].thumbnail_large
             })).catch(err => {
                 console.error(err)
