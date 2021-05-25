@@ -2,8 +2,8 @@ Section,Données extraites,Données en base,Endpoint get,Formulaire,Endpoint pos
 Slider photos,x,x,x,+,x
 Biographie,x,x,x,x,x
 Études,x,x,x,x,x
-Concerts,x,_,x,,
-Répertoire,x,x,x,,
+Concerts,x,x,x,,
+Répertoire,x,x,x,_,
 Vidéos,x,x,x,x,x
 Contact,x,x,x,x,x
 Liens,x,x,x,x,x
