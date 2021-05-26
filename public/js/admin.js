@@ -728,7 +728,18 @@ function Repertory(props) {
                 })
             }}/>}
                 {[...new Set(repertory.filter(rep => rep.title === title).map(e => e.subtitle))].map(subtitle => <Card key={`${title}_${subtitle}`} body>
-                    {(subtitle || (repertory.filter(rep => rep.title === title).map(e => e.subtitle)).filter(subtitle => subtitle !== undefined).length < 1) ? <Form.Label>{subtitle}</Form.Label> : <Form.Control type="text" placeholder="Titre de sous-section" value={subtitle ? subtitle : ''}/>}
+                    {(subtitle || (repertory.filter(rep => rep.title === title).map(e => e.subtitle)).filter(subtitle => subtitle !== undefined).length < 1) ? <Form.Label>{subtitle}</Form.Label> : <Form.Control type="text" placeholder="Titre de sous-section" value={subtitle ? subtitle : ''} onChange={e => {
+                        const repCopy = [...repertory]
+                        repertory.filter(rep => rep.subtitle === subtitle).forEach(rep => {
+                            const index = repertory.findIndex(_rep => _rep._id === rep._id)
+                            repCopy[index] = {
+                                ...rep,
+                                subtitle: e.target.value,
+                                modified: true
+                            }
+                            setRepertory(repCopy)
+                        })
+                    }}/>}
                     <ListGroup>
                         {repertory.filter(rep => rep.title === title && rep.subtitle === subtitle).map(rep => <ListGroup.Item variant={rep.deleted ? 'danger' : undefined} key={rep._id}>
                             <Form.Control type="text" placeholder="Élément de répertoire" disabled={rep.deleted} value={rep.content} onChange={e => {
