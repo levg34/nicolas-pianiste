@@ -629,6 +629,15 @@ function Studies(props) {
         }).catch(err => feedback.treatError(err))
     }
 
+    const deleteStudData = studobject => {
+        feedback.clear()
+        axios.delete('/admin/studies/'+studobject._id).then(res => {
+            console.log(res)
+            feedback.treatSuccess('Modifications effectuées !')
+            getStudData()
+        }).catch(err => feedback.treatError(err))
+    }
+
     useEffect(getStudData,[])
 
     const submitForm = e => {
@@ -637,10 +646,18 @@ function Studies(props) {
             setStudData(title)
         }
         Object.values(paragraphs).filter(p => p.modified).forEach(p => {
-            setStudData(p)
+            if (!p.paragraph && p._id !== 'new') {
+                deleteStudData(p)
+            } else {
+                setStudData(p)
+            }
         })
         Object.values(awards).filter(a => a.modified).forEach(a => {
-            setStudData(a)
+            if (!a.award && a._id !== 'new') {
+                deleteStudData(a)
+            } else {
+                setStudData(a)
+            }
         })
     }
 
@@ -656,7 +673,7 @@ function Studies(props) {
             </Form.Group>
             <hr/>
         {Object.values(paragraphs).map(p => 
-            <Form.Group key={p._id}>
+            <Form.Group className={(!p.paragraph && p._id !== 'new') ? 'bg-secondary' : undefined} key={p._id}>
                 <Form.Label>{`Paragraphe n°${p.index}`}</Form.Label>
                 <Form.Control as="textarea" rows={3} value={p.paragraph} onChange={e => setParagraphs({
                     ...paragraphs,
@@ -673,7 +690,7 @@ function Studies(props) {
                 new: {
                     _id: 'new',
                     paragraph: '',
-                    index: Object.keys(paragraphs).length
+                    index: Math.max(...Object.values(paragraphs).map(p => p.index))+1
                 }
             })}>Ajouter un paragraphe</Button>}
             <hr/>
@@ -687,7 +704,7 @@ function Studies(props) {
             </Form.Group>
             <hr/>
             {Object.values(awards).map(p => 
-            <Form.Group key={p._id}>
+            <Form.Group className={(!p.award && p._id !== 'new') ? 'bg-secondary' : undefined} key={p._id}>
                 <Form.Label>{`Récompense n°${p.index}`}</Form.Label>
                 <Form.Control type="text" placeholder={`Récompense n°${p.index}`} value={p.award} onChange={e => setAwards({
                     ...awards,
@@ -704,7 +721,7 @@ function Studies(props) {
                 new: {
                     _id: 'new',
                     award: '',
-                    index: Object.keys(awards).length
+                    index: Math.max(...Object.values(awards).map(p => p.index))+1
                 }
             })}>Ajouter une récompense</Button>}
             <hr/>
