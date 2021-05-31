@@ -1,6 +1,9 @@
 const express = require('express')
 const app = express()
 
+const multer  = require('multer')
+const upload = multer({ dest: 'uploads/' })
+
 const Datastore = require('nedb')
 const db = {}
 db.messages = new Datastore({ filename: 'data/messages', autoload: true })
@@ -15,6 +18,7 @@ db.studies = new Datastore({ filename: 'data/studies', autoload: true })
 db.concerts = new Datastore({ filename: 'data/concerts', autoload: true })
 db.videos = new Datastore({ filename: 'data/videos', autoload: true })
 db.repertory = new Datastore({ filename: 'data/repertory', autoload: true })
+db.images = new Datastore({ filename: 'data/images', autoload: true })
 
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
@@ -464,6 +468,15 @@ app.get('/admin/tokenvalid', (req, res) => {
     const {exp} = user
     user.expMin = (exp - (new Date()).getTime()/1000)/60
     res.json(user)
+})
+
+app.post('/admin/upload', upload.single('image'), (req, res) => {
+    const {username} = req.user
+    db.images.insert({...req.file,username}, function (err, newDoc) {
+        if (err) res.status(500).json(err)
+        console.log(newDoc)
+    })
+    res.json(req.file)
 })
 
 function canRequest(ip, path) {
