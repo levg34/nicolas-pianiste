@@ -25,3 +25,24 @@ fs.readdir(directoryPath, function (err, files) {
         })
     })
 })
+
+directoryPath = path.join(__dirname, '../public/img/concerts')
+
+fs.readdir(directoryPath, function (err, files) {
+
+    if (err) {
+        return console.log('Unable to scan directory: ' + err)
+    } 
+    
+    files.forEach(function (file) {
+        sizeOf('./public/img/concerts/'+file, function (err, dimensions) {
+            if (err) return console.error(err)
+            
+            const {width, height} = dimensions
+            const ratio = width / height
+            
+            console.log(dimensions)
+            console.log(Math.abs(4/3-ratio)<0.003)
+        })
+    })
+})
