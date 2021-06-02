@@ -165,6 +165,13 @@ app.get('/repertory', (req, res) => {
     })
 })
 
+app.get('/images', (req, res) => {
+    db.images.find({}).sort({ratio: 1}).exec(function (err, docs) {
+        if (err) res.status(500).json(err)
+        res.json(docs)
+    })
+})
+
 app.get('/uploads/:filename', (req, res) => {
     const options = {
         root: path.join(__dirname, 'uploads'),
