@@ -139,13 +139,15 @@ function ImageList(props) {
 
     return <Container>
         {images.map(img => <Image style={{maxHeight:'150px'}} fluid key={img._id} src={img.destination+img.filename} thumbnail onClick={e => showPhotoModal(img)}/>)}
-        <ImageModal show={showModal} setShow={setShowModal} image={viewingImage}/>
+        <ImageModal show={showModal} setShow={setShowModal} image={viewingImage} feedback={feedback}/>
     </Container>
 }
 
 function ImageModal(props) {
-    const {image,show,setShow} = props
+    const {image,show,setShow,feedback} = props
     const url = image.destination+image.filename
+    const urlControl = useRef()
+
     return <Modal size="lg" show={show} onHide={() => setShow(false)}>
         <Modal.Header closeButton>
             <Modal.Title>
@@ -164,11 +166,16 @@ function ImageModal(props) {
                             </tr>)}
                             <tr key="url">
                                 <th>url</th>
-                                <td><Form.Control value={url} readOnly/></td>
+                                <td><Form.Control ref={urlControl} value={url} readOnly/></td>
                             </tr>
                         </tbody>
                     </Table>
-                    <Button variant="primary" onClick={e => setShow(false)}>Utiliser</Button>
+                    <Button variant="primary" onClick={e => {
+                        urlControl.current.select()
+                        document.execCommand('copy')
+                        feedback.treatSuccess('URL de l\'image copiée dans le presse-papier')
+                        setShow(false)
+                    }}>Utiliser</Button>
                 </Card.Body>
             </Card>
         </Modal.Body>
