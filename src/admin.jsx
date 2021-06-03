@@ -122,7 +122,7 @@ function AlertFeedback(props) {
 }
 
 function ImageList(props) {
-    const {feedback, images} = props
+    const {feedback, images, loadImages} = props
 
     const [showModal, setShowModal] = useState(false)
     const [viewingImage, setViewingImage] = useState({})
@@ -181,12 +181,12 @@ function ImageList(props) {
         }} checked={filter.uploads}/>
 
         {filteredImages.map(img => <Image style={{maxHeight:'150px'}} fluid key={img._id} src={img.destination+img.filename} thumbnail onClick={e => showPhotoModal(img)}/>)}
-        <ImageModal show={showModal} setShow={setShowModal} image={viewingImage} feedback={feedback}/>
+        <ImageModal show={showModal} setShow={setShowModal} image={viewingImage} feedback={feedback} loadImages={loadImages}/>
     </Container>
 }
 
 function ImageModal(props) {
-    const {image,show,setShow,feedback} = props
+    const {image,show,setShow,feedback,loadImages} = props
     const url = image.destination+image.filename
     const urlControl = useRef()
 
@@ -196,6 +196,7 @@ function ImageModal(props) {
             console.log(res)
             setShow(false)
             feedback.treatSuccess('Image supprimée.')
+            loadImages()
         }).catch(err => feedback.treatError(err))
     }
 
@@ -226,7 +227,7 @@ function ImageModal(props) {
                     </Table>
                     </div>
                     <div className="float-right">
-                    <Button variant="danger" onClick={() => deleteImage(image)}>Supprimer</Button>{' '}
+                    {image.fieldname && <Button variant="danger" onClick={() => deleteImage(image)}>Supprimer</Button>}{' '}
                     <Button variant="primary" onClick={e => {
                         urlControl.current.select()
                         document.execCommand('copy')
@@ -278,7 +279,7 @@ function Images(props) {
 
     return <Container>
         Images
-        <ImageList feedback={feedback} images={images}/>
+        <ImageList feedback={feedback} images={images} loadImages={loadImages}/>
         <Card body>
             <Form onSubmit={handleSubmit} encType="multipart/form-data">
                 <Form.Group>
