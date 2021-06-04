@@ -469,7 +469,41 @@ function Concerts(props) {
 function ConcertInfo(props) {
     const {feedback, concert} = props
 
-    return concert ? <p>Concert : {concert.name}</p> : <p>Sélectionner un concert</p>
+    const concertTypes = [
+        'Solo',
+        'Duo éphémère',
+        'Trio éphémère',
+        'Musique vocale et spectacles',
+        'Composition'
+    ]
+
+    return concert ? <Container>
+        <Form>
+            <Form.Group>
+                <Form.Label>Nom du concert :</Form.Label>
+                <Form.Control type="text" value={concert.name}/>
+            </Form.Group>
+            <Form.Group>
+                <Form.Label>Image :</Form.Label>{' '}
+                {concert.img ? <Image src={concert.img} thumbnail style={{maxHeight:'100px'}} alt="Image introuvable"/> : <Button variant="outline-secondary">Ajouter une image</Button>}
+            </Form.Group>
+            <Form.Group>
+                <Form.Label>Informations supplémentaires (facultatif) :</Form.Label>
+                <Form.Control as="textarea" rows={3} type="text" value={concert.info !== undefined ? concert.info : ''}/>
+            </Form.Group>
+            <Form.Group>
+                <Form.Label>Type de concert</Form.Label>
+                <Form.Control as="select" value={concert.type}>
+                    {concertTypes.map(t => <option>{t}</option>)}
+                </Form.Control>
+            </Form.Group>
+            <Form.Label>Détails (facultatifs)</Form.Label>
+            {/* TODO: ajouter artistes et pièces <Form.Group>
+                <Form.Label>Type de concert</Form.Label>
+                <Form.Control type="text" value={concert.name}/>
+            </Form.Group> */}
+        </Form>
+    </Container> : <p>Sélectionner un concert</p>
 }
 
 function Carousel(props) {
