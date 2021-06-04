@@ -480,6 +480,12 @@ function ConcertInfo(props) {
     return concert ? <Container>
         <Form>
             <Form.Group>
+                <Form.Label>Type de concert</Form.Label>
+                <Form.Control as="select" value={concert.type}>
+                    {concertTypes.map(t => <option>{t}</option>)}
+                </Form.Control>
+            </Form.Group>
+            <Form.Group>
                 <Form.Label>Nom du concert :</Form.Label>
                 <Form.Control type="text" value={concert.name}/>
             </Form.Group>
@@ -491,17 +497,35 @@ function ConcertInfo(props) {
                 <Form.Label>Informations supplémentaires (facultatif) :</Form.Label>
                 <Form.Control as="textarea" rows={3} type="text" value={concert.info !== undefined ? concert.info : ''}/>
             </Form.Group>
-            <Form.Group>
-                <Form.Label>Type de concert</Form.Label>
-                <Form.Control as="select" value={concert.type}>
-                    {concertTypes.map(t => <option>{t}</option>)}
-                </Form.Control>
-            </Form.Group>
-            <Form.Label>Détails (facultatifs)</Form.Label>
-            {/* TODO: ajouter artistes et pièces <Form.Group>
-                <Form.Label>Type de concert</Form.Label>
-                <Form.Control type="text" value={concert.name}/>
-            </Form.Group> */}
+            <Form.Label>Détails (facultatifs) : </Form.Label>{' '}
+            {(concert.details && concert.details.artists && concert.details.artists.length) && <Card body>
+                <Form.Label>Artistes :</Form.Label>
+                {concert.details.artists.map(artist => <Card body>
+                    <Form.Group>
+                        <Form.Label>Nom de l'artiste :</Form.Label>
+                        <Form.Control type="text" value={artist.name}/>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Instrument(s) de l'artiste :</Form.Label>
+                        <Form.Control type="text" value={artist.instrument}/>
+                    </Form.Group>
+                </Card>)}
+            </Card>}
+            <Button variant="outline-secondary">Ajouter un artiste</Button>{' '}
+            {(concert.details && concert.details.pieces && concert.details.pieces.length) && <Card body>
+                <Form.Label>Œuvres :</Form.Label>
+                {concert.details.pieces.map(piece => <Card body>
+                    <Form.Group>
+                        <Form.Label>Titre de l'œuvre :</Form.Label>
+                        <Form.Control type="text" value={piece.title}/>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Compositeur :</Form.Label>
+                        <Form.Control type="text" value={piece.composer}/>
+                    </Form.Group>
+                </Card>)}
+            </Card>}
+            <Button variant="outline-secondary">Ajouter une œuvre</Button>
         </Form>
     </Container> : <p>Sélectionner un concert</p>
 }
