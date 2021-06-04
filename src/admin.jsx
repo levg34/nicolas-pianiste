@@ -139,14 +139,14 @@ function ImageList(props) {
     useEffect(() => {
         setFilteredImages(images)
         setFilter({
-            banner: false,
+            banner: selectImage instanceof Function,
             concerts: false,
             uploads: false
         })
     },[images])
 
     const [filter,setFilter] = useState({
-        banner: false,
+        banner: selectImage instanceof Function,
         concerts: false,
         uploads: false
     })
