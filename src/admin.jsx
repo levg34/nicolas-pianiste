@@ -122,14 +122,18 @@ function AlertFeedback(props) {
 }
 
 function ImageList(props) {
-    const {feedback, images, loadImages} = props
+    const {feedback, images, loadImages, selectImage} = props
 
     const [showModal, setShowModal] = useState(false)
     const [viewingImage, setViewingImage] = useState({})
 
     const showPhotoModal = img => {
-        setShowModal(true)
-        setViewingImage(img)
+        if (selectImage instanceof Function) {
+            selectImage(img.destination+img.filename)
+        } else {
+            setShowModal(true)
+            setViewingImage(img)
+        }
     }
 
     useEffect(() => {
@@ -191,7 +195,6 @@ function ImageModal(props) {
     const urlControl = useRef()
 
     const deleteImage = image => {
-        console.log(image)
         axios.delete('/admin/image/'+image._id).then(res => {
             console.log(res)
             setShow(false)
@@ -242,7 +245,7 @@ function ImageModal(props) {
 }
 
 function Images(props) {
-    const feedback = props.feedback
+    const {feedback, selectImage} = props
 
     const fileInput = useRef()
 
@@ -279,7 +282,7 @@ function Images(props) {
 
     return <Container>
         Images
-        <ImageList feedback={feedback} images={images} loadImages={loadImages}/>
+        <ImageList feedback={feedback} images={images} loadImages={loadImages} selectImage={selectImage}/>
         <Card body>
             <Form onSubmit={handleSubmit} encType="multipart/form-data">
                 <Form.Group>
@@ -480,6 +483,27 @@ function Carousel(props) {
         })
     }
 
+    const [imageModal, setImageModal] = useState(false)
+
+    const [selectedElement, setSelectedElement] = useState()
+
+    const setImage = image => {
+        setData({
+            ...data,
+            [selectedElement._id]: {
+                ...selectedElement,
+                modified: true,
+                url: image
+            }
+        })
+        setImageModal(false)
+    }
+
+    const showImageModal = carouselElement => {
+        setSelectedElement(carouselElement)
+        setImageModal(true)
+    }
+
     return <Container>
         <Form onSubmit={submitForm}>
             <Row>
@@ -538,7 +562,7 @@ function Carousel(props) {
                         }} disabled={carouselElement.description === undefined}/>
                     </Col>
                     <Col>
-                        <Image src={carouselElement.url} thumbnail />
+                        <Image src={carouselElement.url} thumbnail onClick={e => showImageModal(carouselElement)}/>
                     </Col>
                 </Row>
                 <hr/>
@@ -557,7 +581,26 @@ function Carousel(props) {
                 Valider
             </Button>
         </Form>
+        <SelectImageModal show={imageModal} handleClose={() => setImageModal(false)} feedback={feedback} setImage={setImage}/>
     </Container>
+}
+
+function SelectImageModal(props) {
+    const {show, handleClose, feedback, setImage} = props
+    return <Modal size="lg" show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+            <Modal.Title>Choisir une image</Modal.Title>
+        </Modal.Header>
+        <Modal.Body><Images feedback={feedback} selectImage={setImage}/></Modal.Body>
+        <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+                Annuler
+            </Button>
+            <Button variant="primary" onClick={handleClose}>
+                Utiliser ici
+            </Button>
+        </Modal.Footer>
+    </Modal>
 }
 
 function Bio(props) {
@@ -1238,7 +1281,6 @@ function Videos(props) {
     return <Container>
         <Form onSubmit={e => {
             e.preventDefault()
-            console.log(videos)
             Object.entries(updated).filter(e => e[1]).forEach(e => {
                 const video = videos[e[0]]
                 if (video.deleted) {
