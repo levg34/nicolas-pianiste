@@ -123,7 +123,7 @@ function AlertFeedback(props) {
 }
 
 function ImageList(props) {
-    const {feedback, images, loadImages, selectImage} = props
+    const {feedback, images, loadImages, selectImage, imageType} = props
 
     const [showModal, setShowModal] = useState(false)
     const [viewingImage, setViewingImage] = useState({})
@@ -140,8 +140,8 @@ function ImageList(props) {
     useEffect(() => {
         setFilteredImages(images)
         setFilter({
-            banner: selectImage instanceof Function,
-            concerts: false,
+            banner: selectImage instanceof Function && imageType !== 'concerts',
+            concerts: selectImage instanceof Function && imageType === 'concerts',
             uploads: false
         })
     },[images])
@@ -246,7 +246,7 @@ function ImageModal(props) {
 }
 
 function Images(props) {
-    const {feedback, selectImage} = props
+    const {feedback, selectImage, imageType} = props
 
     const fileInput = useRef()
 
@@ -283,7 +283,7 @@ function Images(props) {
 
     return <Container>
         Images
-        <ImageList feedback={feedback} images={images} loadImages={loadImages} selectImage={selectImage}/>
+        <ImageList feedback={feedback} images={images} loadImages={loadImages} selectImage={selectImage} imageType={imageType}/>
         <Card body>
             <Form onSubmit={handleSubmit} encType="multipart/form-data">
                 <Form.Group>
@@ -462,12 +462,12 @@ function Concerts(props) {
         </ListGroup>
         <Button variant="outline-success" className="mt-2">Ajouter un concert</Button>
         <hr ref={concertInfoRef}/>
-        {selectedConcert ? <ConcertEdit concert={selectedConcert} feedback={feedback}/>  : <p>Sélectionner un concert</p>}
+        {selectedConcert ? <ConcertEdit concert={selectedConcert} feedback={feedback} setConcert={setSelectedConcert}/>  : <p>Sélectionner un concert</p>}
     </Container>
 }
 
 function ConcertInfo(props) {
-    const {feedback, concert} = props
+    const {feedback, concert, setConcert} = props
 
     const concertTypes = [
         'Solo',
@@ -477,51 +477,88 @@ function ConcertInfo(props) {
         'Composition'
     ]
 
+    const [imageModal, setImageModal] = useState(false)
+
+    const selectImage = e => {
+        setImageModal(true)
+    }
+
+    const setImage = image => {
+        setConcert({
+            ...concert,
+            img: image,
+            modified: true
+        })
+        setImageModal(false)
+    }
+
     return <Container>
-        <Form>
+        <Form onSubmit={e => {
+            e.preventDefault()
+            console.log(concert)
+        }}>
             <Form.Group>
                 <Form.Label>Type de concert</Form.Label>
-                <Form.Control as="select" value={concert.type}>
+                <Form.Control as="select" value={concert.type} onChange={e => setConcert({
+                    ...concert,
+                    modified: true,
+                    type: e.target.value
+                })}>
                     {concertTypes.map(t => <option key={t}>{t}</option>)}
                 </Form.Control>
             </Form.Group>
             <Form.Group>
                 <Form.Label>Nom du concert :</Form.Label>
-                <Form.Control type="text" value={concert.name}/>
+                <Form.Control type="text" value={concert.name} onChange={e => setConcert({
+                    ...concert,
+                    modified: true,
+                    name: e.target.value
+                })}/>
             </Form.Group>
             <Form.Group>
                 <Form.Label>Image :</Form.Label>{' '}
-                {concert.img ? <Image src={concert.img} thumbnail style={{maxHeight:'100px'}} alt="Image introuvable"/> : <Button variant="outline-secondary">Ajouter une image</Button>}
+                {concert.img ? <Image onClick={selectImage} src={concert.img} thumbnail style={{maxHeight:'100px'}} alt="Image introuvable"/> : <Button variant="outline-secondary">Ajouter une image</Button>}
             </Form.Group>
             <Form.Group>
                 <Form.Label>Informations supplémentaires (facultatif) :</Form.Label>
-                <Form.Control as="textarea" rows={3} type="text" value={concert.info !== undefined ? concert.info : ''}/>
+                <Form.Control as="textarea" rows={3} type="text" value={concert.info !== undefined ? concert.info : ''} onChange={e => setConcert({
+                    ...concert,
+                    modified: true,
+                    info: e.target.value
+                })}/>
             </Form.Group>
             <Form.Label>Détails (facultatifs) : </Form.Label><br/>
             {(concert.details && concert.details.artists && concert.details.artists.length) && <Card body>
                 <Form.Label>Artistes :</Form.Label>
-                {concert.details.artists.map(artist => <Card key={artist.name+'-'} body>
+                {concert.details.artists.map(artist => <Card key={artist.name+'-artist'} body>
                     <Form.Group>
                         <Form.Label>Nom de l'artiste :</Form.Label>
-                        <Form.Control type="text" value={artist.name}/>
+                        <Form.Control type="text" value={artist.name} onChange={e => setConcert({
+                            ...concert,
+                            // modified: true,
+                            // details: {
+                            //     ...concert.details,
+                            //     e.target.value
+                            // }
+                        })}/>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Instrument(s) de l'artiste :</Form.Label>
-                        <Form.Control type="text" value={artist.instrument}/>
+                        <Form.Control type="text" value={artist.instrument} onChange={e => {}}/>
                     </Form.Group>
                 </Card>)}
             </Card>}
             <Button className="mt-2" variant="outline-secondary">Ajouter un artiste</Button>{' '}
             {(concert.details && concert.details.pieces && concert.details.pieces.length) && <Card body className="mt-2">
                 <Form.Label>Œuvres :</Form.Label>
-                {concert.details.pieces.map(piece => <Card key={piece.name+'-'} body>
+                {concert.details.pieces.map(piece => <Card key={piece.title+'-piece'} body>
                     <Form.Group>
                         <Form.Label>Titre de l'œuvre :</Form.Label>
-                        <Form.Control type="text" value={piece.title}/>
+                        <Form.Control type="text" value={piece.title} onChange={e => {}}/>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Compositeur :</Form.Label>
-                        <Form.Control type="text" value={piece.composer}/>
+                        <Form.Control type="text" value={piece.composer} onChange={e => {}}/>
                     </Form.Group>
                 </Card>)}
             </Card>}
@@ -531,14 +568,15 @@ function ConcertInfo(props) {
                 Valider
             </Button>
         </Form>
+        <SelectImageModal show={imageModal} handleClose={() => setImageModal(false)} feedback={feedback} setImage={setImage} imageType="concerts"/>
     </Container>
 }
 
 function ConcertEdit(props) {
-    const {concert,feedback} = props
-    return <Tabs variant="pills" defaultActiveKey="edit-occs">
+    const {concert,feedback,setConcert} = props
+    return <Tabs variant="pills">
         <Tab eventKey="edit-concert" title="Éditer le concert">
-            <ConcertInfo concert={concert} feedback={feedback}/>
+            <ConcertInfo concert={concert} feedback={feedback} setConcert={setConcert}/>
         </Tab>
         <Tab eventKey="edit-occs" title="Éditer les occurences du concert" disabled={!concert._id}>
             <ConcertOccurences concert={concert} feedback={feedback}/>
@@ -590,32 +628,59 @@ function ConcertOccurences(props) {
         },
         {
             fieldname: 'cancel',
-            description: 'Cocher si concert annulé',
+            description: 'Concert annulé',
             type : 'checkbox'
         },
         {
             fieldname: 'show',
-            description: 'Cocher pour faire apparaitre le concert au sommet avec les images',
+            description: 'Mettre en avant',
             type : 'checkbox',
 			default : true
-        },
-        {
-            fieldname: 'concertId'
         }
     ]
 
     useEffect(getOccurences,[concert])
 
     return <Container>
-        <Form>
-            {occurrences.map((occ, index) => <div key={occ._id}>
+        <Form onSubmit={e => {
+            e.preventDefault()
+            console.log(occurrences)
+        }}>
+            {occurrences.map((occ, index) => <div key={occ._id ? occ._id : 'key_'+index}>
                 <Form.Label>Occurrence n°{index+1}</Form.Label>
                 {fields.map(f => <Form.Group key={f.fieldname}>
+                    {f.type === 'checkbox' ? <Form.Check type={f.type} label={f.description} checked={occ[f.fieldname]} onChange={e => {
+                        const occs = [...occurrences]
+                        occs[index] = {
+                            ...occs[index],
+                            [f.fieldname]: e.target.checked,
+                            modified: true
+                        }
+                        setOccurrences(occs)
+                    }}/> : <div>
                     <Form.Label>{f.description}</Form.Label>
-                    <Form.Control type={f.type ? f.type :'text'} value={occ[f.fieldname]}/>
+                    <Form.Control type={f.type ? f.type :'text'} value={occ[f.fieldname]} onChange={e => {
+                        const occs = [...occurrences]
+                        occs[index] = {
+                            ...occs[index],
+                            [f.fieldname]: e.target.value,
+                            modified: true
+                        }
+                        setOccurrences(occs)
+                    }
+                    }/>
+                    </div>}
                 </Form.Group>)}
                 <hr/>
             </div>)}
+            <Button variant="outline-success" onClick={e => setOccurrences([...occurrences,{
+                concertId: concert._id,
+                show: true
+            }])}>Ajouter une occurence</Button>
+            <hr/>
+            <Button variant="primary" type="submit">
+                Valider
+            </Button>
         </Form>
     </Container>
 }
@@ -764,12 +829,12 @@ function Carousel(props) {
 }
 
 function SelectImageModal(props) {
-    const {show, handleClose, feedback, setImage} = props
+    const {show, handleClose, feedback, setImage, imageType} = props
     return <Modal size="lg" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
             <Modal.Title>Choisir une image</Modal.Title>
         </Modal.Header>
-        <Modal.Body><Images feedback={feedback} selectImage={setImage}/></Modal.Body>
+        <Modal.Body><Images feedback={feedback} selectImage={setImage} imageType={imageType}/></Modal.Body>
         <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
                 Annuler
