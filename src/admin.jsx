@@ -1,4 +1,4 @@
-const { Container, Jumbotron, Navbar, Nav, ListGroup, Row, Col, Card, ButtonGroup, Button, Form, Alert, Image, Toast, Modal, Table, Media } = ReactBootstrap
+const { Container, Jumbotron, Navbar, Nav, ListGroup, Row, Col, Card, ButtonGroup, Button, Form, Alert, Image, Toast, Modal, Table, Media, Tabs, Tab } = ReactBootstrap
 
 const { useState, useEffect, useRef } = React
 
@@ -462,7 +462,7 @@ function Concerts(props) {
         </ListGroup>
         <Button variant="outline-success" className="mt-2">Ajouter un concert</Button>
         <hr ref={concertInfoRef}/>
-        <ConcertInfo concert={selectedConcert} feedback={feedback}/>
+        {selectedConcert ? <ConcertEdit concert={selectedConcert} feedback={feedback}/>  : <p>Sélectionner un concert</p>}
     </Container>
 }
 
@@ -477,12 +477,12 @@ function ConcertInfo(props) {
         'Composition'
     ]
 
-    return concert ? <Container>
+    return <Container>
         <Form>
             <Form.Group>
                 <Form.Label>Type de concert</Form.Label>
                 <Form.Control as="select" value={concert.type}>
-                    {concertTypes.map(t => <option>{t}</option>)}
+                    {concertTypes.map(t => <option key={t}>{t}</option>)}
                 </Form.Control>
             </Form.Group>
             <Form.Group>
@@ -497,10 +497,10 @@ function ConcertInfo(props) {
                 <Form.Label>Informations supplémentaires (facultatif) :</Form.Label>
                 <Form.Control as="textarea" rows={3} type="text" value={concert.info !== undefined ? concert.info : ''}/>
             </Form.Group>
-            <Form.Label>Détails (facultatifs) : </Form.Label>{' '}
+            <Form.Label>Détails (facultatifs) : </Form.Label><br/>
             {(concert.details && concert.details.artists && concert.details.artists.length) && <Card body>
                 <Form.Label>Artistes :</Form.Label>
-                {concert.details.artists.map(artist => <Card body>
+                {concert.details.artists.map(artist => <Card key={artist.name+'-'} body>
                     <Form.Group>
                         <Form.Label>Nom de l'artiste :</Form.Label>
                         <Form.Control type="text" value={artist.name}/>
@@ -511,10 +511,10 @@ function ConcertInfo(props) {
                     </Form.Group>
                 </Card>)}
             </Card>}
-            <Button variant="outline-secondary">Ajouter un artiste</Button>{' '}
-            {(concert.details && concert.details.pieces && concert.details.pieces.length) && <Card body>
+            <Button className="mt-2" variant="outline-secondary">Ajouter un artiste</Button>{' '}
+            {(concert.details && concert.details.pieces && concert.details.pieces.length) && <Card body className="mt-2">
                 <Form.Label>Œuvres :</Form.Label>
-                {concert.details.pieces.map(piece => <Card body>
+                {concert.details.pieces.map(piece => <Card key={piece.name+'-'} body>
                     <Form.Group>
                         <Form.Label>Titre de l'œuvre :</Form.Label>
                         <Form.Control type="text" value={piece.title}/>
@@ -525,9 +525,99 @@ function ConcertInfo(props) {
                     </Form.Group>
                 </Card>)}
             </Card>}
-            <Button variant="outline-secondary">Ajouter une œuvre</Button>
+            <Button className="mt-2" variant="outline-secondary">Ajouter une œuvre</Button>
+            <hr/>
+            <Button variant="primary" type="submit">
+                Valider
+            </Button>
         </Form>
-    </Container> : <p>Sélectionner un concert</p>
+    </Container>
+}
+
+function ConcertEdit(props) {
+    const {concert,feedback} = props
+    return <Tabs variant="pills" defaultActiveKey="edit-occs">
+        <Tab eventKey="edit-concert" title="Éditer le concert">
+            <ConcertInfo concert={concert} feedback={feedback}/>
+        </Tab>
+        <Tab eventKey="edit-occs" title="Éditer les occurences du concert" disabled={!concert._id}>
+            <ConcertOccurences concert={concert} feedback={feedback}/>
+        </Tab>
+    </Tabs>
+}
+
+function ConcertOccurences(props) {
+    const {concert,feedback} = props
+
+    const [occurrences, setOccurrences] = useState([])
+
+    const getOccurences = () => {
+        axios.get('/concerts').then(res => setOccurrences(res.data.filter(c => c.concertId && c.concertId === concert._id))).catch(err => feedback.treatError(err))
+    }
+
+    const fields = [
+        {
+            fieldname: 'date',
+            description: 'Date du concert',
+            type: 'date'
+        },
+        {
+            fieldname: 'time',
+            description: 'Heure du concert',
+            type: 'time'
+        },
+        {
+            fieldname: 'city',
+            description: 'Ville où a lieu le concert'
+        },
+        {
+            fieldname: 'place',
+            description: 'Endroit (exemple: Conservatoire de Paris) ou adresse'
+        },
+        {
+            fieldname: 'info',
+            description: 'Informations supplémentaires'
+        },
+        {
+            fieldname: 'irUrl',
+            description: 'Url info-réservations',
+            type: 'url'
+        },
+        {
+            type: 'url',
+			fieldname : "photosUrl",
+			description : "URL des éventuelles photos d'après concert"
+        },
+        {
+            fieldname: 'cancel',
+            description: 'Cocher si concert annulé',
+            type : 'checkbox'
+        },
+        {
+            fieldname: 'show',
+            description: 'Cocher pour faire apparaitre le concert au sommet avec les images',
+            type : 'checkbox',
+			default : true
+        },
+        {
+            fieldname: 'concertId'
+        }
+    ]
+
+    useEffect(getOccurences,[concert])
+
+    return <Container>
+        <Form>
+            {occurrences.map((occ, index) => <div key={occ._id}>
+                <Form.Label>Occurrence n°{index+1}</Form.Label>
+                {fields.map(f => <Form.Group key={f.fieldname}>
+                    <Form.Label>{f.description}</Form.Label>
+                    <Form.Control type={f.type ? f.type :'text'} value={occ[f.fieldname]}/>
+                </Form.Group>)}
+                <hr/>
+            </div>)}
+        </Form>
+    </Container>
 }
 
 function Carousel(props) {
