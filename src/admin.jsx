@@ -442,9 +442,11 @@ function Concerts(props) {
 
     const [concerts,setConcerts] = useState([])
 
-    useEffect(() => {
+    const getConcerts = () => {
         axios.get('/concerts').then(res => setConcerts(res.data.filter(c => c.name))).catch(err => feedback.treatError(err))
-    },[])
+    }
+
+    useEffect(getConcerts,[])
 
     const concertInfoRef = useRef()
 
@@ -470,12 +472,12 @@ function Concerts(props) {
             setSelectedConcert(newConcert)
         }}>Ajouter un concert</Button>}
         <hr ref={concertInfoRef}/>
-        {selectedConcert ? <ConcertEdit concert={selectedConcert} feedback={feedback} setConcert={setSelectedConcert}/>  : <p>Sélectionner un concert</p>}
+        {selectedConcert ? <ConcertEdit concert={selectedConcert} feedback={feedback} setConcert={setSelectedConcert} getConcerts={getConcerts}/>  : <p>Sélectionner un concert</p>}
     </Container>
 }
 
 function ConcertInfo(props) {
-    const {feedback, concert, setConcert} = props
+    const {feedback, concert, setConcert, getConcerts} = props
 
     const concertTypes = [
         'Solo',
@@ -494,22 +496,33 @@ function ConcertInfo(props) {
     const setImage = image => {
         setConcert({
             ...concert,
-            img: image,
-            modified: true
+            img: image
         })
         setImageModal(false)
+    }
+
+    const saveConcert = concertO => {
+        feedback.clear()
+        const concertBd = {...concertO}
+        if (concertBd._id.startsWith('new')) {
+            delete concertBd._id
+        }
+        axios.post('/admin/concerts',concertBd).then(res => {
+            console.log(res)
+            feedback.treatSuccess('Modifications effectuées !')
+            getConcerts()
+        }).catch(err => feedback.treatError(err))
     }
 
     return <Container>
         <Form onSubmit={e => {
             e.preventDefault()
-            console.log(concert)
+            saveConcert(concert)
         }}>
             <Form.Group>
                 <Form.Label>Type de concert</Form.Label>
                 <Form.Control as="select" value={concert.type} onChange={e => setConcert({
                     ...concert,
-                    modified: true,
                     type: e.target.value
                 })}>
                     {concertTypes.map(t => <option key={t}>{t}</option>)}
@@ -519,7 +532,6 @@ function ConcertInfo(props) {
                 <Form.Label>Nom du concert :</Form.Label>
                 <Form.Control type="text" value={concert.name} onChange={e => setConcert({
                     ...concert,
-                    modified: true,
                     name: e.target.value
                 })}/>
             </Form.Group>
@@ -531,7 +543,6 @@ function ConcertInfo(props) {
                 <Form.Label>Informations supplémentaires (facultatif) :</Form.Label>
                 <Form.Control as="textarea" rows={3} type="text" value={concert.info !== undefined ? concert.info : ''} onChange={e => setConcert({
                     ...concert,
-                    modified: true,
                     info: e.target.value
                 })}/>
             </Form.Group>
@@ -549,7 +560,6 @@ function ConcertInfo(props) {
                             }
                             setConcert({
                                 ...concert,
-                                modified: true,
                                 details: {
                                     ...concert.details,
                                     artists: newArtists
@@ -567,7 +577,6 @@ function ConcertInfo(props) {
                             }
                             setConcert({
                                 ...concert,
-                                modified: true,
                                 details: {
                                     ...concert.details,
                                     artists: newArtists
@@ -584,7 +593,6 @@ function ConcertInfo(props) {
                 }
                 setConcert({
                     ...concert,
-                    modified: true,
                     details: {
                         ...concert.details,
                         artists: (concert.details && concert.details.artists) ? [...concert.details.artists,newArtist] : [newArtist]
@@ -604,7 +612,6 @@ function ConcertInfo(props) {
                             }
                             setConcert({
                                 ...concert,
-                                modified: true,
                                 details: {
                                     ...concert.details,
                                     pieces: newPieces
@@ -622,7 +629,6 @@ function ConcertInfo(props) {
                             }
                             setConcert({
                                 ...concert,
-                                modified: true,
                                 details: {
                                     ...concert.details,
                                     pieces: newPieces
@@ -639,7 +645,6 @@ function ConcertInfo(props) {
                 }
                 setConcert({
                     ...concert,
-                    modified: true,
                     details: {
                         ...concert.details,
                         pieces: (concert.details && concert.details.pieces) ? [...concert.details.pieces,newPiece] : [newPiece]
@@ -656,10 +661,10 @@ function ConcertInfo(props) {
 }
 
 function ConcertEdit(props) {
-    const {concert,feedback,setConcert} = props
+    const {concert,feedback,setConcert,getConcerts} = props
     return <Tabs variant="pills">
         <Tab eventKey="edit-concert" title="Éditer le concert">
-            <ConcertInfo concert={concert} feedback={feedback} setConcert={setConcert}/>
+            <ConcertInfo concert={concert} feedback={feedback} setConcert={setConcert} getConcerts={getConcerts}/>
         </Tab>
         <Tab eventKey="edit-occs" title="Éditer les occurences du concert" disabled={!concert._id || concert._id === 'new'}>
             <ConcertOccurences concert={concert} feedback={feedback}/>

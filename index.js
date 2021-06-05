@@ -435,6 +435,22 @@ app.post('/admin/repertory', (req, res) => {
     }
 })
 
+app.post('/admin/concerts', (req, res) => {
+    const concert = req.body
+
+    if (!concert._id) {
+        db.concerts.insert(concert, function (err, newDoc) {
+            if (err) res.status(500).json(err)
+            res.json(newDoc)
+        })
+    } else {
+        db.concerts.update({ _id: concert._id }, concert, {}, function (err, numReplaced) {
+            if (err) res.status(500).json({err})
+            res.json({ok:numReplaced})
+        })
+    }
+})
+
 app.delete('/admin/repertory/:id', (req, res) => {
     const repId = req.params.id
 
