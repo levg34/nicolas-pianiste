@@ -577,7 +577,20 @@ function ConcertInfo(props) {
                     </Form.Group>
                 </Card>)}
             </Card>}
-            <Button className="mt-2" variant="outline-secondary">Ajouter un artiste</Button>{' '}
+            <Button className="mt-2" variant="outline-secondary" onClick={e => {
+                const newArtist = {
+                    name: '',
+                    instrument: ''
+                }
+                setConcert({
+                    ...concert,
+                    modified: true,
+                    details: {
+                        ...concert.details,
+                        artists: (concert.details && concert.details.artists) ? [...concert.details.artists,newArtist] : [newArtist]
+                    }
+                })
+            }}>Ajouter un artiste</Button>{' '}
             {(concert.details && concert.details.pieces && concert.details.pieces.length) && <Card body className="mt-2">
                 <Form.Label>Œuvres :</Form.Label>
                 {concert.details.pieces.map((piece,pIndex) => <Card key={piece.title+'-piece-'+pIndex} body>
@@ -619,7 +632,20 @@ function ConcertInfo(props) {
                     </Form.Group>
                 </Card>)}
             </Card>}
-            <Button className="mt-2" variant="outline-secondary">Ajouter une œuvre</Button>
+            <Button className="mt-2" variant="outline-secondary" onClick={e => {
+                const newPiece = {
+                    composer: '',
+                    title: ''
+                }
+                setConcert({
+                    ...concert,
+                    modified: true,
+                    details: {
+                        ...concert.details,
+                        pieces: (concert.details && concert.details.pieces) ? [...concert.details.pieces,newPiece] : [newPiece]
+                    }
+                })
+            }}>Ajouter une œuvre</Button>
             <hr/>
             <Button variant="primary" type="submit">
                 Valider
