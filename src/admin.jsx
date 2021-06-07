@@ -667,26 +667,13 @@ function ConcertInfo(props) {
 
 function ConcertEdit(props) {
     const {concert,feedback,setConcert,getConcerts} = props
-    return <Tabs variant="pills">
-        <Tab eventKey="edit-concert" title="Éditer le concert">
-            <ConcertInfo concert={concert} feedback={feedback} setConcert={setConcert} getConcerts={getConcerts}/>
-        </Tab>
-        <Tab eventKey="edit-occs" title="Éditer les occurences du concert" disabled={!concert._id || concert._id === 'new'}>
-            <ConcertOccurences concert={concert} feedback={feedback} getConcerts={getConcerts}/>
-        </Tab>
-        <Tab variant="danger" eventKey="delete-concert" title="Supprimer le concert" disabled={!concert._id || concert._id === 'new'}>
-            <DeleteConcert concert={concert} feedback={feedback} getConcerts={getConcerts}/>
-        </Tab>
-    </Tabs>
-}
-
-function DeleteConcert(props) {
-    const {concert,feedback,getConcerts} = props
 
     const [occurrences, setOccurrences] = useState([])
 
     const getOccurences = () => {
-        axios.get('/concerts').then(res => setOccurrences(res.data.filter(c => c.concertId && c.concertId === concert._id))).catch(err => feedback.treatError(err))
+        if (concert && concert._id) {
+            axios.get('/concerts').then(res => setOccurrences(res.data.filter(c => c.concertId && c.concertId === concert._id).sort((a,b) => new Date(`${a.date} ${a.time}`) - new Date(`${b.date} ${b.time}`)))).catch(err => feedback.treatError(err))
+        }
     }
 
     useEffect(getOccurences,[concert])
@@ -697,8 +684,25 @@ function DeleteConcert(props) {
             console.log(res)
             feedback.treatSuccess('Modifications effectuées !')
             getConcerts()
+            getOccurences()
         }).catch(err => feedback.treatError(err))
     }
+
+    return <Tabs variant="pills">
+        <Tab eventKey="edit-concert" title="Éditer le concert">
+            <ConcertInfo concert={concert} feedback={feedback} setConcert={setConcert} getConcerts={getConcerts}/>
+        </Tab>
+        <Tab eventKey="edit-occs" title="Éditer les occurences du concert" disabled={!concert._id || concert._id === 'new'}>
+            <ConcertOccurences concert={concert} feedback={feedback} getConcerts={getConcerts} occurrences={occurrences} getOccurences={getOccurences} setOccurrences={setOccurrences} deleteOccurence={deleteOccurence}/>
+        </Tab>
+        <Tab variant="danger" eventKey="delete-concert" title="Supprimer le concert" disabled={!concert._id || concert._id === 'new'}>
+            <DeleteConcert concert={concert} feedback={feedback} getConcerts={getConcerts} occurrences={occurrences} getOccurences={getOccurences} setOccurrences={setOccurrences} deleteOccurence={deleteOccurence}/>
+        </Tab>
+    </Tabs>
+}
+
+function DeleteConcert(props) {
+    const {concert, getConcerts, occurrences, deleteOccurence} = props
 
     const deleteConcert = e => {
         occurrences.forEach(occ => {
@@ -715,29 +719,13 @@ function DeleteConcert(props) {
 }
 
 function ConcertOccurences(props) {
-    const {concert,feedback, getConcerts} = props
-
-    const [occurrences, setOccurrences] = useState([])
-
-    const getOccurences = () => {
-        axios.get('/concerts').then(res => setOccurrences(res.data.filter(c => c.concertId && c.concertId === concert._id).sort((a,b) => new Date(`${a.date} ${a.time}`) - new Date(`${b.date} ${b.time}`)))).catch(err => feedback.treatError(err))
-    }
+    const {concert,feedback, getConcerts, occurrences, getOccurences, setOccurrences, deleteOccurence} = props
 
     const saveOccurence = occ => {
         feedback.clear()
         delete occ.modified
         delete occ.deleted
         axios.post('/admin/concerts',occ).then(res => {
-            console.log(res)
-            feedback.treatSuccess('Modifications effectuées !')
-            getConcerts()
-            getOccurences()
-        }).catch(err => feedback.treatError(err))
-    }
-
-    const deleteOccurence = occ => {
-        feedback.clear()
-        axios.delete('/admin/concert/'+occ._id).then(res => {
             console.log(res)
             feedback.treatSuccess('Modifications effectuées !')
             getConcerts()
@@ -795,8 +783,6 @@ function ConcertOccurences(props) {
             type : 'checkbox'
         },
     ]
-
-    useEffect(getOccurences,[concert])
 
     return <Container>
         <Form onSubmit={e => {
