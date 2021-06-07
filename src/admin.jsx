@@ -443,7 +443,12 @@ function Concerts(props) {
     const [concerts,setConcerts] = useState([])
 
     const getConcerts = () => {
-        axios.get('/concerts').then(res => setConcerts(res.data.filter(c => c.name))).catch(err => feedback.treatError(err))
+        axios.get('/concerts').then(res => {
+            setConcerts(res.data.filter(c => c.name))
+            if (selectedConcert !== undefined && !res.data.map(c => c._id).includes(selectedConcert._id)) {
+                setSelectedConcert()
+            }
+        }).catch(err => feedback.treatError(err))
     }
 
     useEffect(getConcerts,[])
@@ -669,7 +674,44 @@ function ConcertEdit(props) {
         <Tab eventKey="edit-occs" title="Éditer les occurences du concert" disabled={!concert._id || concert._id === 'new'}>
             <ConcertOccurences concert={concert} feedback={feedback} getConcerts={getConcerts}/>
         </Tab>
+        <Tab variant="danger" eventKey="delete-concert" title="Supprimer le concert" disabled={!concert._id || concert._id === 'new'}>
+            <DeleteConcert concert={concert} feedback={feedback} getConcerts={getConcerts}/>
+        </Tab>
     </Tabs>
+}
+
+function DeleteConcert(props) {
+    const {concert,feedback,getConcerts} = props
+
+    const [occurrences, setOccurrences] = useState([])
+
+    const getOccurences = () => {
+        axios.get('/concerts').then(res => setOccurrences(res.data.filter(c => c.concertId && c.concertId === concert._id))).catch(err => feedback.treatError(err))
+    }
+
+    useEffect(getOccurences,[concert])
+
+    const deleteOccurence = occ => {
+        feedback.clear()
+        axios.delete('/admin/concert/'+occ._id).then(res => {
+            console.log(res)
+            feedback.treatSuccess('Modifications effectuées !')
+            getConcerts()
+        }).catch(err => feedback.treatError(err))
+    }
+
+    const deleteConcert = e => {
+        occurrences.forEach(occ => {
+            deleteOccurence(occ)
+        })
+        deleteOccurence(concert)
+        getConcerts()
+    }
+
+    return <Container>
+        <Form.Label className="text-danger"><strong>Attention !</strong><br/>Le concert <strong>{concert.name}</strong> et ses <strong>{occurrences.length}</strong> occurences seront perdues.</Form.Label><br/>
+        <Button variant="danger" onClick={deleteConcert}>Supprimer le concert</Button>
+    </Container>
 }
 
 function ConcertOccurences(props) {
