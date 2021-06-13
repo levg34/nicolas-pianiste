@@ -20,5 +20,5 @@ $(document).ready(function(){
 			});
 		} // End if 
 	});
-	$('#sendSuccess').hide()
+	$("#newModal").modal()
 })
