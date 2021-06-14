@@ -45,6 +45,7 @@ function Header(props) {
                 <Nav.Link onClick={() => setActivePage('repertory')}>Répertoire</Nav.Link>
                 <Nav.Link onClick={() => setActivePage('videos')}>Vidéos</Nav.Link>
                 <Nav.Link onClick={() => setActivePage('links')}>Liens</Nav.Link>
+                <Nav.Link onClick={() => setActivePage('newsletter')}>Newsletter</Nav.Link>
             </Nav>
             <Nav className="ml-auto">
                 <Nav.Link onClick={disconnect}><Button variant="info">Se déconnecter</Button></Nav.Link>
@@ -1690,6 +1691,33 @@ function Videos(props) {
     </Container>
 }
 
+function Newsletter(props) {
+    const [subscribers,setSubscribers] = useState([])
+
+    const {feedback} = props
+
+    useEffect(() => axios.get('/admin/newsletter').then(res => setSubscribers(res.data)).catch(err => feedback.treatError(err)),[])
+
+    return <Container>
+        <h2>Newsletter</h2>
+        <h3>Liste des personnes inscrites aux newsletters :</h3>
+        <Table striped bordered hover>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    {subscribers[0] && Object.keys(subscribers[0]).filter(key => key !== '_id' && key !== 'ipInfos').map(key => <th key={'key_'+key}>{key}</th>)}
+                </tr>
+            </thead>
+            <tbody>
+                {subscribers.map((sub, index) =><tr key={sub._id}>
+                    <td>{index}</td>
+                    {Object.entries(sub).filter(e => e[0] !== '_id' && !(e[1] instanceof Object)).map(e => <td key={e[0]}>{e[0] === 'date' ? formatDate(new Date(e[1])) : e[1]}</td>)}
+                </tr>)}
+            </tbody>
+        </Table>
+    </Container>
+}
+
 function Content(props) {
     const startPage = () => window.location.hash ? window.location.hash.replace('#','') : 'messages'
 
@@ -1755,6 +1783,9 @@ function Content(props) {
             break
         case 'images':
             component = <Images feedback={feedback}/>
+            break
+        case 'newsletter':
+            component = <Newsletter feedback={feedback}/>
             break
         default:
             component = <Container>

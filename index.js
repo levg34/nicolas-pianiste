@@ -307,6 +307,13 @@ app.get('/admin/messages', (req, res) => {
     })
 })
 
+app.get('/admin/newsletter', (req, res) => {
+    db.newsletter.find({}).sort({date: -1}).exec(function (err, docs) {
+        if (err) res.status(500).json(err)
+        res.json(docs)
+    })
+})
+
 app.patch('/admin/message/read/:id', (req, res) => {
     const id = req.params.id
     db.messages.update({ _id: id }, { $set: { read: true } }, {}, function(err) {
