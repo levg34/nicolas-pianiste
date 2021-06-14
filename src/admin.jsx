@@ -1706,12 +1706,14 @@ function Newsletter(props) {
                 <tr>
                     <th>#</th>
                     {subscribers[0] && Object.keys(subscribers[0]).filter(key => key !== '_id' && key !== 'ipInfos').map(key => <th key={'key_'+key}>{key}</th>)}
+                    <th>lieu</th>
                 </tr>
             </thead>
             <tbody>
                 {subscribers.map((sub, index) =><tr key={sub._id}>
                     <td>{index}</td>
                     {Object.entries(sub).filter(e => e[0] !== '_id' && !(e[1] instanceof Object)).map(e => <td key={e[0]}>{e[0] === 'date' ? formatDate(new Date(e[1])) : e[1]}</td>)}
+                    <td>{sub.ipInfos ? `${sub.ipInfos.city}, ${sub.ipInfos.regionName}, ${sub.ipInfos.country}` : 'Introuvable'}</td>
                 </tr>)}
             </tbody>
         </Table>
