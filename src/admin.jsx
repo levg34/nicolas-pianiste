@@ -1,4 +1,4 @@
-const { Container, Jumbotron, Navbar, Nav, ListGroup, Row, Col, Card, ButtonGroup, Button, Form, Alert, Image, Toast, Modal, Table, Media, Tabs, Tab } = ReactBootstrap
+const { Container, Jumbotron, Navbar, Nav, ListGroup, Row, Col, Card, ButtonGroup, Button, Form, Alert, Image, Toast, Modal, Table, Media, Tabs, Tab, InputGroup } = ReactBootstrap
 
 const { useState, useEffect, useRef } = React
 
@@ -106,6 +106,20 @@ Se reconnecter ?`
             behavior: 'smooth'
         })
         setTimeout(() => this.clear(),1500)
+    }
+
+    treatVariant(variant,text,dismiss) {
+        this.setAlert({
+            variant,
+            text
+        })
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        })
+        if (dismiss) {
+            setTimeout(() => this.clear(),1500)
+        }
     }
 
     clear() {
@@ -1693,6 +1707,10 @@ function Videos(props) {
 
 function Newsletter(props) {
     const [subscribers,setSubscribers] = useState([])
+    const [newsletter,setNewsletter] = useState({
+        to: '',
+        message: ''
+    })
 
     const {feedback} = props
 
@@ -1700,6 +1718,37 @@ function Newsletter(props) {
 
     return <Container>
         <h2>Newsletter</h2>
+        <h3>Envoyer une newsletter</h3>
+        <Form onSubmit={e => {
+            e.preventDefault()
+            console.log(newsletter)
+            newsletter.attention = `Ce message n'a pas vraiment été envoyé. Cela viendra bientôt !`
+            feedback.treatVariant('info',newsletter)
+        }}>
+            <Form.Group>
+                <Form.Label>Envoyer à :</Form.Label>
+                <Form.Control type="text" placeholder="Liste d'emails à qui envoyer la newsletter" value={newsletter.to} onChange={e => setNewsletter({
+                    ...newsletter,
+                    to: e.target.value
+                })}/>
+                <InputGroup.Append>
+                    <Button variant="outline-success" onClick={e => setNewsletter({
+                        ...newsletter,
+                        to: subscribers.map(n => n.email).join('; ')
+                    })}>Remplir</Button>
+                </InputGroup.Append>
+            </Form.Group>
+            <Form.Group>
+                <Form.Control as="textarea" rows={5} type="text" placeholder="Texte de la newsletter..." value={newsletter.message} onChange={e => setNewsletter({
+                    ...newsletter,
+                    message: e.target.value
+                })}/>
+            </Form.Group>
+            <Button variant="primary" type="submit" disabled={!newsletter.to || ! newsletter.message}>
+                Envoyer
+            </Button>
+        </Form>
+        <hr/>
         <h3>Liste des personnes inscrites aux newsletters :</h3>
         <Table striped bordered hover>
             <thead>
