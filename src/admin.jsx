@@ -1,4 +1,4 @@
-const { Container, Jumbotron, Navbar, Nav, ListGroup, Row, Col, Card, ButtonGroup, Button, Form, Alert, Image, Toast, Modal, Table, Media, Tabs, Tab, InputGroup } = ReactBootstrap
+const { Container, Jumbotron, Navbar, Nav, ListGroup, Row, Col, Card, ButtonGroup, Button, Form, Alert, Image, Toast, Modal, Table, Media, Tabs, Tab, InputGroup, DropdownButton, Dropdown } = ReactBootstrap
 
 const { useState, useEffect, useRef } = React
 
@@ -1734,7 +1734,7 @@ function Newsletter(props) {
                     <InputGroup.Append>
                         <Button variant="outline-success" onClick={e => setNewsletter({
                             ...newsletter,
-                            to: subscribers.map(n => n.email).join('; ')
+                            to: subscribers.filter(sub => !sub.skip).map(n => n.email).join('; ')
                         })}>Remplir</Button>
                     </InputGroup.Append>
                 </InputGroup>
@@ -1755,15 +1755,32 @@ function Newsletter(props) {
         <Table striped bordered hover>
             <thead>
                 <tr>
-                    <th>#</th>
-                    {subscribers[0] && Object.keys(subscribers[0]).filter(key => key !== '_id' && key !== 'ipInfos').map(key => <th key={'key_'+key}>{key}</th>)}
-                    <th>lieu</th>
+                    <th>Actions</th>
+                    <th>Email</th>
+                    <th>IP</th>
+                    <th>Date</th>
+                    <th>Lieu</th>
                 </tr>
             </thead>
             <tbody>
                 {subscribers.map((sub, index) =><tr key={sub._id}>
-                    <td>{index}</td>
-                    {Object.entries(sub).filter(e => e[0] !== '_id' && !(e[1] instanceof Object)).map(e => <td key={e[0]}>{e[0] === 'date' ? formatDate(new Date(e[1])) : e[1]}</td>)}
+                    <td>
+                        <DropdownButton id="dropdown-basic-button" title="Actions" variant="info">
+                            <Dropdown.Item>Supprimer</Dropdown.Item>
+                            <Dropdown.Item>Supprimer tout IP</Dropdown.Item>
+                            <Dropdown.Item onClick={e => {
+                                subCopy = [...subscribers]
+                                subCopy[index] = {
+                                    ...sub,
+                                    skip: !sub.skip
+                                }
+                                setSubscribers(subCopy)
+                            }}>{sub.skip ? 'Sélectionner' : 'Désélectionner'}</Dropdown.Item>
+                        </DropdownButton>
+                    </td>
+                    <td className={sub.skip ? 'bg-secondary' : "bg-success text-white"}>{sub.email}</td>
+                    <td>{sub.ip}</td>
+                    <td>{formatDate(new Date(sub.date))}</td>
                     <td>{sub.ipInfos ? `${sub.ipInfos.city}, ${sub.ipInfos.regionName}, ${sub.ipInfos.country}` : 'Introuvable'}</td>
                 </tr>)}
             </tbody>
