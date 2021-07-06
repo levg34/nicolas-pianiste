@@ -126,6 +126,7 @@ app.controller('contactCtrl', function($scope, $http) {
 	$scope.sendError = false
 	$scope.sendSuccess = false
 	$scope.loading = false
+	$scope.nbMessages = 0
 
 	$scope.sendMessage = function() {
 		$scope.sendError = false
@@ -148,6 +149,7 @@ app.controller('contactCtrl', function($scope, $http) {
 				$scope.email = ""
 				$scope.message = ""
 				$scope.loading = false
+				getNbMessages()
 			}).catch(err => {
 				$scope.sendError = err.data ? err.data : err
 				$scope.loading = false
@@ -160,6 +162,12 @@ app.controller('contactCtrl', function($scope, $http) {
 			}
 		}
 	}
+
+	function getNbMessages() {
+		$http.get('/messages/count').then(res => $scope.nbMessages = res.data.messages).catch(err => console.error(err))
+	}
+
+	getNbMessages()
 })
 
 app.controller('videosCtrl', function($scope,$http) {
