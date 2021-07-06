@@ -431,9 +431,9 @@
         <div id="sendError" class="alert alert-danger" ng-if="sendError">
           <strong>Erreur !</strong> Le message n'a pas été envoyé : {{sendError}}
         </div>
-        <p ng-if="!nbMessages">Aucun message envoyé pour l'instant. Soyez le premier !</p>
+        <p ng-if="!nbMessages">Aucun message envoyé pour l'instant.<br>Envoyez le premier !</p>
         <p ng-if="nbMessages === 1">Un message envoyé.</p>
-        <p ng-if="nbMessages > 0">{{nbMessages}} messages envoyés.</p>
+        <p ng-if="nbMessages > 1">{{nbMessages}} messages envoyés.</p>
       </div>
       <div class="col-md-8">
         <div class="row">
