@@ -123,20 +123,20 @@
       <ul ng-repeat="piece in concert.details.pieces">
         <li>{{piece.composer}} – {{piece.title}}</li>
       </ul>
-      <ul class="list-group">
-        <li ng-repeat="occ in concert.occs" class="list-group-item">
-          <span ng-if="!concert.noOccs">
+      <span ng-if="!concert.noOccs">
+        <ul class="list-group">
+          <li ng-repeat="occ in concert.occs" class="list-group-item">
             {{occ.date | date:'dd/MM/yyyy'}} : {{occ.place}}, {{occ.city}} <span ng-show="state(occ)=='on'">
               <span class="label label-success">À venir</span> <span ng-show="occ.irUrl" class="label "><a target="_blank" href="{{occ.irUrl}}">infos réservation</a></span> <span class="label " ng-if="occ.info"><a href="" data-placement="bottom" data-toggle="popover" data-trigger="hover" title="{{occ.date | date:'dd/MM/yyyy'}}" data-content="{{occ.info}}">plus d'info...</a></span>
             </span>
             <span ng-show="state(occ)=='off'" class="label label-warning">Terminé</span>
             <span ng-show="state(occ)=='cancel'" class="label label-danger">Annulé</span>
-          </span>
-          <span ng-if="concert.noOccs">
-            <span ng-if="concert.noOccs" class="label label-info">Prévu</span>
-          </span>
-        </li>
-      </ul>
+          </li>
+        </ul>
+      </span>
+      <span ng-if="concert.noOccs">
+        <span ng-if="concert.noOccs" class="label label-info">Prévu</span>
+      </span>
       </span>
 
       <h4>Solo</h4>
@@ -149,20 +149,20 @@
       <ul ng-repeat="piece in concert.details.pieces">
         <li>{{piece.composer}} – {{piece.title}}</li>
       </ul>
-      <ul class="list-group">
-        <li ng-repeat="occ in concert.occs" class="list-group-item">
-          <span ng-if="!concert.noOccs">
+      <span ng-if="!concert.noOccs">
+        <ul class="list-group">
+          <li ng-repeat="occ in concert.occs" class="list-group-item">
             {{occ.date | date:'dd/MM/yyyy'}} : {{occ.place}}, {{occ.city}} <span ng-show="state(occ)=='on'">
               <span class="label label-success">À venir</span> <span ng-show="occ.irUrl" class="label "><a target="_blank" href="{{occ.irUrl}}">infos réservation</a></span> <span class="label " ng-if="occ.info"><a href="" data-placement="bottom" data-toggle="popover" data-trigger="hover" title="{{occ.date | date:'dd/MM/yyyy'}}" data-content="{{occ.info}}">plus d'info...</a></span>
             </span>
             <span ng-show="state(occ)=='off'" class="label label-warning">Terminé</span>
             <span ng-show="state(occ)=='cancel'" class="label label-danger">Annulé</span>
-          </span>
-          <span ng-if="concert.noOccs">
-            <span ng-if="concert.noOccs" class="label label-info">Prévu</span>
-          </span>
-        </li>
-      </ul>
+          </li>
+        </ul>
+      </span>
+      <span ng-if="concert.noOccs">
+        <span ng-if="concert.noOccs" class="label label-info">Prévu</span>
+      </span>
       </span>
       
       <p>
@@ -222,20 +222,20 @@
       <ul ng-repeat="piece in concert.details.pieces">
         <li>{{piece.composer}} – {{piece.title}}</li>
       </ul>
-      <ul class="list-group">
-        <li ng-repeat="occ in concert.occs" class="list-group-item">
-          <span ng-if="!concert.noOccs">
+      <span ng-if="!concert.noOccs">
+        <ul class="list-group">
+          <li ng-repeat="occ in concert.occs" class="list-group-item">
             {{occ.date | date:'dd/MM/yyyy'}} : {{occ.place}}, {{occ.city}} <span ng-show="state(occ)=='on'">
               <span class="label label-success">À venir</span> <span ng-show="occ.irUrl" class="label "><a target="_blank" href="{{occ.irUrl}}">infos réservation</a></span> <span class="label " ng-if="occ.info"><a href="" data-placement="bottom" data-toggle="popover" data-trigger="hover" title="{{occ.date | date:'dd/MM/yyyy'}}" data-content="{{occ.info}}">plus d'info...</a></span>
             </span>
             <span ng-show="state(occ)=='off'" class="label label-warning">Terminé</span>
             <span ng-show="state(occ)=='cancel'" class="label label-danger">Annulé</span>
-          </span>
-          <span ng-if="concert.noOccs">
-            <span ng-if="concert.noOccs" class="label label-info">Prévu</span>
-          </span>
-        </li>
-      </ul>
+          </li>
+        </ul>
+      </span>
+      <span ng-if="concert.noOccs">
+        <span ng-if="concert.noOccs" class="label label-info">Prévu</span>
+      </span>
       </span>
 
       <ul>
@@ -259,20 +259,20 @@
       <ul ng-repeat="piece in concert.details.pieces">
         <li>{{piece.composer}} – {{piece.title}}</li>
       </ul>
-      <ul class="list-group">
-        <li ng-repeat="occ in concert.occs" class="list-group-item">
-          <span ng-if="!concert.noOccs">
+      <span ng-if="!concert.noOccs">
+        <ul class="list-group">
+          <li ng-repeat="occ in concert.occs" class="list-group-item">
             {{occ.date | date:'dd/MM/yyyy'}} : {{occ.place}}, {{occ.city}} <span ng-show="state(occ)=='on'">
               <span class="label label-success">À venir</span> <span ng-show="occ.irUrl" class="label "><a target="_blank" href="{{occ.irUrl}}">infos réservation</a></span> <span class="label " ng-if="occ.info"><a href="" data-placement="bottom" data-toggle="popover" data-trigger="hover" title="{{occ.date | date:'dd/MM/yyyy'}}" data-content="{{occ.info}}">plus d'info...</a></span>
             </span>
             <span ng-show="state(occ)=='off'" class="label label-warning">Terminé</span>
             <span ng-show="state(occ)=='cancel'" class="label label-danger">Annulé</span>
-          </span>
-          <span ng-if="concert.noOccs">
-            <span ng-if="concert.noOccs" class="label label-info">Prévu</span>
-          </span>
-        </li>
-      </ul>
+          </li>
+        </ul>
+      </span>
+      <span ng-if="concert.noOccs">
+        <span ng-if="concert.noOccs" class="label label-info">Prévu</span>
+      </span>
       </span>
       
       <ul>
@@ -324,20 +324,20 @@
       <ul ng-repeat="piece in concert.details.pieces">
         <li>{{piece.composer}} – {{piece.title}}</li>
       </ul>
-      <ul class="list-group">
-        <li ng-repeat="occ in concert.occs" class="list-group-item">
-          <span ng-if="!concert.noOccs">
+      <span ng-if="!concert.noOccs">
+        <ul class="list-group">
+          <li ng-repeat="occ in concert.occs" class="list-group-item">
             {{occ.date | date:'dd/MM/yyyy'}} : {{occ.place}}, {{occ.city}} <span ng-show="state(occ)=='on'">
               <span class="label label-success">À venir</span> <span ng-show="occ.irUrl" class="label "><a target="_blank" href="{{occ.irUrl}}">infos réservation</a></span> <span class="label " ng-if="occ.info"><a href="" data-placement="bottom" data-toggle="popover" data-trigger="hover" title="{{occ.date | date:'dd/MM/yyyy'}}" data-content="{{occ.info}}">plus d'info...</a></span>
             </span>
             <span ng-show="state(occ)=='off'" class="label label-warning">Terminé</span>
             <span ng-show="state(occ)=='cancel'" class="label label-danger">Annulé</span>
-          </span>
-          <span ng-if="concert.noOccs">
-            <span ng-if="concert.noOccs" class="label label-info">Prévu</span>
-          </span>
-        </li>
-      </ul>
+          </li>
+        </ul>
+      </span>
+      <span ng-if="concert.noOccs">
+        <span ng-if="concert.noOccs" class="label label-info">Prévu</span>
+      </span>
       </span>
       
       <p id="rchant">
@@ -427,20 +427,20 @@
       <ul ng-repeat="piece in concert.details.pieces">
         <li>{{piece.composer}} – {{piece.title}}</li>
       </ul>
-      <ul class="list-group">
-        <li ng-repeat="occ in concert.occs" class="list-group-item">
-          <span ng-if="!concert.noOccs">
+      <span ng-if="!concert.noOccs">
+        <ul class="list-group">
+          <li ng-repeat="occ in concert.occs" class="list-group-item">
             {{occ.date | date:'dd/MM/yyyy'}} : {{occ.place}}, {{occ.city}} <span ng-show="state(occ)=='on'">
               <span class="label label-success">À venir</span> <span ng-show="occ.irUrl" class="label "><a target="_blank" href="{{occ.irUrl}}">infos réservation</a></span> <span class="label " ng-if="occ.info"><a href="" data-placement="bottom" data-toggle="popover" data-trigger="hover" title="{{occ.date | date:'dd/MM/yyyy'}}" data-content="{{occ.info}}">plus d'info...</a></span>
             </span>
             <span ng-show="state(occ)=='off'" class="label label-warning">Terminé</span>
             <span ng-show="state(occ)=='cancel'" class="label label-danger">Annulé</span>
-          </span>
-          <span ng-if="concert.noOccs">
-            <span ng-if="concert.noOccs" class="label label-info">Prévu</span>
-          </span>
-        </li>
-      </ul>
+          </li>
+        </ul>
+      </span>
+      <span ng-if="concert.noOccs">
+        <span ng-if="concert.noOccs" class="label label-info">Prévu</span>
+      </span>
     </span>
     
     <p>
