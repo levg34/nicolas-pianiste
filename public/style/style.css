@@ -182,3 +182,14 @@ footer a:hover {
 #myCarousel {
 	top:50px;
 }
+
+.popover {
+    color: #000;
+}
+
+.popover h3 {
+    font: initial;
+    margin: initial;
+    letter-spacing: initial; 
+    font-size: initial;
+}
