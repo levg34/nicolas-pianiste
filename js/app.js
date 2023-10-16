@@ -84,3 +84,40 @@ app.controller('studCtrl', function($scope) {
 	}
 	$scope.loadData()
 })
+
+app.controller('tourCtrl', function($scope, $http) {
+	$scope.concertList = []
+	$scope.occList = []
+	$scope.loadData = function() {
+		$http.get('https://potential-bassoon.firebaseio.com/concerts.json').then(function(response) {
+			$scope.concertList = response.data
+		})
+	}
+	$scope.state = function(occ) {
+		if (occ.cancel) {
+			return 'cancel'
+		} else if (new Date(occ.date) >= new Date().setHours(0,0,0,0)) {
+			return 'on'
+		} else {
+			return 'off'
+		}
+	}
+	function concertsToOcc() {
+		var res = []
+		$scope.concertList.forEach(function(concert) {
+			var occurences = []
+			concert.occs.forEach(function(o) {
+				if(!o.show) return
+				var occurence = JSON.parse(JSON.stringify(concert))
+				delete occurence.details
+				delete occurence.occs
+				Object.assign(occurence,o)
+				occurences.push(occurence)
+			})
+			res.push(occurences)
+		})
+		$scope.occList = [].concat.apply([], res)
+	}
+	$scope.$watch('concertList', concertsToOcc)
+	$scope.loadData()
+})
