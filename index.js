@@ -197,8 +197,8 @@ app.post('/login', (req,res) => {
                     if (err) {
                         res.status(500).json({err})
                     } else if (result) {
-                        userData.token = generateAccessToken(userData)
                         delete userData.password
+                        userData.token = generateAccessToken(userData)
                         res.json(userData)
                     } else {
                         res.status(403).json({
