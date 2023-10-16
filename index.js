@@ -42,6 +42,23 @@ app.get('/admin/messages', (req, res) => {
     })
 })
 
+app.post('/admin/message/read/:id', (req, res) => {
+    const id = req.params.id
+    // db.messages.update({ _id: id }, { $set: { "data.read": true}})
+    res.json({read:id})
+})
+
+app.post('/admin/message/delete/:id', (req, res) => {
+    const id = req.params.id
+    db.messages.remove({ _id: id }, {}, function (err, numRemoved) {
+        if (err) res.status(500).json({err})
+        res.json({
+            deleted:id,
+            numRemoved
+        })
+    })
+})
+
 app.post('/message', (req, res) => {
     const message = req.body
     message.ip = req.ip
