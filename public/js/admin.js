@@ -20,6 +20,11 @@ function formatDate(date) {
 }
 
 function Header() {
+    const disconnect = () => {
+        sessionStorage.clear()
+        window.location = '/admin'
+    }
+
     return <Navbar expand="lg" bg="dark" variant="dark">
         <Navbar.Brand href="#home">Adminicolas</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -32,6 +37,9 @@ function Header() {
                 <NavDropdown.Divider />
                 <NavDropdown.Item href="#action/3.4">Bidules</NavDropdown.Item>
             </NavDropdown>
+        </Nav>
+        <Nav className="ml-auto">
+            <Nav.Link onClick={disconnect}>Se déconnecter</Nav.Link>
         </Nav>
     </Navbar>
 }
@@ -174,16 +182,34 @@ function Content() {
 }
 
 function Login() {
+    const [username,setUsername] = useState('')
+    const [password,setPassword] = useState('')
+
+    const handleSubmit = e => {
+        e.preventDefault()
+        setPassword('')
+        axios.post('/login',{username,password}).then(response => {
+            if (response.data && response.data.token) {
+                sessionStorage.setItem('token',response.data.token)
+                window.location = '/admin'
+            } else {
+                console.error(response)
+            }
+        }).catch(err => {
+            console.error(err)
+        })
+    }
+
     return <Container>
         <Card body>
-            <Form>
+            <Form onSubmit={e => { handleSubmit(e) }}>
                 <Form.Group controlId="formGroupEmail">
                     <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" placeholder="Enter email" />
+                    <Form.Control type="email" placeholder="Enter email" onChange={e => setUsername(e.target.value)} value={username}/>
                 </Form.Group>
                 <Form.Group controlId="formGroupPassword">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" />
+                    <Form.Control type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} value={password}/>
                 </Form.Group>
                 <Button variant="primary" type="submit">
                     Submit
