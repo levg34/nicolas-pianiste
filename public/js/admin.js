@@ -381,7 +381,8 @@ function Links(props) {
 
     return <Container>
         <Form>
-            {linkTypes.map(type => <Form.Group key={type[0]}><Row><Form.Label>{type[1]}</Form.Label></Row>
+            {linkTypes.map(type => <Form.Group key={type[0]}>
+                <Row><Form.Label>{type[1]}</Form.Label></Row>
             {Object.values(links).filter(link => link.type === type[0]).map(link => <Row key={link._id}>
                 <Col xs={3}>
                     <Form.Label>Nom</Form.Label>
@@ -391,7 +392,17 @@ function Links(props) {
                     <Form.Label>Url</Form.Label>
                     <Form.Control placeholder="Url" value={link.url} onChange={e => urlChange(e,link)}/>
                 </Col>
-            </Row>)}</Form.Group>)}
+            </Row>)}
+            {(!links[`new_${type[0]}`]) && <Button className="mt-2" variant="outline-success" onClick={e => setLinks({
+                ...links,
+                [`new_${type[0]}`]: {
+                    _id: `new_${type[0]}`,
+                    name: '',
+                    url: '',
+                    type: type[0]
+                }
+            })}>{`Ajouter un lien "${type[1]}"`}</Button>}
+            </Form.Group>)}
         </Form>
     </Container>
 }
