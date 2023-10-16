@@ -699,7 +699,7 @@ function Repertory(props) {
     }
 
     return <Container>
-        Répertoire
+        <h2>Répertoire</h2>
         <Form onSubmit={e => {
             e.preventDefault()
             repertory.filter(rep => rep.modified && !rep.deleted).forEach(rep => {
