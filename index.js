@@ -1,5 +1,7 @@
 const express = require('express')
 const app = express()
+const helmet = require("helmet")
+app.use(helmet())
 
 const multer  = require('multer')
 const upload = multer({ dest: 'uploads/' })
