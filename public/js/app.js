@@ -75,7 +75,22 @@ app.controller('tourCtrl', function($scope, $http) {
 				concert.occs = raw.filter(o => o.concertId === concert._id)
 				concertList.push(concert)
 			})
-			$scope.concertList = concertList.filter(concert => concert.occs.length > 0)
+			$scope.concertList = concertList.map(concert => {
+				if (concert.occs.length > 0) {
+					return concert
+				} else {
+					return {
+						...concert,
+						noOccs: true,
+						occs: [
+							{
+								date:'2099-12-31',
+								time:'23:59'
+							}
+						]
+					}
+				}
+			})
 			$scope.concertList.forEach(concert => {
 				concert.occs.sort((a, b) => (a.date > b.date) ? 1 : (a.date === b.date) ? ((a.time > b.time) ? 1 : -1) : -1 ) //.reverse()
 			})
