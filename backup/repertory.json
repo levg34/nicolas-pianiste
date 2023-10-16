@@ -1,0 +1,101 @@
+[
+    {
+        "title": "Solo",
+        "items": [
+            {
+                "list": [
+                    "Bach JS - Prélude et fugue chromatique BWV 903, Clavier bien tempéré I et II (extraits)",
+                    "Rameau - Pièces de clavecin",
+                    "Mozart - Sonate KV.332, Fantaisie en do mineur KV.475",
+                    "Beethoven - Sonate no.11 op.22",
+                    "Schubert - Moments musicaux, Impromptus, Sonate D.958",
+                    "Brahms - Klavierstüke op.119",
+                    "Chopin - Scherzos no.2 et 4, Nocturnes (extraits), Etudes (extraits)",
+                    "Liszt - Leggerezza, Légendes, Rhapsodies hongroises n°2 et 6",
+                    "Rachmaninov - Sonate no.2, Etudes-tableaux op.39/26",
+                    "Fauré - Barcarole no.3, Impromptu no.5",
+                    "Ravel - Jeux d'eau, Miroirs, Valses nobles et sentimentales, Ondine, Tombeau de Couperin (extraits)",
+                    "Debussy - Etudes, Images II, Préludes (extraits), L'isle joyeuse",
+                    "Franck - Prélude, choral et fugue",
+                    "Babadjanian - Capriccio",
+                    "Copland - Piano variations",
+                    "Piazzola/Yamamoto - Tango-étude no.6",
+                    "Berio - Sequenza, Encores (extraits)",
+                    "Dutilleux - Jeu des contraires",
+                    "Takemitsu - Rain tree sketch II",
+                    "Hersant - Éphémères (extraits)",
+                    "Gaussin - Tokyo City",
+                    "Escaich - Trois études baroques",
+                    "Waksman - Tsukihime"
+                ]
+            }
+        ]
+    },
+    {
+        "title": "Concerto",
+        "items": [
+            {
+                "list": [
+                    "Mozart - Concerto no.24 et 27",
+                    "Beethoven - Concerto no.3"
+                ]
+            }
+        ]
+    },
+    {
+        "title": "Musique de chambre",
+        "items": [
+            {
+                "title": "Cordes",
+                "list": [
+                    "Beethoven - Sonate no.10 op.96, Sonate n°8 op.30 n°3",
+                    "Schubert - Trio no.2, Sonate Arpégionne",
+                    "Ravel - Trio, Sonate pour violon",
+                    "Enescu - Sonate pour violon no.3",
+                    "Grieg - Sonate pour violon no.2 op.13",
+                    "Beach - Romance pour violon, Summer dreams (4 mains)",
+                    "Brahms - Sonate pour violon no.3, Sonate pour violoncelle en mi mineur",
+                    "Glinka - Trio pathétique",
+                    "L. Boulanger - D'un matin de printemps, D'un soir triste",
+                    "F. Bridge – Sonate pour violoncelle et piano",
+                    "Piazzola - Summer, Winter"
+                ]
+            },
+            {
+                "title": "Vents",
+                "list": [
+                    "Mozart - Quintette avec vents",
+                    "R. Schumann – Fantasiestücke op.73",
+                    "S. Prokofiev - Sonate pour flûte op.94",
+                    "György Vukán – 13 Bagatelles for clarinet and piano : Prayer, Let’s do it, Rag-music",
+                    "Péter Zombola – Institutio n°2 for bass clarinet and piano"
+                ]
+            },
+            {
+                "title": "Mixte",
+                "list": [
+                    "Piazzola/Sirodeau - La Camorra, Oblivion"
+                ]
+            },
+            {
+                "title": "Duo de pianistes",
+                "list": [
+                    "Brahms - Sonate pour deux pianos",
+                    "Dutilleux - Figures de résonnances (2 pianos)",
+                    "Lutoslawski - Variations paganini (2 pianos)",
+                    "G. Fauré – Dolly suite op.56",
+                    "Grieg – Peer Gynt suite n°1 op.46",
+                    "F. Schubert – Fantaisie en Fa mineur D.940"
+                ]
+            },
+            {
+                "title": "Musique vocale",
+                "list": [
+                    "Mélodies de Poulenc, Ravel (Histoires naturelles, Mélodies populaires grecques, A, Caplet, Messiean, Debussy",
+                    "Lieder de Schubert (Winterreise), Schumann (Liederkreis op.39), Beethoven",
+                    "Songs de Britten, Quilter, Guastavino"
+                ]
+            }
+        ]
+    }
+]
