@@ -1,4 +1,4 @@
-const { Container, Jumbotron, Navbar, Nav, ListGroup, Row, Col, Card, ButtonGroup, Button, Form, Alert } = ReactBootstrap
+const { Container, Jumbotron, Navbar, Nav, ListGroup, Row, Col, Card, ButtonGroup, Button, Form, Alert, Image } = ReactBootstrap
 const { useState, useEffect } = React
 
 function stringToColour(str) {
@@ -238,9 +238,98 @@ function Concerts() {
     </Container>
 }
 
-function Carousel() {
+function Carousel(props) {
+    const [data,setData] = useState({})
+
+    const feedback = props.feedback
+
+    const getData = () => {
+        axios.get('/carousel').then(res => {
+            setData(res.data.reduce((acc, cur) => {
+                return {...acc, [cur._id]: cur}
+            },{}))
+        }).catch(err => feedback.treatError(err))
+    }
+
+    useState(getData,[])
+
+    const submitForm = e => {
+        e.preventDefault()
+        Object.values(data).filter(el => el.modified).forEach(el => {
+            feedback.clear()
+            delete el.modified
+            const carousel = {...el}
+            if (el._id.startsWith('new')) {
+                delete carousel._id
+            }
+            axios.post('/admin/carousel',carousel).then(res => {
+                console.log(res)
+                feedback.treatSuccess('Modifications effectuées !')
+                getData()
+            }).catch(err => feedback.treatError(err))
+        })
+    }
+
     return <Container>
-        Carousel...
+        <Form onSubmit={submitForm}>
+            <Row>
+                <Col>
+                    <Form.Label>Titre</Form.Label>
+                </Col>
+                <Col>
+                    <Form.Label>Description</Form.Label>
+                </Col>
+                <Col>
+                    <Form.Label>Image (format 9x2)</Form.Label>
+                </Col>
+            </Row>
+            <hr/>
+            {Object.values(data).map(carouselElement => <Form.Group key={carouselElement._id}>
+                <Row>
+                    <Col>
+                        <Form.Control placeholder={carouselElement.title !== undefined ? 'Titre' : 'Image principale'} value={carouselElement.title} onChange={e => {
+                            setData({
+                                ...data,
+                                [carouselElement._id]: {
+                                    ...carouselElement,
+                                    modified: true,
+                                    title: e.target.value
+                                }
+                            })
+                        }} disabled={carouselElement.title === undefined}/>
+                    </Col>
+                    <Col>
+                        <Form.Control as="textarea" rows={3} placeholder={carouselElement.description !== undefined ? 'Description' : ''} value={carouselElement.description} onChange={e => {
+                            setData({
+                                ...data,
+                                [carouselElement._id]: {
+                                    ...carouselElement,
+                                    modified: true,
+                                    description: e.target.value
+                                }
+                            })
+                        }} disabled={carouselElement.description === undefined}/>
+                    </Col>
+                    <Col>
+                        <Image src={carouselElement.url} thumbnail />
+                    </Col>
+                </Row>
+                <hr/>
+            </Form.Group>)}
+            <Button className="mt-2" variant="outline-success" onClick={e => setData({
+                ...data,
+                [`new_${Object.keys(data).length}`]: {
+                    _id: `new_${Object.keys(data).length}`,
+                    title: '',
+                    url: 'https://via.placeholder.com/900x200',
+                    description: ''
+                }
+            })}>Ajouter un slider photo</Button>
+            <hr/>
+            <Button variant="primary" type="submit">
+                Valider
+            </Button>
+        </Form>
     </Container>
 }
 
