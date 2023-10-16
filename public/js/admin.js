@@ -51,11 +51,27 @@ function Message(props) {
     if (_message) {
         const {message,ip,date,_id} = _message
         const formatedDate = formatDate(new Date(date))
+
+        const [ipInfos, setIpInfos] = useState()
+
+        useEffect(() => {
+            axios.get(`http://ip-api.com/json/${ip}`).then(response => {
+                if (response.data) {
+                    setIpInfos(response.data)
+                }
+            }).catch(err => {
+                console.error(err)
+            })
+        },[_message])
+
         resJSX = (
             <Card>
                 <Card.Body>
                     <Card.Title><MessageInfo message={_message}/></Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">{`Le ${formatedDate}, depuis ${ip}`}</Card.Subtitle>
+                    <Card.Subtitle className="mb-2 text-muted">
+                        <div>{`Le ${formatedDate}`}</div>
+                        <div>{`${(ipInfos && ipInfos.city) ? `Depuis ${ipInfos.city}, ${ipInfos.regionName}, ${ipInfos.country}` : `Adresse ip : ${ip}`}`}</div>
+                    </Card.Subtitle>
                     <Card.Text as="div">
                         <pre style={{whiteSpace: 'pre-wrap'}}>{message}</pre>
                     </Card.Text>
