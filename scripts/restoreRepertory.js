@@ -9,6 +9,7 @@ db.repertory.remove({}, { multi: true }, function (err, numRemoved) {
 
 const repertoryData = require('../backup/repertory.json')
 
+let index = 1
 repertoryData.forEach(data => {
     const title = data.title
 
@@ -17,7 +18,8 @@ repertoryData.forEach(data => {
         item.list.forEach(e => {
             const repertoryElement = {
                 title,
-                content: e
+                content: e,
+                index: index++
             }
             if (subtitle) {
                 repertoryElement.subtitle = subtitle
