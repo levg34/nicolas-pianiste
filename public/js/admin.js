@@ -712,6 +712,7 @@ function VideoFormGroup(props) {
     }
 
     return <div>
+        <Form.Label>{`Vidéo n°${video.index}`}</Form.Label>
         <Form.Group>
             <Form.Label>Url de la vidéo</Form.Label>
             <Form.Control type="url" onChange={e => setVideo({
@@ -788,23 +789,40 @@ function VideoFormGroup(props) {
 
 function Videos(props) {
     const feedback = props.feedback
-    const [data, setData] = useState({
+
+    const [videos,setVideos] = useState([])
+
+    const newVideo = {
         url: '',
         title: '',
         subtitle: '',
         img: '',
         alt: '',
         description: '',
+        index: videos.length+1,
         list: []
-    })
+    }
+
+    const getVideos = () => {
+        axios.get('/videos').then(res => {
+            setVideos(res.data)
+        }).catch(err => feedback.treatError(err))
+    }
+
+    const setVideo = (index,video) => {
+        const modifsVideo = [...videos]
+        modifsVideo[index] = video
+        setVideos(modifsVideo)
+    }
+
+    useEffect(getVideos,[])
     
     return <Container>
-        Vidéos...
         <Form onSubmit={e => {
             e.preventDefault()
-            console.log(data)
+            console.log(videos)
         }}>
-            <VideoFormGroup video={data} setVideo={setData}/>
+            {videos.map((video, index) => <VideoFormGroup key={video._id} video={video} setVideo={setVideo.bind(null,index)}/>)}
             <Button variant="primary" type="submit">
                 Valider
             </Button>
