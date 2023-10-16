@@ -137,3 +137,16 @@ app.controller('tourCtrl', function($scope, $http) {
 	$scope.$watch('concertList', concertsToOcc)
 	$scope.loadData()
 })
+
+app.controller('contact', function($scope, $http) {
+	$scope.sendError = false
+	$scope.sendSuccess = false
+	$scope.sendMessage = function() {
+		const messagePayload = {
+			name: $scope.name,
+			email: $scope.email,
+			message: $scope.message
+		}
+		console.log(messagePayload)
+	}
+})
