@@ -649,6 +649,21 @@ app.post('/admin/newsletter', (req, res) => {
     })
 })
 
+app.post('/admin/extract_newsletter', async (req, res) => {
+    if (!process.env.NEWSLETTER_HOOK) {
+        res.status(500).json('No NEWSLETTER_HOOK')
+        console.error('No NEWSLETTER_HOOK')
+    }
+
+    try {
+        const response = await axios.post(process.env.NEWSLETTER_HOOK, req.body)
+        res.json(response.data)
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({error})
+    }
+})
+
 app.get('/admin/tokenvalid', (req, res) => {
     const user = {...req.user}
     const {exp} = user

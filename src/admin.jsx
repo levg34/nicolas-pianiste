@@ -1726,6 +1726,10 @@ function Newsletter(props) {
         axios.get('/admin/newsletter').then(res => setSubscribers(res.data)).catch(err => feedback.treatError(err))
     }
 
+    const extractSubscribers = () => {
+        axios.post('/admin/extract_newsletter',subscribers).then(res => console.log(res.data)).catch(err => feedback.treatError(err))
+    }
+
     useEffect(getSubscribers,[])
 
     const converterOptions = {
@@ -1786,7 +1790,8 @@ function Newsletter(props) {
             </Button>
         </Form>
         <hr/>
-        <h3>Liste des personnes inscrites aux newsletters :</h3>
+        <h3>Liste des personnes inscrites aux newsletters :{' '}
+        <Button variant="outline-info" onClick={extractSubscribers}>Extraire dans le Google Sheet</Button></h3>
         <div style={{overflow: "scroll"}}>
         <Table striped bordered hover>
             <thead>
