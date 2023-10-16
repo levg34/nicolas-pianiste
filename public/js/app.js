@@ -67,8 +67,15 @@ app.controller('tourCtrl', function($scope, $http) {
 	$scope.concertList = []
 	$scope.occList = []
 	$scope.loadData = function() {
-		$http.get('https://potential-bassoon.firebaseio.com/concerts.json').then(function(response) {
-			$scope.concertList = Object.values(response.data)
+		$http.get('/concerts').then(function(response) {
+			const raw = response.data
+			const concertList = []
+			raw.filter(c => c.name).forEach(concert => {
+				concert.id = concert._id
+				concert.occs = raw.filter(o => o.concertId === concert._id)
+				concertList.push(concert)
+			})
+			$scope.concertList = concertList
 			$scope.concertList.forEach(concert => {
 				concert.occs.sort((a, b) => (a.date > b.date) ? 1 : (a.date === b.date) ? ((a.time > b.time) ? 1 : -1) : -1 ) //.reverse()
 			})
