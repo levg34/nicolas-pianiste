@@ -1,4 +1,4 @@
-const { Container, Jumbotron, Navbar, Nav, NavDropdown, ListGroup, Row, Col, Card, ButtonGroup, Button, Form, Alert } = ReactBootstrap
+const { Container, Jumbotron, Navbar, Nav, ListGroup, Row, Col, Card, ButtonGroup, Button, Form, Alert } = ReactBootstrap
 const { useState, useEffect } = React
 
 function stringToColour(str) {
@@ -19,7 +19,9 @@ function formatDate(date) {
     return new Intl.DateTimeFormat('fr-FR', { dateStyle: 'full', timeStyle: 'long' }).format(date)
 }
 
-function Header() {
+function Header(props) {
+    const {setActivePage} = props
+
     const disconnect = () => {
         sessionStorage.clear()
         window.location = '/admin'
@@ -29,14 +31,12 @@ function Header() {
         <Navbar.Brand href="#home">Adminicolas</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Nav>
-            <Nav.Link>Messages</Nav.Link>
-            <NavDropdown title="Objets" id="collasible-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Concerts</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">Machins</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">Trucs</NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">Bidules</NavDropdown.Item>
-            </NavDropdown>
+            <Nav.Link onClick={() => setActivePage('messages')}>Messages</Nav.Link>
+            <Nav.Link onClick={() => setActivePage('concerts')}>Concerts</Nav.Link>
+            <Nav.Link onClick={() => setActivePage('carousel')}>Slider photo</Nav.Link>
+            <Nav.Link onClick={() => setActivePage('biographie')}>Biographie</Nav.Link>
+            <Nav.Link onClick={() => setActivePage('links')}>Liens</Nav.Link>
+            <Nav.Link onClick={() => setActivePage('studies')}>Études</Nav.Link>
         </Nav>
         <Nav className="ml-auto">
             <Nav.Link onClick={disconnect}>Se déconnecter</Nav.Link>
@@ -206,9 +206,70 @@ function Messages() {
     </Container>
 }
 
-function Content() {
+function Concerts() {
+    return <Container>
+        Concerts...
+    </Container>
+}
+
+function Carousel() {
+    return <Container>
+        Carousel...
+    </Container>
+}
+
+function Bio() {
+    return <Container>
+        Bio...
+    </Container>
+}
+
+function Links() {
+    return <Container>
+        Links...
+    </Container>
+}
+
+function Studies() {
+    return <Container>
+        Studies...
+    </Container>
+}
+
+function Content(props) {
+    const {page} = props
+
+    let component = 'Chargement...'
+    switch (page) {
+        case 'messages':
+            component = <Messages/>
+            break
+        case 'concerts':
+            component = <Concerts/>
+            break
+        case 'carousel':
+            component = <Carousel/>
+            break
+        case 'biographie':
+            component = <Bio/>
+            break
+        case 'links':
+            component = <Links/>
+            break
+        case 'studies':
+            component = <Studies/>
+            break
+        default:
+            component = <Container>
+                <Alert variant="danger">
+                    {`Component "${page}" not found.`}
+                </Alert>
+            </Container>
+            break
+    }
+
     return <Container fluid>
-        <Messages/>
+        {component}
     </Container>
 }
 
@@ -268,9 +329,10 @@ function App() {
     const token = sessionStorage.getItem('token')
     if (token) {
         axios.defaults.headers.common['Authorization'] = 'Bearer '+token
+        const [activePage, setActivePage] = useState('messages')
         return <div>
-            <Header/>
-            <Content/>
+            <Header setActivePage={setActivePage}/>
+            <Content page={activePage}/>
         </div>
     } else {
         return <Login/>
