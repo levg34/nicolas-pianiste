@@ -35,6 +35,7 @@ function Header(props) {
         <Navbar.Collapse id="responsive-navbar-nav">
             <Nav>
                 <Nav.Link onClick={() => setActivePage('messages')}>Messages</Nav.Link>
+                <Nav.Link onClick={() => setActivePage('images')}>Images</Nav.Link>
                 {/*here: separator*/}
                 <Nav.Link onClick={() => setActivePage('carousel')}>Slider photo</Nav.Link>
                 <Nav.Link onClick={() => setActivePage('biographie')}>Biographie</Nav.Link>
@@ -115,6 +116,42 @@ function AlertFeedback(props) {
             {text instanceof Object ? <pre>{JSON.stringify(text, null, 2) }</pre> : text}
             {jsx && <div>{jsx}</div>}
         </Alert>}
+    </Container>
+}
+
+function Images(props) {
+    const feedback = props.feedback
+
+    const fileInput = useRef()
+
+    const handleSubmit = e => {
+        e.preventDefault()
+        const selectedFile = fileInput.current.files[0]
+
+        const formData = new FormData()
+        
+        formData.append(
+            'image',
+            selectedFile,
+            selectedFile.name
+        )
+
+        console.log(selectedFile)
+        
+        axios.post('/admin/upload', formData).then(res => console.log(res)).catch(err => feedback.treatError(err))
+    }
+
+    return <Container>
+        Images...
+        <Form onSubmit={handleSubmit} encType="multipart/form-data">
+            <Form.Group>
+                <Form.Label>Sélectionner une image</Form.Label>
+                <Form.Control type="file" label="Image" name="image" ref={fileInput}/>
+            </Form.Group>
+            <Button variant="primary" type="submit">
+                Valider
+            </Button>
+        </Form>
     </Container>
 }
 
@@ -1157,6 +1194,9 @@ function Content(props) {
             break
         case 'videos':
             component = <Videos feedback={feedback}/>
+            break
+        case 'images':
+            component = <Images feedback={feedback}/>
             break
         default:
             component = <Container>
