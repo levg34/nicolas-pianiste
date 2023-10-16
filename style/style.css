@@ -40,10 +40,8 @@ textarea {
     border-color: #f1f1f1;
 }
 .carousel-inner img {
-    -webkit-filter: grayscale(90%);
-    filter: grayscale(90%); /* make all photos black and white */ 
-    width: 100%; /* Set width to 100% */
-    margin: auto;
+    margin:auto;
+    width: 100%;
 }
 
 .carousel-caption h3 {
@@ -177,4 +175,8 @@ footer a:hover {
 
 .title {
 	color: blue
+}
+
+#myCarousel {
+	top:50px;
 }
