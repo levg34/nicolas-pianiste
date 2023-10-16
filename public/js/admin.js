@@ -803,7 +803,7 @@ function Videos(props) {
     const markUpdated = index => {
         setUpdated({
             ...updated,
-            [index]: (updated[index] !== undefined) ? (updated[index]+1) : 0
+            [index]: (updated[index] !== undefined) ? (updated[index]+1) : 1
         })
     }
 
@@ -818,13 +818,28 @@ function Videos(props) {
     }
 
     useEffect(getVideos,[])
+
+    const saveVideo = video => {
+        feedback.clear()
+        axios.post('/admin/video',video).then(res => {
+            console.log(res)
+            feedback.treatSuccess('Modifications effectuées !')
+            getVideos()
+            setUpdated(Object.keys(videos).reduce((acc,curr) => {
+                return {
+                    ...acc,
+                    [curr]: 0
+                }
+            },{}))
+        }).catch(err => feedback.treatError(err))
+    }
     
     return <Container>
         <Form onSubmit={e => {
             e.preventDefault()
             console.log(videos)
             Object.entries(updated).filter(e => e[1]).forEach(e => {
-                console.log(videos[e[0]])
+                saveVideo(videos[e[0]])
             })
         }}>
             {videos.map((video, index) => <VideoFormGroup key={video._id ? video._id : index} video={video} setVideo={setVideo.bind(null,index)}/>)}

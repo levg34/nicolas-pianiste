@@ -369,6 +369,22 @@ app.post('/admin/carousel', (req, res) => {
     }
 })
 
+app.post('/admin/video', (req, res) => {
+    const video = req.body
+
+    if (!video._id) {
+        db.videos.insert(video, function (err, newDoc) {
+            if (err) res.status(500).json(err)
+            res.json(newDoc)
+        })
+    } else {
+        db.videos.update({ _id: video._id }, video, {}, function (err, numReplaced) {
+            if (err) res.status(500).json({err})
+            res.json({ok:numReplaced})
+        })
+    }
+})
+
 function canRequest(ip, path) {
     if (path != '/message' && path != '/login' && (!knownIps[ip] || !knownIps[ip].blocked)) {
         return true
