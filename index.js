@@ -3,6 +3,7 @@ const app = express()
 
 const multer  = require('multer')
 const upload = multer({ dest: 'uploads/' })
+const path = require('path')
 
 const Datastore = require('nedb')
 const db = {}
@@ -160,6 +161,21 @@ app.get('/repertory', (req, res) => {
             formattedRep.push(section)
         })
         res.json(formattedRep)
+    })
+})
+
+app.get('/uploads/:filename', (req, res) => {
+    const options = {
+        root: path.join(__dirname, 'uploads'),
+        headers: {
+            'x-timestamp': Date.now(),
+            'x-sent': true
+        }
+    }
+
+    const fileName = req.params.filename
+    res.sendFile(fileName, options, function (err) {
+        console.log(err)
     })
 })
 
