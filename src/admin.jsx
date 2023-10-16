@@ -684,7 +684,18 @@ function ConcertOccurences(props) {
     const saveOccurence = occ => {
         feedback.clear()
         delete occ.modified
+        delete occ.deleted
         axios.post('/admin/concerts',occ).then(res => {
+            console.log(res)
+            feedback.treatSuccess('Modifications effectuées !')
+            getConcerts()
+            getOccurences()
+        }).catch(err => feedback.treatError(err))
+    }
+
+    const deleteOccurence = occ => {
+        feedback.clear()
+        axios.delete('/admin/concert/'+occ._id).then(res => {
             console.log(res)
             feedback.treatSuccess('Modifications effectuées !')
             getConcerts()
@@ -722,8 +733,8 @@ function ConcertOccurences(props) {
         },
         {
             type: 'url',
-			fieldname : "photosUrl",
-			description : "URL des éventuelles photos d'après concert"
+            fieldname : "photosUrl",
+            description : "URL des éventuelles photos d'après concert"
         },
         {
             fieldname: 'cancel',
@@ -734,8 +745,13 @@ function ConcertOccurences(props) {
             fieldname: 'show',
             description: 'Mettre en avant',
             type : 'checkbox',
-			default : true
-        }
+            default : true
+        },
+        {
+            fieldname: 'deleted',
+            description: 'Supprimer l\'occurence',
+            type : 'checkbox'
+        },
     ]
 
     useEffect(getOccurences,[concert])
@@ -743,9 +759,10 @@ function ConcertOccurences(props) {
     return <Container>
         <Form onSubmit={e => {
             e.preventDefault()
-            occurrences.filter(o => o.modified).forEach(occ => saveOccurence(occ))
+            occurrences.filter(o => o.modified && !o.deleted).forEach(occ => saveOccurence(occ))
+            occurrences.filter(o => o.deleted).forEach(occ => deleteOccurence(occ))
         }}>
-            {occurrences.map((occ, index) => <div key={occ._id ? occ._id : 'key_'+index}>
+            {occurrences.map((occ, index) => <div key={occ._id ? occ._id : 'key_'+index} className={occ.deleted ? 'bg-secondary' : undefined}>
                 <Form.Label>Occurrence n°{index+1}</Form.Label>
                 {fields.map(f => <Form.Group key={f.fieldname}>
                     {f.type === 'checkbox' ? <Form.Check type={f.type} label={f.description} checked={occ[f.fieldname] || false} onChange={e => {
