@@ -77,15 +77,21 @@ class FeedbackManager {
             variant: 'success',
             text: success
         })
-        setTimeout(() => this.setAlert(null),1500)
+        setTimeout(() => this.reset(),1500)
+    }
+
+    reset() {
+        this.setAlert(null)
     }
 }
 
 function AlertFeedback(props) {
     const {text,variant} = props.alert ? props.alert : {}
-    return <div>{text && <Alert variant={variant}>
-        {text instanceof Object ? <pre>{JSON.stringify(text, null, 2) }</pre> : text}
-    </Alert>}</div>
+    return <Container>
+        {text && <Alert variant={variant}>
+            {text instanceof Object ? <pre>{JSON.stringify(text, null, 2) }</pre> : text}
+        </Alert>}
+    </Container>
 }
 
 function MessageInfo(props) {
@@ -135,16 +141,14 @@ function Message(props) {
     return resJSX
 }
 
-function Messages() {
+function Messages(props) {
     const [messages,setMessages] = useState([])
     const [selectedMessage,selectMessage] = useState()
 
-    const [alert, setAlert] = useState()
-
-    const feedback = new FeedbackManager(setAlert)
+    const feedback = props.feedback
 
     const getMessages = (showFeedback) => {
-        setAlert(null)
+        feedback.reset()
         selectMessage(null)
         axios.get('/admin/messages')
         .then(function (response) {
@@ -208,7 +212,6 @@ function Messages() {
     }
 
     return <Container>
-        <AlertFeedback alert={alert}/>
         <ButtonGroup aria-label="Basic example">
             <Button variant="primary" onClick={getMessages.bind(null,true)}>Rafraîchir</Button>
             {(selectedMessage && selectedMessage.read) && <Button variant="info" onClick={unreadMessage}>Non lu</Button>}
@@ -239,16 +242,15 @@ function Carousel() {
     </Container>
 }
 
-function Bio() {
+function Bio(params) {
     const [title,setTitle] = useState({
         title: '',
         subtitle: ''
     })
 
     const [paragraphs,setParagraphs] = useState({})
-    const [alert,setAlert] = useState()
 
-    const feedback = new FeedbackManager(setAlert)
+    const feedback = params.feedback
 
     const getBioData = () => {
         axios.get('/biographie').then(res => {
@@ -283,7 +285,6 @@ function Bio() {
     }
     
     return <Container>
-        <AlertFeedback alert={alert}/>
         <Form onSubmit={submitForm}>
             <Form.Group>
                 <Form.Label>Titre de la section</Form.Label>
@@ -338,25 +339,28 @@ function Studies() {
 function Content(props) {
     const {page} = props
 
+    const [alert,setAlert] = useState()
+    const feedback = new FeedbackManager(setAlert)
+
     let component = 'Chargement...'
     switch (page) {
         case 'messages':
-            component = <Messages/>
+            component = <Messages feedback={feedback}/>
             break
         case 'concerts':
-            component = <Concerts/>
+            component = <Concerts feedback={feedback}/>
             break
         case 'carousel':
-            component = <Carousel/>
+            component = <Carousel feedback={feedback}/>
             break
         case 'biographie':
-            component = <Bio/>
+            component = <Bio feedback={feedback}/>
             break
         case 'links':
-            component = <Links/>
+            component = <Links feedback={feedback}/>
             break
         case 'studies':
-            component = <Studies/>
+            component = <Studies feedback={feedback}/>
             break
         default:
             component = <Container>
@@ -368,6 +372,7 @@ function Content(props) {
     }
 
     return <Container fluid>
+        <AlertFeedback alert={alert}/>
         {component}
     </Container>
 }
