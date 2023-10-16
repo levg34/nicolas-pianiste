@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+app.set('trust proxy', 'loopback')
 const helmet = require("helmet")
 app.use(helmet({
     contentSecurityPolicy: false
