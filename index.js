@@ -237,8 +237,12 @@ app.post('/admin/biographie', (req, res) => {
             })
         }
     }
-
-    if (bio.paragraph && !bio.index && bio.index !== 0) {
+    if (!bio._id) {
+        db.biographie.insert(bio, function (err, newDoc) {
+            if (err) res.status(500).json(err)
+            res.json(newDoc)
+        })
+    } else if (bio.paragraph && !bio.index && bio.index !== 0) {
         db.biographie.count({ paragraph: { $exists: true }}, function (err, count) {
             if (err) res.status(500).json({err})
             updateBio(count)
