@@ -138,15 +138,42 @@ app.controller('tourCtrl', function($scope, $http) {
 	$scope.loadData()
 })
 
-app.controller('contact', function($scope, $http) {
+app.controller('contactCtrl', function($scope, $http) {
 	$scope.sendError = false
 	$scope.sendSuccess = false
+	$scope.loading = false
+
 	$scope.sendMessage = function() {
-		const messagePayload = {
-			name: $scope.name,
-			email: $scope.email,
-			message: $scope.message
+		$scope.sendError = false
+		$scope.sendSuccess = false
+		
+		const {name,email,message} = $scope
+		
+		if (name && email && message) {
+			const messagePayload = {
+				name,
+				email,
+				message
+			}
+
+			$scope.loading = true
+			
+			$http.post('/message',messagePayload).then(res => {
+				$scope.sendSuccess = true
+				$scope.name = ""
+				$scope.email = ""
+				$scope.message = ""
+				$scope.loading = false
+			}).catch(err => {
+				$scope.sendError = err.data ? err.data : err
+				$scope.loading = false
+			})
+		} else {
+			if (name && message) {
+				$scope.sendError = "Veuillez renseigner un email valide."
+			} else {
+				$scope.sendError = "Vous devez remplir tous les champs."
+			}
 		}
-		console.log(messagePayload)
 	}
 })

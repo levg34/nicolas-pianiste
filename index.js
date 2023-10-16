@@ -2,6 +2,10 @@ const express = require('express')
 const app = express()
 const port = 3000
 
+const Datastore = require('nedb')
+const db = {}
+db.messages = new Datastore({ filename: 'data/datafile', autoload: true })
+
 const knownIps = {}
 const MAX_REQUESTS = 5
 const RESET_TIME = 60*1000
@@ -14,20 +18,33 @@ app.use(function(req, res, next) {
     } else {
         res.status(401).json({
             error: 'Access denied',
-            reason: 'Too many requests',
-            knownIps
+            data: 'Too many requests'
         })
     }
 })
 
 app.use(express.static(__dirname + '/public'))
 
+app.use(express.json())
+
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/view/index.html')
 })
 
-app.get('/message', (req, res) => {
-    res.status(501).send('Not implemented.')
+app.get('/messages', (req, res) => {
+    db.messages.find({}, function (err, docs) {
+        if (err) res.status(500).json(err)
+        res.json(docs)
+    })
+})
+
+app.post('/message', (req, res) => {
+    const message = req.body
+    message.ip = req.ip
+    db.messages.insert(message, function (err, newDoc) {
+        if (err) res.status(500).json(err)
+        res.json(newDoc)
+    })
 })
 
 function canRequest(ip, path) {
