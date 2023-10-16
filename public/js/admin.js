@@ -684,7 +684,7 @@ function Repertory() {
             {[...titles].map(title => <Card key={title} body>
             {title ? <Form.Label>{title}</Form.Label> : <Form.Control type="text" placeholder="Titre de section" value={title}/>}
                 {[...new Set(repertory.filter(rep => rep.title === title).map(e => e.subtitle))].map(subtitle => <Card key={`${title}_${subtitle}`} body>
-                    {subtitle ? <Form.Label>{subtitle}</Form.Label> : <Form.Control type="text" placeholder="Titre de sous-section" value={subtitle}/>}
+                    {(subtitle || (repertory.filter(rep => rep.title === title).map(e => e.subtitle)).filter(subtitle => subtitle !== undefined).length < 1) ? <Form.Label>{subtitle}</Form.Label> : <Form.Control type="text" placeholder="Titre de sous-section" value={subtitle}/>}
                     <ListGroup>
                         {repertory.filter(rep => rep.title === title && rep.subtitle === subtitle).map(rep => <ListGroup.Item key={rep._id}>
                             <Form.Control type="text" placeholder="Élément de répertoire" value={rep.content}/>
@@ -713,7 +713,6 @@ function Repertory() {
             <Button className="mt-2" variant="outline-warning" onClick={e => {
                                         const newPiece = {
                                             title: '',
-                                            subtitle: '',
                                             content: '',
                                             index: repertory.length+1
                                         }
