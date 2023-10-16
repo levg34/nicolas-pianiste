@@ -379,8 +379,24 @@ function Links(props) {
         })
     }
 
+    const submitForm = e => {
+        e.preventDefault()
+        Object.values(links).filter(l => l.modified).forEach(l => {
+            feedback.clear()
+            delete l.modified
+            if (l._id === 'new') {
+                delete l._id
+            }
+            axios.post('/admin/links',l).then(res => {
+                console.log(res)
+                feedback.treatSuccess('Modifications effectuées !')
+                getLinks()
+            }).catch(err => feedback.treatError(err))
+        })
+    }
+
     return <Container>
-        <Form>
+        <Form onSubmit={submitForm}>
             {linkTypes.map(type => <Form.Group key={type[0]}>
                 <Row><Form.Label>{type[1]}</Form.Label></Row>
             {Object.values(links).filter(link => link.type === type[0]).map(link => <Row key={link._id}>
@@ -402,7 +418,11 @@ function Links(props) {
                     type: type[0]
                 }
             })}>{`Ajouter un lien "${type[1]}"`}</Button>
+            <hr/>
             </Form.Group>)}
+            <Button variant="primary" type="submit">
+                Valider
+            </Button>
         </Form>
     </Container>
 }
