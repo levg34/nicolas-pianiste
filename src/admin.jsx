@@ -647,7 +647,7 @@ function ConcertInfo(props) {
                 })
             }}>Ajouter une œuvre</Button>
             <hr/>
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" disabled={!concert.name}>
                 Valider
             </Button>
         </Form>
