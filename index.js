@@ -389,6 +389,31 @@ app.post('/admin/video', (req, res) => {
     }
 })
 
+app.post('/admin/repertory', (req, res) => {
+    const repItem = req.body
+
+    if (!repItem._id) {
+        db.repertory.insert(repItem, function (err, newDoc) {
+            if (err) res.status(500).json(err)
+            res.json(newDoc)
+        })
+    } else {
+        db.repertory.update({ _id: repItem._id }, repItem, {}, function (err, numReplaced) {
+            if (err) res.status(500).json({err})
+            res.json({ok:numReplaced})
+        })
+    }
+})
+
+app.delete('/admin/repertory/:id', (req, res) => {
+    const repId = req.params.id
+
+    db.repertory.remove({ _id: repId }, {}, function (err, numRemoved) {
+        if (err) res.status(500).json({err})
+        res.json({removed:numRemoved})
+    })
+})
+
 app.get('/admin/tokenvalid', (req, res) => {
     const user = {...req.user}
     const {exp} = user
