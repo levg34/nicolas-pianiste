@@ -15,7 +15,7 @@ const sizeOf = require('image-size')
 
 const fs = require('fs')
 
-const Datastore = require('nedb')
+const Datastore = require('@seald-io/nedb')
 const db = {}
 db.messages = new Datastore({ filename: 'data/messages', autoload: true })
 db.users = new Datastore({ filename: 'data/users', autoload: true })
