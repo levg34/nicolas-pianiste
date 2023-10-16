@@ -10,6 +10,8 @@ db.users.ensureIndex({ fieldName: 'username', unique: true }, function (err) {
 })
 db.carousel = new Datastore({ filename: 'data/carousel', autoload: true })
 db.links = new Datastore({ filename: 'data/links', autoload: true })
+db.biographie = new Datastore({ filename: 'data/biographie', autoload: true })
+db.studies = new Datastore({ filename: 'data/studies', autoload: true })
 
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
@@ -87,6 +89,20 @@ app.get('/links', (req, res) => {
 
 app.get('/carousel', (req, res) => {
     db.carousel.find({}).sort({active: -1}).exec(function (err, docs) {
+        if (err) res.status(500).json(err)
+        res.json(docs)
+    })
+})
+
+app.get('/biographie', (req, res) => {
+    db.biographie.find({}).sort({index: 1}).exec(function (err, docs) {
+        if (err) res.status(500).json(err)
+        res.json(docs)
+    })
+})
+
+app.get('/studies', (req, res) => {
+    db.studies.find({}).sort({index: 1}).exec(function (err, docs) {
         if (err) res.status(500).json(err)
         res.json(docs)
     })
