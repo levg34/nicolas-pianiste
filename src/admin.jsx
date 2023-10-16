@@ -1738,7 +1738,7 @@ function Newsletter(props) {
                     <InputGroup.Append>
                         <Button variant="outline-success" onClick={e => setNewsletter({
                             ...newsletter,
-                            to: subscribers.filter(sub => !sub.skip).map(n => n.email).join('; ')
+                            to: subscribers.filter(sub => !sub.skip && !sub.unsubscribed).map(n => n.email).join('; ')
                         })}>Remplir</Button>
                     </InputGroup.Append>
                 </InputGroup>
@@ -1790,17 +1790,17 @@ function Newsletter(props) {
                                     getSubscribers()
                                 }).catch(err => feedback.treatError(err))
                             }}>Supprimer tout IP</Dropdown.Item>
-                            <Dropdown.Item onClick={e => {
+                            {!sub.unsubscribed && <Dropdown.Item onClick={e => {
                                 subCopy = [...subscribers]
                                 subCopy[index] = {
                                     ...sub,
                                     skip: !sub.skip
                                 }
                                 setSubscribers(subCopy)
-                            }}>{sub.skip ? 'Sélectionner' : 'Désélectionner'}</Dropdown.Item>
+                            }}>{sub.skip ? 'Sélectionner' : 'Désélectionner'}</Dropdown.Item>}
                         </DropdownButton>
                     </td>
-                    <td className={sub.skip ? 'bg-secondary' : "bg-success text-white"}>{sub.email}</td>
+                    <td className={sub.unsubscribed ? 'bg-warning' : sub.skip ? 'bg-secondary' : "bg-success text-white"}>{sub.email}</td>
                     <td>{sub.ip}</td>
                     <td>{formatDate(new Date(sub.date))}</td>
                     <td>{sub.ipInfos ? `${sub.ipInfos.city}, ${sub.ipInfos.regionName}, ${sub.ipInfos.country}` : 'Introuvable'}</td>
