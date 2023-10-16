@@ -10,3 +10,4 @@ package-lock.json
 .env
 
 public/js/admin.js
+uploads/

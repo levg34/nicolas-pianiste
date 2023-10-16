@@ -123,6 +123,7 @@ function Images(props) {
     const feedback = props.feedback
 
     const fileInput = useRef()
+    const [imgData, setImgData] = useState()
 
     const handleSubmit = e => {
         e.preventDefault()
@@ -135,14 +136,16 @@ function Images(props) {
             selectedFile,
             selectedFile.name
         )
-
-        console.log(selectedFile)
         
-        axios.post('/admin/upload', formData).then(res => console.log(res)).catch(err => feedback.treatError(err))
+        axios.post('/admin/upload', formData).then(res => {
+            feedback.treatSuccess(res.data)
+            setImgData(res.data)
+        }).catch(err => feedback.treatError(err))
     }
 
     return <Container>
         Images...
+        {imgData && <Image src={'/uploads/'+imgData.filename} thumbnail />}
         <Form onSubmit={handleSubmit} encType="multipart/form-data">
             <Form.Group>
                 <Form.Label>Sélectionner une image</Form.Label>
