@@ -128,6 +128,10 @@ app.get('/videos', (req, res) => {
 app.get('/repertory', (req, res) => {
     db.repertory.find({}).sort({index: 1}).exec(function (err, docs) {
         if (err) res.status(500).json(err)
+        if (req.query.raw !== undefined) {
+            res.json(docs)
+            return
+        }
         const rep = {}
         docs.forEach(doc => {
             if (!rep[doc.title]) rep[doc.title] = {}
