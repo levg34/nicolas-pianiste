@@ -77,10 +77,10 @@ class FeedbackManager {
             variant: 'success',
             text: success
         })
-        setTimeout(() => this.reset(),1500)
+        setTimeout(() => this.clear(),1500)
     }
 
-    reset() {
+    clear() {
         this.setAlert(null)
     }
 }
@@ -148,7 +148,7 @@ function Messages(props) {
     const feedback = props.feedback
 
     const getMessages = (showFeedback) => {
-        feedback.reset()
+        feedback.clear()
         selectMessage(null)
         axios.get('/admin/messages')
         .then(function (response) {
@@ -263,6 +263,7 @@ function Bio(params) {
 
     const setBioData = (biobject) => {
         delete biobject.modified
+        feedback.clear()
         axios.post('/admin/biographie',biobject).then(res => {
             console.log(res)
             feedback.treatSuccess('Modifications effectuées !')
