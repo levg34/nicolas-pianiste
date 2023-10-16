@@ -9,7 +9,7 @@
   "scripts": {
     "test": "echo 1",
     "dev-server": "nodemon index.js",
-    "babel-watch": "babel --watch src --out-dir public/js --presets react-app/prod",
+    "babel-watch": "babel --watch src --out-dir public/js --presets react-app/prod env",
     "dev": "npm-run-all --parallel dev-server babel-watch",
     "start-server": "node index.js",
     "babel-build": "babel src --out-dir public/js --presets react-app/prod",
@@ -40,6 +40,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
     "babel-preset-react-app": "^3.1.2",
     "nodemon": "^2.0.7",
     "npm-run-all": "^4.1.5",
