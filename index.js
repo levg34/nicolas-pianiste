@@ -1,6 +1,5 @@
 const express = require('express')
 const app = express()
-const port = 3000
 
 const Datastore = require('nedb')
 const db = {}
@@ -10,6 +9,7 @@ db.users = new Datastore({ filename: 'data/users', autoload: true })
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
 dotenv.config()
+const port = process.env.APP_PORT || 3000
 
 function generateAccessToken(userData) {
     return jwt.sign(userData, process.env.TOKEN_SECRET, { expiresIn: '30m' });
@@ -32,7 +32,6 @@ app.use(function(req, res, next) {
             })
             return
         }
-        console.log(token)
         jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
             if (err) {
                 res.status(403).json({
