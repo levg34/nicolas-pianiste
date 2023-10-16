@@ -47,6 +47,18 @@ function Message(props) {
     let resJSX = 'Sélectionner d\'abord un message.'
     const _message = props.message
 
+    const deleteMessage = (messageId) => {
+        axios.post(`/admin/message/delete/${messageId}`)
+        .then(function (response) {
+            if (response.data) {
+                console.log(response.data)
+            }
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
+    }
+
     if (_message) {
         const {message,ip,date,_id} = _message
         const formatedDate = formatDate(new Date(date))
@@ -55,9 +67,9 @@ function Message(props) {
             <Card.Title><MessageInfo message={_message}/></Card.Title>
             <Card.Subtitle className="mb-2 text-muted">{`Le ${formatedDate}, depuis ${ip}`}</Card.Subtitle>
             <Card.Text>
-            {message}
+                <pre style={{whiteSpace: 'pre-wrap'}}>{message}</pre>
             </Card.Text>
-            <Card.Link href="#">Supprimer</Card.Link>
+            <Card.Link onClick={() => deleteMessage(_id)}>Supprimer</Card.Link>
             <Card.Link href="#">Marquer</Card.Link>
         </Card.Body>
     </Card>
@@ -72,23 +84,36 @@ function Messages() {
 
     useEffect(() => {
         axios.get('/admin/messages')
-    .then(function (response) {
-        if (response.data) {
-            setMessages(response.data)
-        }
-    })
-    .catch(function (error) {
-        console.log(error)
-    })
-    .then(function () {
-    })
+        .then(function (response) {
+            if (response.data) {
+                setMessages(response.data)
+            }
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
+        .then(function () {
+        })
     },[])
+
+    const handleClickMessage = (message) => {
+        selectMessage(message)
+        axios.post(`/admin/message/read/${message._id}`)
+        .then(function (response) {
+            if (response.data) {
+                console.log(response.data)
+            }
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
+    }
 
     return <Container>
         <Row>
             <Col>
                 <ListGroup>
-                {messages.map(message => <ListGroup.Item onClick={() => {selectMessage(message)}} action key={message._id}><MessageInfo message={message}/></ListGroup.Item>)}
+                {messages.map(message => <ListGroup.Item onClick={() => handleClickMessage(message)} action key={message._id}><MessageInfo message={message}/></ListGroup.Item>)}
                 </ListGroup>
             </Col>
             <Col xs={8}>
