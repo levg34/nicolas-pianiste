@@ -1709,7 +1709,7 @@ function Newsletter(props) {
     const [subscribers,setSubscribers] = useState([])
     const [newsletter,setNewsletter] = useState({
         to: '',
-        message: ''
+        message: '<Corps du message...>\n\nPour vous désinscrire, cliquez ici ou allez sur https://nicolasdross.fr/unsubscribe.'
     })
 
     const {feedback} = props
@@ -1725,8 +1725,11 @@ function Newsletter(props) {
         <h3>Envoyer une newsletter</h3>
         <Form onSubmit={e => {
             e.preventDefault()
-            newsletter.attention = `Ce message n'a pas vraiment été envoyé. Cela viendra bientôt !`
-            feedback.treatVariant('info',newsletter)
+            axios.post('/admin/newsletter',newsletter).then(res => {
+                console.log(res.data)
+                newsletter.attention = `Ce message n'a pas vraiment été envoyé. Cela viendra bientôt !`
+                feedback.treatVariant('info',newsletter)
+            }).catch(err => feedback.treatError(err))
         }}>
             <Form.Group>
                 <Form.Label>Envoyer à :</Form.Label>
