@@ -1,5 +1,5 @@
 const { Well, FormGroup, FormControl, HelpBlock, ControlLabel, Button, Alert } = ReactBootstrap
-const { useState } = React
+const { useState, useEffect } = React
 
 function NewsletterFeedback(props) {
     const { setFeedback, email, setEmail, feedback } = props
@@ -24,6 +24,14 @@ function NewsletterFeedback(props) {
 function Newsletter(props) {
     const { setFeedback, email, setEmail, feedback } = props
 
+    const [subs,setSubs] = useState(0)
+
+    const getSubs = () => {
+        axios.get('/newsletter/subscribers').then(res => setSubs(res.data.subscribers)).catch(err => console.error(err))
+    }
+
+    useEffect(getSubs,[])
+
     return <Well>
         <h2>Newsletter</h2>
         <form onSubmit={e => {
@@ -34,6 +42,7 @@ function Newsletter(props) {
                     show: true,
                     variant: 'success'
                 })
+                getSubs()
             }).catch(err => setFeedback({
                 show: true,
                 variant: 'danger',
@@ -44,6 +53,7 @@ function Newsletter(props) {
                 <ControlLabel>Entrez votre email ci-dessous pour vous inscrire à la newsletter</ControlLabel>
                 <FormControl type="email" placeholder="Votre adresse email" value={email} onChange={e => setEmail(e.target.value)} disabled={feedback.show}/>
                 <HelpBlock>Vous recevrez des informations générales, et sur les concerts à venir.</HelpBlock>
+                <HelpBlock>Nombre de personnes inscrites : {subs}</HelpBlock>
             </FormGroup>
             <Button type="submit" disabled={feedback.show || !email}>S'inscrire</Button>
         </form>
