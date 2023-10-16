@@ -682,16 +682,35 @@ function Repertory() {
         Répertoire
         <Form>
             {[...titles].map(title => <Card key={title} body>
-            {title ? <Form.Label>{title}</Form.Label> : <Form.Control type="text" placeholder="Titre de section" value={title}/>}
+            {title ? <Form.Label>{title}</Form.Label> : <Form.Control type="text" placeholder="Titre de section" value={title} onChange={e => {
+                const repCopy = [...repertory]
+                repertory.filter(rep => rep.title === title).forEach(rep => {
+                    const index = repertory.findIndex(_rep => _rep._id === rep._id)
+                    repCopy[index] = {
+                        ...rep,
+                        title: e.target.value
+                    }
+                    setRepertory(repCopy)
+                })
+            }}/>}
                 {[...new Set(repertory.filter(rep => rep.title === title).map(e => e.subtitle))].map(subtitle => <Card key={`${title}_${subtitle}`} body>
                     {(subtitle || (repertory.filter(rep => rep.title === title).map(e => e.subtitle)).filter(subtitle => subtitle !== undefined).length < 1) ? <Form.Label>{subtitle}</Form.Label> : <Form.Control type="text" placeholder="Titre de sous-section" value={subtitle ? subtitle : ''}/>}
                     <ListGroup>
                         {repertory.filter(rep => rep.title === title && rep.subtitle === subtitle).map(rep => <ListGroup.Item key={rep._id}>
-                            <Form.Control type="text" placeholder="Élément de répertoire" value={rep.content}/>
+                            <Form.Control type="text" placeholder="Élément de répertoire" value={rep.content} onChange={e => {
+                                const repCopy = [...repertory]
+                                const index = repertory.findIndex(_rep => _rep._id === rep._id)
+                                repCopy[index] = {
+                                    ...rep,
+                                    content: e.target.value
+                                }
+                                setRepertory(repCopy)
+                            }}/>
                         </ListGroup.Item>)}
                     </ListGroup>
                     <Button className="mt-2" variant="outline-success" onClick={e => {
                         const newPiece = {
+                            _id: `new_${repertory.length+1}`,
                             title,
                             subtitle,
                             content: '',
@@ -702,6 +721,7 @@ function Repertory() {
                 </Card>)}
                 <Button className="mt-2" variant="outline-info" onClick={e => {
                     const newPiece = {
+                        _id: `new_${repertory.length+1}`,
                         title,
                         subtitle: '',
                         content: '',
@@ -711,12 +731,13 @@ function Repertory() {
                 }}>Ajouter une sous-section</Button>
             </Card>)}
             <Button className="mt-2" variant="outline-warning" onClick={e => {
-                                        const newPiece = {
-                                            title: '',
-                                            content: '',
-                                            index: repertory.length+1
-                                        }
-                                        setRepertory([...repertory,newPiece])
+                const newPiece = {
+                    _id: `new_${repertory.length+1}`,
+                    title: '',
+                    content: '',
+                    index: repertory.length+1
+                }
+                setRepertory([...repertory,newPiece])
             }}>Ajouter une section</Button>
             <hr/>
             <Button variant="primary" type="submit">
