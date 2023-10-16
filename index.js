@@ -5,6 +5,9 @@ const Datastore = require('nedb')
 const db = {}
 db.messages = new Datastore({ filename: 'data/messages', autoload: true })
 db.users = new Datastore({ filename: 'data/users', autoload: true })
+db.users.ensureIndex({ fieldName: 'username', unique: true }, function (err) {
+    if (err) console.error(err)
+})
 
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
@@ -214,7 +217,7 @@ function sendEmail(emailInfo) {
         subject: `Nouveau message de ${emailInfo.name} <${emailInfo.email}>`,
         text: emailInfo.message
     }
-    
+
     try {
         const mg = mailgun({
             apiKey: process.env.MAIL_API_KEY,
