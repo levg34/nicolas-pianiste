@@ -549,7 +549,7 @@ function ConcertInfo(props) {
             <Form.Label>Détails (facultatifs) : </Form.Label><br/>
             {(concert.details && concert.details.artists && concert.details.artists.length) && <Card body>
                 <Form.Label>Artistes :</Form.Label>
-                {concert.details.artists.map((artist,artIndex) => <Card key={artist.name+'-artist-'+artIndex} body>
+                {concert.details.artists.map((artist,artIndex) => <Card key={'artist-'+artIndex} body>
                     <Form.Group>
                         <Form.Label>Nom de l'artiste :</Form.Label>
                         <Form.Control type="text" value={artist.name} onChange={e => {
@@ -601,10 +601,10 @@ function ConcertInfo(props) {
             }}>Ajouter un artiste</Button>{' '}
             {(concert.details && concert.details.pieces && concert.details.pieces.length) && <Card body className="mt-2">
                 <Form.Label>Œuvres :</Form.Label>
-                {concert.details.pieces.map((piece,pIndex) => <Card key={piece.title+'-piece-'+pIndex} body>
+                {concert.details.pieces.map((piece,pIndex) => <Card key={'piece-'+pIndex} body>
                     <Form.Group>
                         <Form.Label>Titre de l'œuvre :</Form.Label>
-                        <Form.Control type="text" value={piece.title} onChange={e => {
+                        <Form.Control key={'piece-title-'+pIndex} type="text" value={piece.title} onChange={e => {
                             const newPieces = [...concert.details.pieces]
                             newPieces[pIndex] = {
                                 ...newPieces[pIndex],
