@@ -298,6 +298,22 @@ app.post('/admin/biographie', (req, res) => {
     
 })
 
+app.post('/admin/links', (req, res) => {
+    const link = req.body
+
+    if (!link._id) {
+        db.links.insert(link, function (err, newDoc) {
+            if (err) res.status(500).json(err)
+            res.json(newDoc)
+        })
+    } else {
+        db.links.update({ _id: link._id }, link, {}, function (err, numReplaced) {
+            if (err) res.status(500).json({err})
+            res.json({ok:numReplaced})
+        })
+    }
+})
+
 function canRequest(ip, path) {
     if (path != '/message' && path != '/login' && (!knownIps[ip] || !knownIps[ip].blocked)) {
         return true
