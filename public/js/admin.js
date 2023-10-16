@@ -715,7 +715,7 @@ function Repertory(props) {
             })
         }}>
             {[...titles].map(title => <Card key={title} body>
-            {title ? <Form.Label>{title}</Form.Label> : <Form.Control type="text" placeholder="Titre de section" value={title} onChange={e => {
+            <Form.Control type="text" placeholder="Titre de section" value={title} onChange={e => {
                 const repCopy = [...repertory]
                 repertory.filter(rep => rep.title === title).forEach(rep => {
                     const index = repertory.findIndex(_rep => _rep._id === rep._id)
@@ -726,11 +726,11 @@ function Repertory(props) {
                     }
                     setRepertory(repCopy)
                 })
-            }}/>}
+            }}/>
                 {[...new Set(repertory.filter(rep => rep.title === title).map(e => e.subtitle))].map(subtitle => <Card key={`${title}_${subtitle}`} body>
-                    {(subtitle || (repertory.filter(rep => rep.title === title).map(e => e.subtitle)).filter(subtitle => subtitle !== undefined).length < 1) ? <Form.Label>{subtitle}</Form.Label> : <Form.Control type="text" placeholder="Titre de sous-section" value={subtitle ? subtitle : ''} onChange={e => {
+                    {((repertory.filter(rep => rep.title === title).map(e => e.subtitle)).filter(subtitle => subtitle !== undefined).length < 1) ? <Form.Label>{subtitle}</Form.Label> : <Form.Control type="text" placeholder="Titre de sous-section" value={subtitle ? subtitle : ''} onChange={e => {
                         const repCopy = [...repertory]
-                        repertory.filter(rep => rep.subtitle === subtitle).forEach(rep => {
+                        repertory.filter(rep => rep.title === title && rep.subtitle === subtitle).forEach(rep => {
                             const index = repertory.findIndex(_rep => _rep._id === rep._id)
                             repCopy[index] = {
                                 ...rep,
