@@ -123,7 +123,6 @@ app.controller('tourCtrl', function($scope, $http) {
 		$scope.concertList.forEach(function(concert) {
 			var occurences = []
 			concert.occs.forEach(function(o) {
-				if(!o.show) return
 				var occurence = JSON.parse(JSON.stringify(concert))
 				delete occurence.details
 				delete occurence.occs
