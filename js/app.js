@@ -89,8 +89,8 @@ app.controller('tourCtrl', function($scope, $http) {
 	$scope.concertList = []
 	$scope.occList = []
 	$scope.loadData = function() {
-		$http.get('https://potential-bassoon.firebaseio.com/concerts.json').then(function(response) {
-			$scope.concertList = response.data
+		$http.get('https://potential-bassoon.firebaseio.com/concerts.json').then(function(response) {			
+			$scope.concertList = Object.keys(response.data).map(x => response.data[x])
 		})
 	}
 	$scope.state = function(occ) {
