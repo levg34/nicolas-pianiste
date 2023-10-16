@@ -133,9 +133,25 @@ function Messages() {
         })
     }
 
+    const unreadMessage = () => {
+        if (!selectedMessage) return
+        const messageId = selectedMessage._id
+        axios.post(`/admin/message/unread/${messageId}`)
+        .then(function (response) {
+            if (response.data) {
+                console.log(response.data)
+                getMessages()
+            }
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
+    }
+
     return <Container>
         <ButtonGroup aria-label="Basic example">
             <Button variant="primary" onClick={getMessages}>Rafraîchir</Button>
+            {(selectedMessage && selectedMessage.read) && <Button variant="info" onClick={unreadMessage}>Non lu</Button>}
             {selectedMessage && <Button variant="danger" onClick={deleteMessage}>Supprimer</Button>}
         </ButtonGroup>
         <Row>

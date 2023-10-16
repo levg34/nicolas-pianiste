@@ -50,6 +50,14 @@ app.post('/admin/message/read/:id', (req, res) => {
     })
 })
 
+app.post('/admin/message/unread/:id', (req, res) => {
+    const id = req.params.id
+    db.messages.update({ _id: id }, { $unset: { read: true } }, {}, function(err) {
+        if (err) res.status(500).json(err)
+        res.json({unread:id})
+    })
+})
+
 app.post('/admin/message/delete/:id', (req, res) => {
     const id = req.params.id
     db.messages.remove({ _id: id }, {}, function (err, numRemoved) {
