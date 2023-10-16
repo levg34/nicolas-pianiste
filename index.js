@@ -40,8 +40,6 @@ const dotenv = require('dotenv')
 dotenv.config()
 const port = process.env.APP_PORT || 3000
 
-const mailgun = require("mailgun-js")
-
 const bcrypt = require('bcrypt')
 const saltRounds = 13
 
@@ -233,7 +231,7 @@ app.post('/message', (req, res) => {
     message.date = new Date().toISOString()
     db.messages.insert(message, function (err, newDoc) {
         if (err) res.status(500).json(err)
-        sendEmail(newDoc)
+        sendEmail(newDoc).then(res => console.log(res?.data)).catch(err => console.log(err))
         res.json(newDoc)
         axios.get(`http://ip-api.com/json/${message.ip}`).then(response => {
             if (response.data) {
@@ -735,27 +733,11 @@ app.listen(port, () => {
     console.log(`Nicolapp listening at http://localhost:${port}`)
 })
 
-function sendEmail(emailInfo) {
-    const data = {
-        from: process.env.MAIL_SENDER,
-        to: process.env.ADMIN_EMAIL,
-        subject: `Nouveau message de ${emailInfo.name} <${emailInfo.email}>`,
-        text: emailInfo.message
+function sendEmail({name, email, message}) {
+    if (process.env.MAIL_HOOK) {
+        return axios.post(process.env.MAIL_HOOK, {name, email, message})
     }
-
-    try {
-        const mg = mailgun({
-            apiKey: process.env.MAIL_API_KEY,
-            domain: process.env.MAIL_DOMAIN
-        })
-    
-        mg.messages().send(data, function (error, body) {
-            if (error) console.error(error)
-            console.log(body)
-        })
-    } catch (error) {
-        console.error(error)
-    }
+    return Promise.reject('No email hook found')
 }
 
 function sendNewsletter(newsletter) {
@@ -767,19 +749,5 @@ function sendNewsletter(newsletter) {
         html: newsletter.html
     }
 
-    return new Promise((resolve,reject) => {
-        try {
-            const mg = mailgun({
-                apiKey: process.env.MAIL_API_KEY,
-                domain: process.env.MAIL_DOMAIN
-            })
-        
-            mg.messages().send(data, function (error, body) {
-                if (error) reject(error)
-                resolve(body)
-            })
-        } catch (error) {
-            reject(error)
-        }
-    })
+    return Promise.reject('Not implemented')
 }

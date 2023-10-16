@@ -1,0 +1,709 @@
+[
+    {
+        "name": "Les claviéristes français, de Couperin à… Fauré",
+        "type": "Solo",
+        "details": {
+            "pieces": [
+                {
+                    "composer": "Rameau",
+                    "title": "Allemande, Gavotte et 6 doubles (Nouvelles Suites de Pièces de Clavecin, suite en la)"
+                },
+                {
+                    "composer": "Couperin",
+                    "title": "25e ordre"
+                },
+                {
+                    "composer": "Franck",
+                    "title": "Prélude, Choral et Fugue"
+                },
+                {
+                    "composer": "Saint-Saëns",
+                    "title": "Toccata op.111"
+                },
+                {
+                    "composer": "Ravel",
+                    "title": "Ondine"
+                },
+                {
+                    "composer": "Fauré",
+                    "title": "L'horizon chimérique"
+                }
+            ]
+        },
+        "occs": [
+            {
+                "date": "2021-08-08",
+                "place": "Château de la petite Malmaison",
+                "time": "00:00",
+                "city": "Rueil-Malmaison"
+            }
+        ]
+    },
+    {
+        "name": "Abendempfindung",
+        "type": "Solo",
+        "details": {
+            "pieces": [
+                {
+                    "composer": "François Couperin",
+                    "title": "Pièces de Clavecin, Vingt-cinquième Ordre"
+                },
+                {
+                    "composer": "Franz Liszt",
+                    "title": "Études d’exécution transcendante, S.139  n° 6 : « Vision »  n° 11 : « Harmonies du soir »"
+                },
+                {
+                    "composer": "Alexandre Scriabine",
+                    "title": "Sonate n° 5, op. 53"
+                },
+                {
+                    "composer": "Béla Bartók",
+                    "title": "Szabadban, Sz 81, 2e partie"
+                }
+            ]
+        },
+        "occs": [
+            {
+                "date": "2020-07-15",
+                "place": "CNSM",
+                "time": "00:00",
+                "cancel": true,
+                "city": "Paris"
+            }
+        ]
+    },
+    {
+        "name": "Au fil de l’eau",
+        "type": "Solo",
+        "details": {
+            "pieces": [
+                {
+                    "composer": "T. Takemitsu",
+                    "title": "Rain Tree Sketch II"
+                },
+                {
+                    "composer": "L. Berio",
+                    "title": "Wasserklavier"
+                },
+                {
+                    "composer": "M. Ravel",
+                    "title": "Ondine, Une barque sur l’océan, Jeux d’eau"
+                },
+                {
+                    "composer": "C. Debussy",
+                    "title": "Reflets dans l’eau, Poissons d’or"
+                },
+                {
+                    "composer": "A. Scriabine",
+                    "title": "Sonate n°2 (Sonate-Fantaisie)"
+                },
+                {
+                    "composer": "C. Scott",
+                    "title": "Lotus Land op.47 n°1"
+                },
+                {
+                    "composer": "F. Liszt",
+                    "title": "Au bord d’une source"
+                },
+                {
+                    "composer": "J.-P. Rameau",
+                    "title": "Les tourbillons"
+                }
+            ]
+        },
+        "occs": [
+            {
+                "date": "2017-09-07",
+                "place": "Petit Palais",
+                "time": "00:00",
+                "city": "Paris"
+            },
+            {
+                "date": "2017-08-28",
+                "place": "Château Malmont",
+                "time": "00:00",
+                "city": "Villeneuvette"
+            }
+        ]
+    },
+    {
+        "name": "Contraintes libératrices",
+        "type": "Solo",
+        "details": {
+            "pieces": [
+                {
+                    "composer": "J.-S. Bach",
+                    "title": "Chromatische Fantasie und Fuge"
+                },
+                {
+                    "composer": "R. Schumann",
+                    "title": "Carnaval op.9"
+                },
+                {
+                    "composer": "E. Satie",
+                    "title": "Avant-dernières pensées"
+                }
+            ]
+        },
+        "occs": [
+            {
+                "date": "2016-12-21",
+                "place": "Hôtel Magnol",
+                "time": "00:00",
+                "city": "Montpellier"
+            }
+        ]
+    },
+    {
+        "name": "Concert de piano",
+        "type": "Solo",
+        "details": {
+            "pieces": [
+                {
+                    "composer": "A. Scriabine",
+                    "title": "Sonate n°2 (Sonate-Fantaisie"
+                },
+                {
+                    "composer": "S. Rachmaninov",
+                    "title": "Prélude op.23 n°6, Études-tableaux op.33 n°2 et 6"
+                },
+                {
+                    "composer": "M. Ravel",
+                    "title": "Valses nobles et sentimentales"
+                }
+            ]
+        },
+        "occs": [
+            {
+                "date": "2015-10-10",
+                "place": "Château Saint-Martin de la Garrigue",
+                "city": "Montagnac",
+                "time": "00:00"
+            }
+        ]
+    },
+    {
+        "name": "Trio avec Charlotte Saluste-Bridoux et Frankie Carr",
+        "type": "Trio éphémère",
+        "details": {
+            "pieces": [
+                {
+                    "composer": "Ravel",
+                    "title": "Trio"
+                },
+                {
+                    "composer": "Schubert",
+                    "title": "Trio no.2 op.100, D.929"
+                }
+            ]
+        },
+        "occs": [
+            {
+                "date": "2017-12-21",
+                "place": "Chapelle des Jésuites",
+                "city": "Carcassonne",
+                "time": "00:00"
+            }
+        ]
+    },
+    {
+        "name": "Violon et piano avec Charlotte Saluste-Bridoux",
+        "type": "Duo éphémère",
+        "details": {
+            "pieces": [
+                {
+                    "composer": "Beethoven",
+                    "title": "Sonate pour violon et piano no.3"
+                },
+                {
+                    "composer": "Brahms",
+                    "title": "Sonate pour piano et violon no.3"
+                },
+                {
+                    "composer": "Szymanowski",
+                    "title": "Mythes"
+                }
+            ]
+        },
+        "occs": [
+            {
+                "date": "2019-02-02",
+                "place": "Hôtel Magnol",
+                "time": "19:00",
+                "cancel": true,
+                "city": "Montpellier"
+            }
+        ]
+    },
+    {
+        "name": "Violon et piano avec Charlotte Saluste-Bridoux",
+        "type": "Duo éphémère",
+        "details": {
+            "pieces": [
+                {
+                    "composer": "Beethoven",
+                    "title": "Sonate no.10 op.96"
+                },
+                {
+                    "composer": "Grieg",
+                    "title": "Sonate no.2 op.13"
+                },
+                {
+                    "composer": "Ravel",
+                    "title": "Sonate en Sol"
+                }
+            ]
+        },
+        "occs": [
+            {
+                "date": "2017-10-28",
+                "place": "Hôtel Magnol",
+                "time": "00:00",
+                "city": "Montpellier"
+            },
+            {
+                "date": "2017-09-29",
+                "place": "Château Rieutort",
+                "time": "00:00",
+                "city": "Saint-Pargoire"
+            },
+            {
+                "date": "2017-08-23",
+                "place": "Château Cicéron",
+                "time": "00:00",
+                "city": "Ribaute"
+            }
+        ]
+    },
+    {
+        "name": "Violon et piano avec Charlotte Saluste-Bridoux",
+        "type": "Duo éphémère",
+        "details": {
+            "pieces": [
+                {
+                    "composer": "L.V. Beethoven",
+                    "title": "Sonate n°8 en sol majeur, op.30 n°3"
+                },
+                {
+                    "composer": "R. Schumann",
+                    "title": "Fantasie en ut majeur, op.131"
+                },
+                {
+                    "composer": "G. Enescu",
+                    "title": "Sonate n°3 en la mineur"
+                }
+            ]
+        },
+        "occs": [
+            {
+                "date": "2016-08-09",
+                "place": "Château Planères",
+                "time": "00:00",
+                "city": "Saint-Jean-Lasseille"
+            }
+        ]
+    },
+    {
+        "name": "Violon et piano avec Charlotte Saluste-Bridoux",
+        "type": "Duo éphémère",
+        "details": {
+            "pieces": [
+                {
+                    "composer": "Bach",
+                    "title": "Sonate pour violon et clavecin BWV 1018"
+                },
+                {
+                    "composer": "Brahms",
+                    "title": "Sonate pour piano et violon no.3 op.108"
+                },
+                {
+                    "composer": "Ravel",
+                    "title": "Sonate en sol"
+                }
+            ]
+        },
+        "occs": [
+            {
+                "date": "2015-08-14",
+                "place": "Château de Cassan",
+                "time": "00:00",
+                "city": "Roujan"
+            }
+        ]
+    },
+    {
+        "name": "Duo violon-piano",
+        "type": "Musique vocale et spectacles",
+        "details": {
+            "pieces": [
+                {
+                    "composer": "Saint-Saëns",
+                    "title": "Danse macabre, Introduction et rondo capriccioso"
+                },
+                {
+                    "composer": "Beethoven",
+                    "title": "Sonate pour violon et piano no.7 en do mineur, op.30 no.2"
+                },
+                {
+                    "composer": "Brahms",
+                    "title": "Sonate pour violon et piano no.3 en ré mineur, op.108"
+                }
+            ]
+        },
+        "occs": [
+            {
+                "date": "2021-08-01",
+                "place": "Château de la petite Malmaison, Rueil-Malmaison",
+                "time": "00:00"
+            }
+        ]
+    },
+    {
+        "name": "Duo d'oro",
+        "type": "Musique vocale et spectacles",
+        "details": {
+            "pieces": []
+        },
+        "occs": [
+            {
+                "date": "2021-07-17",
+                "place": "Camping La Chabannerie, Saint-Martin de Clelles, 38930",
+                "time": "00:00"
+            }
+        ]
+    },
+    {
+        "name": "Loreley",
+        "type": "Musique vocale et spectacles",
+        "details": {
+            "pieces": [
+                {
+                    "composer": "Debussy, Ravel",
+                    "title": "œuvres pour piano"
+                },
+                {
+                    "composer": "Brahms, Schubert, Schumann, Wolf, Mendelsohn",
+                    "title": "lieder et mélodies"
+                }
+            ]
+        },
+        "occs": [
+            {
+                "date": "2020-01-22",
+                "place": "Musée Gustave Moreau, Paris",
+                "time": "00:00"
+            }
+        ]
+    },
+    {
+        "name": "Rosemary & Thyme - Musique britanique au fil des siècles",
+        "type": "Musique vocale et spectacles",
+        "details": {
+            "pieces": []
+        },
+        "occs": [
+            {
+                "date": "2019-08-25",
+                "place": "Château de la Petite Malmaison, Rueil-Malmaison",
+                "time": "00:00"
+            }
+        ]
+    },
+    {
+        "name": "Hector Berlioz – Les amours et la musique (concert lecture)",
+        "type": "Musique vocale et spectacles",
+        "details": {
+            "pieces": [
+                {
+                    "composer": "Hector Berlioz",
+                    "title": "Nuits d'été, extraits d'opéras (Bérédice et Bénédicte, la Damnation de Faust), Le Bal (transcription de Liszt)..."
+                }
+            ]
+        },
+        "occs": [
+            {
+                "date": "2019-07-28",
+                "place": "Château de la petite Malmaison, Rueil-Malmaison",
+                "time": "00:00"
+            }
+        ]
+    },
+    {
+        "name": "Concert des chœurs de Jacqueline Blondin",
+        "type": "Musique vocale et spectacles",
+        "details": {
+            "pieces": [
+                {
+                    "composer": "Mozart et Mendelson",
+                    "title": "Diverses œuvres"
+                },
+                {
+                    "composer": "",
+                    "title": "Chants traditionnels"
+                }
+            ]
+        },
+        "occs": [
+            {
+                "date": "2019-04-02",
+                "place": "Conservatoire à Rayonnement Régional, Rueil-Malmaison",
+                "time": "00:00"
+            }
+        ]
+    },
+    {
+        "name": "Prélude aux concerts de l'orchestre de Paris",
+        "type": "Musique vocale et spectacles",
+        "details": {
+            "pieces": [
+                {
+                    "composer": "Richard Strauss",
+                    "title": "Drei Lieder der Ophelia op. 67"
+                },
+                {
+                    "composer": "Trio en la mineur Don Quichotte, Chants populaires",
+                    "title": "Maurice Ravel"
+                }
+            ]
+        },
+        "occs": [
+            {
+                "date": "2019-03-21",
+                "place": "Philharmonie, Paris",
+                "time": "00:00"
+            }
+        ]
+    },
+    {
+        "name": "Audition classe d'accompagnement vocal",
+        "type": "Musique vocale et spectacles",
+        "details": {
+            "pieces": [
+                {
+                    "composer": "Richard Strauss",
+                    "title": "Ophélie Lieder"
+                },
+                {
+                    "composer": "Gustav Mahler",
+                    "title": "Lieder eines fahrenden Gesellen"
+                }
+            ]
+        },
+        "occs": [
+            {
+                "date": "2019-03-15",
+                "place": "Conservatoire régional de Paris, Salle Fauré",
+                "time": "00:00",
+                "city": "Paris"
+            }
+        ]
+    },
+    {
+        "name": "Récital de chant",
+        "type": "Musique vocale et spectacles",
+        "details": {
+            "pieces": [
+                {
+                    "composer": "Mélodies, airs d'opéra romantiques français et allemands"
+                }
+            ],
+            "artists": [
+                {
+                  "name": "Solène Lorent et Adèle Clermont",
+                  "instrument": "soprani"
+                },
+                {
+                  "name": "Nicolas Dross",
+                  "instrument": "piano"
+                }
+            ]
+        },
+        "occs": [
+            {
+                "date": "2019-01-28",
+                "place": "Conservatoire à rayonnement régional, salle Gabriel Fauré",
+                "time": "19:00",
+                "city": "Paris"
+            }
+        ]
+    },
+    {
+        "name": "Concert Rossini",
+        "type": "Musique vocale et spectacles",
+        "details": {
+            "pieces": [
+                {
+                    "composer": "Una voce poco fa, air extrait du Barbier de Séville de Rossini"
+                },
+                {
+                    "composer": "La promessa, extrait des Soirées musicales de Rossini"
+                },
+                {
+                    "composer": "La ricordanza, des 4 sonnets de Bellini"
+                },
+                {
+                    "composer": "Quelques riens pour album de Rossini"
+                },
+                {
+                    "composer": "Fantaisie pour clarinette de Rossini"
+                },
+                {
+                    "composer": "Introduction, thème et variation pour clarinette de Rossini"
+                },
+                {
+                    "composer": "Pot-pourri “Rossini à l'Opéra”"
+                }
+            ],
+            "artists": [
+                {
+                  "name": "Lalaïna Garreta",
+                  "instrument": "soprano"
+                },
+                {
+                  "name": "Nicolas Dross",
+                  "instrument": "piano"
+                },
+                {
+                  "name": "Masako Miyako",
+                  "instrument": "clarinettiste"
+                }
+            ]
+        },
+        "occs": [
+            {
+                "date": "2019-01-27",
+                "place": "Château de la petite Malmaison",
+                "time": "17:00",
+                "city": "Rueil Malmaison"
+            }
+        ]
+    },
+    {
+        "name": "Au salon d'Augusta Holmès",
+        "type": "Musique vocale et spectacles",
+        "details": {
+            "pieces": [
+                {
+                    "composer": "Œuvres d’ A. Holmès, C. Saint-Saëns, J. Massenet, F. Liszt et C. Franck."
+                }
+            ],
+            "artists": [
+                {
+                  "name": "Brigitte Fossey",
+                  "instrument": "comédienne"
+                },
+                {
+                  "name": "Natacha Hummel",
+                  "instrument": "mezzo-soprano"
+                },
+                {
+                  "name": "Lauriane Vidal",
+                  "instrument": "soprano"
+                },
+                {
+                  "name": "Nicolas Dross",
+                  "instrument": "pianiste"
+                }
+            ]
+        },
+        "occs": [
+            {
+                "date": "2018-10-07",
+                "place": "Salle Ravel",
+                "time": "00:00",
+                "city": "Levallois"
+            },
+            {
+                "date": "2018-03-16",
+                "place": "Salon de l'Hôtel de Ville",
+                "time": "00:00",
+                "city": "Versailles"
+            }
+        ]
+    },
+    {
+        "name": "Les Femmes Compositrices",
+        "type": "Musique vocale et spectacles",
+        "details": {
+            "pieces": [
+                {
+                    "composer": "Clara Schumann, Pauline Viardot, Maria Malibran, Augusta Holmes et Isabelle Aboulker"
+                }
+            ],
+            "artists": [
+                {
+                  "name": "Natacha Hummel",
+                  "instrument": "mezzo-soprano"
+                },
+                {
+                  "name": "Anaëlle Gregorutti",
+                  "instrument": "soprano"
+                },
+                {
+                  "name": "Nicolas Dross et Isabelle Aboulker",
+                  "instrument": "piano"
+                }
+            ]
+        },
+        "occs": [
+            {
+                "date": "2018-11-21",
+                "place": "MINES ParisTech",
+                "time": "00:00",
+                "city": "Paris"
+            },
+            {
+                "date": "2017-09-4",
+                "place": "MINES ParisTech",
+                "time": "00:00",
+                "city": "Paris"
+            }
+        ]
+    },
+    {
+        "name": "Winterreise",
+        "type": "Musique vocale et spectacles",
+        "details": {
+            "pieces": [],
+            "artists": [
+                {
+                    "name": "Myrianne-Fleur Le Ralle",
+                    "instrument": "soprano"
+                },
+                {
+                    "name": "Alexandre Jamar",
+                    "instrument": "tenor"
+                },
+                {
+                    "name": "Halidou Nombre",
+                    "instrument": "baryton"
+                },
+                {
+                    "name": "Paul Meynieux",
+                    "instrument": "mise en scène"
+                }
+            ]
+        },
+        "occs": [
+            {
+                "date": "2018-01-27",
+                "place": "Maison Heinrich Heine",
+                "time": "00:00",
+                "city": "Paris",
+                "photosUrl": "https://www.maison-heinrich-heine.org/manifestations-culturelles/2018/janvier/die-winterreise#gallery-1-picture-0"
+            },
+            {
+                "date": "2018-01-20",
+                "place": "Fondation Biermans-Lapôtre",
+                "time": "00:00",
+                "city": "Paris"
+            },
+            {
+                "date": "2018-01-11",
+                "place": "Conservatoire Paul Dukas",
+                "time": "00:00",
+                "city": "Paris"
+            }
+        ]
+    }
+]
