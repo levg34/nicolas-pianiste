@@ -1721,7 +1721,6 @@ function Newsletter(props) {
         <h3>Envoyer une newsletter</h3>
         <Form onSubmit={e => {
             e.preventDefault()
-            console.log(newsletter)
             newsletter.attention = `Ce message n'a pas vraiment été envoyé. Cela viendra bientôt !`
             feedback.treatVariant('info',newsletter)
         }}>
