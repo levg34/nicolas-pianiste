@@ -216,6 +216,51 @@ app.delete('/admin/message/:id', (req, res) => {
     })
 })
 
+app.post('/admin/studies', (req, res) => {
+    const studies = req.body
+
+    const updateStudies = (index) => {
+        if (studies.title) {
+            db.studies.update({ _id: studies._id }, studies, {}, function (err, numReplaced) {
+                if (err) res.status(500).json({err})
+                res.json({ok:numReplaced})
+            })
+        } else {
+            const field = studies.paragraph ? 'paragraph' : (studies.award ? 'award' : '_field')
+            if (index || index === 0) {
+                db.studies.update({ _id: studies._id }, { $set: { [field]: studies[field], index } }, {}, function (err, numReplaced) {
+                    if (err) res.status(500).json({err})
+                    res.json({ok:numReplaced})
+                })
+            } else {
+                db.studies.update({ _id: studies._id }, { $set: { [field]: studies[field] } }, {}, function (err, numReplaced) {
+                    if (err) res.status(500).json({err})
+                    res.json({ok:numReplaced})
+                })
+            }
+        }
+    }
+    if (!studies._id) {
+        db.studies.insert(studies, function (err, newDoc) {
+            if (err) res.status(500).json(err)
+            res.json(newDoc)
+        })
+    } else if (studies.paragraph && !studies.index && studies.index !== 0) {
+        db.studies.count({ paragraph: { $exists: true }}, function (err, count) {
+            if (err) res.status(500).json({err})
+            updateStudies(count)
+        })
+    } else if (studies.award && !studies.index && studies.index !== 0) {
+        db.studies.count({ award: { $exists: true }}, function (err, count) {
+            if (err) res.status(500).json({err})
+            updateStudies(count)
+        })
+    } else {
+        updateStudies()
+    }
+    
+})
+
 app.post('/admin/biographie', (req, res) => {
     const bio = req.body
 
