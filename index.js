@@ -108,7 +108,7 @@ app.get('/admin/messages', (req, res) => {
     })
 })
 
-app.post('/admin/message/read/:id', (req, res) => {
+app.patch('/admin/message/read/:id', (req, res) => {
     const id = req.params.id
     db.messages.update({ _id: id }, { $set: { read: true } }, {}, function(err) {
         if (err) res.status(500).json(err)
@@ -116,7 +116,7 @@ app.post('/admin/message/read/:id', (req, res) => {
     })
 })
 
-app.post('/admin/message/unread/:id', (req, res) => {
+app.patch('/admin/message/unread/:id', (req, res) => {
     const id = req.params.id
     db.messages.update({ _id: id }, { $unset: { read: true } }, {}, function(err) {
         if (err) res.status(500).json(err)
@@ -124,7 +124,7 @@ app.post('/admin/message/unread/:id', (req, res) => {
     })
 })
 
-app.post('/admin/message/delete/:id', (req, res) => {
+app.delete('/admin/message/:id', (req, res) => {
     const id = req.params.id
     db.messages.remove({ _id: id }, {}, function (err, numRemoved) {
         if (err) res.status(500).json({err})
