@@ -18,7 +18,7 @@ app.use(function(req, res, next) {
     } else {
         res.status(401).json({
             error: 'Access denied',
-            data: 'Too many requests'
+            data: 'Login required'
         })
     }
 })
@@ -29,6 +29,16 @@ app.use(express.json())
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/view/index.html')
+})
+
+app.post('/message', (req, res) => {
+    const message = req.body
+    message.ip = req.ip
+    message.date = new Date().toISOString()
+    db.messages.insert(message, function (err, newDoc) {
+        if (err) res.status(500).json(err)
+        res.json(newDoc)
+    })
 })
 
 app.get('/admin', (req, res) => {
@@ -69,18 +79,10 @@ app.post('/admin/message/delete/:id', (req, res) => {
     })
 })
 
-app.post('/message', (req, res) => {
-    const message = req.body
-    message.ip = req.ip
-    message.date = new Date().toISOString()
-    db.messages.insert(message, function (err, newDoc) {
-        if (err) res.status(500).json(err)
-        res.json(newDoc)
-    })
-})
-
 function canRequest(ip, path) {
-    if (path != '/message' && (!knownIps[ip] || !knownIps[ip].blocked)) {
+    if (path.startsWith('/admin')) {
+        return false
+    } else if (path != '/message' && (!knownIps[ip] || !knownIps[ip].blocked)) {
         return true
     } else if (!knownIps[ip]) {
         knownIps[ip] = {
