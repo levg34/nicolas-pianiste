@@ -80,6 +80,7 @@ app.controller('tourCtrl', function($scope, $http) {
 				concert.occs.sort((a, b) => (a.date > b.date) ? 1 : (a.date === b.date) ? ((a.time > b.time) ? 1 : -1) : -1 ) //.reverse()
 			})
 			$scope.concertList.sort((a, b) => (a.occs[0].date > b.occs[0].date) ? 1 : (a.occs[0].date === b.occs[0].date) ? ((a.occs[0].time > b.occs[0].time) ? 1 : -1) : -1 )
+			$('[data-toggle="popover"]').popover()
 		})
 	}
 	$scope.state = function(occ) {
