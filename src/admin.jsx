@@ -1714,7 +1714,11 @@ function Newsletter(props) {
 
     const {feedback} = props
 
-    useEffect(() => axios.get('/admin/newsletter').then(res => setSubscribers(res.data)).catch(err => feedback.treatError(err)),[])
+    const getSubscribers = () => {
+        axios.get('/admin/newsletter').then(res => setSubscribers(res.data)).catch(err => feedback.treatError(err))
+    }
+
+    useEffect(getSubscribers,[])
 
     return <Container>
         <h2>Newsletter</h2>
@@ -1766,8 +1770,26 @@ function Newsletter(props) {
                 {subscribers.map((sub, index) =><tr key={sub._id}>
                     <td>
                         <DropdownButton id="dropdown-basic-button" title="Actions" variant="info">
-                            <Dropdown.Item>Supprimer</Dropdown.Item>
-                            <Dropdown.Item>Supprimer tout IP</Dropdown.Item>
+                            <Dropdown.Item onClick={e => {
+                                axios.delete('/admin/newsletter/'+sub._id).then(res => {
+                                    if (res.data && res.data.removed === 1) {
+                                        feedback.treatSuccess('Email supprimé')
+                                    } else {
+                                        feedback.treatError('Erreur de suppression')
+                                    }
+                                    getSubscribers()
+                                }).catch(err => feedback.treatError(err))
+                            }}>Supprimer</Dropdown.Item>
+                            <Dropdown.Item onClick={e => {
+                                axios.delete('/admin/newsletter/byip/'+sub.ip).then(res => {
+                                    if (res.data && res.data.removed) {
+                                        feedback.treatSuccess(res.data.removed+' emails supprimés')
+                                    } else {
+                                        feedback.treatError('Erreur de suppression')
+                                    }
+                                    getSubscribers()
+                                }).catch(err => feedback.treatError(err))
+                            }}>Supprimer tout IP</Dropdown.Item>
                             <Dropdown.Item onClick={e => {
                                 subCopy = [...subscribers]
                                 subCopy[index] = {
