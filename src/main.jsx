@@ -9,9 +9,10 @@ function NewsletterFeedback(props) {
         {feedback.variant === 'success' ? 
         <span>Merci <strong>{email}</strong> ! Vous avez bien souscrit à la newsletter.<br/>
         Pour souscrire avec une autre adresse, ou si vous vous êtes trompés d'adresse, </span> : 
-        <span>Une erreur s'est produite. 
-            {(feedback.error && feedback.error.errorType === 'uniqueViolated') && <span><br/>Cette adresse est déjà inscrite aux newsletters.<br/>
-            Si vous vous êtes désinscrits, vous devez attendre que votre désinscription soit traitée avant de vous réinscrire.</span>}<br/>
+        (feedback.error && feedback.error.errorType === 'uniqueViolated') ?
+        <span>Cette adresse est déjà inscrite aux newsletters.<br/>
+        Si vous vous êtes désinscrits, vous devez attendre que votre désinscription soit traitée avant de vous réinscrire.<br/>Si vous vous êtes trompés d'adresse, </span> :
+        <span>Une erreur s'est produite.<br/>
         Pour reessayer, </span>}
         <a href="#newsletter" onClick={e => {
             setFeedback({show: false})
