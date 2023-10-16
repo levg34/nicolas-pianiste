@@ -400,7 +400,7 @@ function Links(props) {
             {linkTypes.map(type => <Form.Group key={type[0]}>
                 <Row><Form.Label>{type[1]}</Form.Label></Row>
             {Object.values(links).filter(link => link.type === type[0]).map(link => <Row key={link._id ? link._id : `new_${type[0]}_${Object.keys(links).length}`}>
-                <Col xs={3}>
+                <Col xs={4}>
                     <Form.Label>Nom</Form.Label>
                     <Form.Control placeholder="Nom" value={link.name} onChange={e => nameChange(e,link)}/>
                 </Col>
