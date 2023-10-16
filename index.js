@@ -47,7 +47,7 @@ function canRequest(ip, path) {
         const now = new Date().getTime()
         if (now - knownIps[ip].first > RESET_TIME) {
             delete knownIps[ip]
-            return canRequest(ip)
+            return canRequest(ip,path)
         } else if (knownIps[ip].nb < MAX_REQUESTS) {
             knownIps[ip].nb++
             return true
