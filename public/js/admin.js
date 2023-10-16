@@ -1,4 +1,4 @@
-const { Container, Jumbotron, Navbar, Nav, NavDropdown, ListGroup, Row, Col, Card, ButtonGroup, Button, Form } = ReactBootstrap
+const { Container, Jumbotron, Navbar, Nav, NavDropdown, ListGroup, Row, Col, Card, ButtonGroup, Button, Form, Alert } = ReactBootstrap
 const { useState, useEffect } = React
 
 function stringToColour(str) {
@@ -185,9 +185,12 @@ function Login() {
     const [username,setUsername] = useState('')
     const [password,setPassword] = useState('')
 
+    const [error,setError] = useState()
+
     const handleSubmit = e => {
         e.preventDefault()
         setPassword('')
+        setError()
         axios.post('/login',{username,password}).then(response => {
             if (response.data && response.data.token) {
                 sessionStorage.setItem('token',response.data.token)
@@ -197,15 +200,26 @@ function Login() {
             }
         }).catch(err => {
             console.error(err)
+            if (err.response) {
+                setError(err.response.data ? err.response.data : err.response)
+            } else if (err.request) {
+                setError(err.request)
+            } else {
+                setError(err.message)
+            }
         })
     }
 
     return <Container>
+        {error && <Alert variant="danger">
+            <Alert.Heading>Could not log in!</Alert.Heading>
+            {error instanceof Object ? <pre>{JSON.stringify(error, null, 2) }</pre> : error}
+        </Alert>}
         <Card body>
             <Form onSubmit={e => { handleSubmit(e) }}>
                 <Form.Group controlId="formGroupEmail">
                     <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" placeholder="Enter email" onChange={e => setUsername(e.target.value)} value={username}/>
+                    <Form.Control type="email" placeholder="Enter email" onChange={e => setUsername(e.target.value)} value={username} required/>
                 </Form.Group>
                 <Form.Group controlId="formGroupPassword">
                     <Form.Label>Password</Form.Label>
