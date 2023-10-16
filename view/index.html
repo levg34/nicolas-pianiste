@@ -114,14 +114,14 @@
       </div>
       
       <h4 ng-show="concertList.filter(concertIsOn).length">A venir</h4>
-      <span ng-repeat="concert in concertList | filter: concertIsOn">
+      <span class="concertInfo" ng-repeat="concert in concertList | filter: concertIsOn">
       <p id="{{concert.id}}_avenir">
         <b>{{concert.name}}</b>
         <span ng-show="concert.info"><br><span style="font-style:italic; margin-left: 15px;">{{concert.info}}</span></span>
         <span ng-repeat="artist in concert.details.artists"><br>{{artist.name}}, {{artist.instrument}}</span>
       </p>
-      <ul ng-repeat="piece in concert.details.pieces">
-        <li>{{piece.composer}} – {{piece.title}}</li>
+      <ul>
+        <li ng-repeat="piece in concert.details.pieces">{{piece.composer}} – {{piece.title}}</li>
       </ul>
       <span ng-if="!concert.noOccs">
         <ul class="list-group">
@@ -140,14 +140,14 @@
       </span>
 
       <h4>Solo</h4>
-      <span ng-repeat="concert in concertList | orderBy:'-' | filter: {type:  'Solo'}">
+      <span class="concertInfo" ng-repeat="concert in concertList | orderBy:'-' | filter: {type:  'Solo'}">
       <p id="{{concert.id}}">
         <b>{{concert.name}}</b>
         <span ng-show="concert.info"><br><span style="font-style:italic; margin-left: 15px;">{{concert.info}}</span></span>
         <span ng-repeat="artist in concert.details.artists"><br>{{artist.name}}, {{artist.instrument}}</span>
       </p>
-      <ul ng-repeat="piece in concert.details.pieces">
-        <li>{{piece.composer}} – {{piece.title}}</li>
+      <ul>
+        <li ng-repeat="piece in concert.details.pieces">{{piece.composer}} – {{piece.title}}</li>
       </ul>
       <span ng-if="!concert.noOccs">
         <ul class="list-group">
@@ -213,14 +213,14 @@
         <b>Trio avec Charlotte Saluste-Bridoux et Frankie Carr</b>
       </p>
       
-      <span ng-repeat="concert in concertList | orderBy:'-' | filter: {type:  'Trio éphémère'}">
+      <span class="concertInfo" ng-repeat="concert in concertList | orderBy:'-' | filter: {type:  'Trio éphémère'}">
       <p id="{{concert.id}}">
         <b>{{concert.name}}</b>
         <span ng-show="concert.info"><br><span style="font-style:italic; margin-left: 15px;">{{concert.info}}</span></span>
         <span ng-repeat="artist in concert.details.artists"><br>{{artist.name}}, {{artist.instrument}}</span>
       </p>
-      <ul ng-repeat="piece in concert.details.pieces">
-        <li>{{piece.composer}} – {{piece.title}}</li>
+      <ul>
+        <li ng-repeat="piece in concert.details.pieces">{{piece.composer}} – {{piece.title}}</li>
       </ul>
       <span ng-if="!concert.noOccs">
         <ul class="list-group">
@@ -250,14 +250,14 @@
         <b>Violon et piano avec Charlotte Saluste-Bridoux</b>
       </p>
       
-      <span ng-repeat="concert in concertList | orderBy:'-' | filter: {type:  'Duo éphémère'}">
+      <span class="concertInfo" ng-repeat="concert in concertList | orderBy:'-' | filter: {type:  'Duo éphémère'}">
       <p id="{{concert.id}}">
         <b>{{concert.name}}</b>
         <span ng-show="concert.info"><br><span style="font-style:italic; margin-left: 15px;">{{concert.info}}</span></span>
         <span ng-repeat="artist in concert.details.artists"><br>{{artist.name}}, {{artist.instrument}}</span>
       </p>
-      <ul ng-repeat="piece in concert.details.pieces">
-        <li>{{piece.composer}} – {{piece.title}}</li>
+      <ul>
+        <li ng-repeat="piece in concert.details.pieces">{{piece.composer}} – {{piece.title}}</li>
       </ul>
       <span ng-if="!concert.noOccs">
         <ul class="list-group">
@@ -315,14 +315,14 @@
       
       <h4>Musique vocale et spectacles</h4>
       
-      <span ng-repeat="concert in concertList | orderBy:'-' | filter: {type:  'Musique vocale et spectacles'}">
+      <span class="concertInfo" ng-repeat="concert in concertList | orderBy:'-' | filter: {type:  'Musique vocale et spectacles'}">
       <p id="{{concert.id}}">
         <b>{{concert.name}}</b>
         <span ng-show="concert.info"><br><span style="font-style:italic; margin-left: 15px;">{{concert.info}}</span></span>
         <span ng-repeat="artist in concert.details.artists"><br>{{artist.name}}, {{artist.instrument}}</span>
       </p>
-      <ul ng-repeat="piece in concert.details.pieces">
-        <li>{{piece.composer}} – {{piece.title}}</li>
+      <ul>
+        <li ng-repeat="piece in concert.details.pieces">{{piece.composer}} – {{piece.title}}</li>
       </ul>
       <span ng-if="!concert.noOccs">
         <ul class="list-group">
@@ -418,14 +418,14 @@
   <div id="compos" class="container" ng-controller="tourCtrl">
     <h3 class="text-center">COMPOSITION</h3>
 
-    <span ng-repeat="concert in concertList | orderBy:'-' | filter: {type:  'Composition'}">
+    <span class="concertInfo" ng-repeat="concert in concertList | orderBy:'-' | filter: {type:  'Composition'}">
       <p id="{{concert.id}}">
         <b>{{concert.name}}</b>
         <span ng-show="concert.info"><br><span style="font-style:italic; margin-left: 15px;">{{concert.info}}</span></span>
         <span ng-repeat="artist in concert.details.artists"><br>{{artist.name}}, {{artist.instrument}}</span>
       </p>
-      <ul ng-repeat="piece in concert.details.pieces">
-        <li>{{piece.composer}} – {{piece.title}}</li>
+      <ul>
+        <li ng-repeat="piece in concert.details.pieces">{{piece.composer}} – {{piece.title}}</li>
       </ul>
       <span ng-if="!concert.noOccs">
         <ul class="list-group">
@@ -443,12 +443,14 @@
       </span>
     </span>
     
-    <p>
-      <b>Participation en tant que compositeur</b><br> Piano Orchestra
-    </p>
-    <ul class="list-group">
-      <li class="list-group-item">Dimanche 7 avril 2019 — 15h00, cité de la musique <span class="label label-warning">Terminé</span> <span class="label"><a target="_blank" href="https://philharmoniedeparis.fr/fr/activite/concert-performance/19353-piano-orchestra">info réservation</a></span></li>
-    </ul>
+    <span class="concertInfo">
+      <p>
+        <b>Participation en tant que compositeur</b><br> Piano Orchestra
+      </p>
+      <ul class="list-group">
+        <li class="list-group-item">Dimanche 7 avril 2019 — 15h00, cité de la musique <span class="label label-warning">Terminé</span> <span class="label"><a target="_blank" href="https://philharmoniedeparis.fr/fr/activite/concert-performance/19353-piano-orchestra">info réservation</a></span></li>
+      </ul>
+    </span>
   </div>
 
   <div id="videos" class="bg-1" ng-controller="videosCtrl">
