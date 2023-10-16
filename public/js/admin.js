@@ -751,7 +751,7 @@ function VideoFormGroup(props) {
                 ...video,
                 description: e.target.value
             })} value={video.description}/>
-            <Form.Check type="checkbox" label="Utiliser une liste" value={useList} onChange={e => {
+            <Form.Check type="checkbox" label="Utiliser une liste" checked={useList} onChange={e => {
                 setUseList(e.target.checked)
                 if (!e.target.checked) {
                     setVideo({
