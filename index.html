@@ -101,7 +101,7 @@
       </p>
 
       <div class="row text-center">
-        <div class="col-sm-4" ng-repeat="concert in occList">
+        <div class="col-sm-4" ng-repeat="concert in occList | filter: occIsOn">
           <div class="thumbnail">
             <a href="#{{concert.id}}"> <img src="{{concert.img}}" alt="{{concert.name}}">
               <p>

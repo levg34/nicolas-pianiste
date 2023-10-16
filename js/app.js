@@ -115,6 +115,9 @@ app.controller('tourCtrl', function($scope, $http) {
 		})
 		return res
 	}
+	$scope.occIsOn = function (occ) {
+		return $scope.state(occ)=='on'
+	}
 	function concertsToOcc() {
 		var res = []
 		$scope.concertList.forEach(function(concert) {
