@@ -90,7 +90,7 @@ app.controller('tourCtrl', function($scope, $http) {
 	$scope.occList = []
 	$scope.loadData = function() {
 		$http.get('https://potential-bassoon.firebaseio.com/concerts.json').then(function(response) {
-			//$scope.concertList = response.data
+			$scope.concertList = response.data
 		})
 	}
 	$scope.state = function(occ) {
