@@ -680,7 +680,10 @@ function Repertory() {
 
     return <Container>
         Répertoire
-        <Form>
+        <Form onSubmit={e => {
+            e.preventDefault()
+            console.log(repertory)
+        }}>
             {[...titles].map(title => <Card key={title} body>
             {title ? <Form.Label>{title}</Form.Label> : <Form.Control type="text" placeholder="Titre de section" value={title} onChange={e => {
                 const repCopy = [...repertory]
@@ -696,8 +699,8 @@ function Repertory() {
                 {[...new Set(repertory.filter(rep => rep.title === title).map(e => e.subtitle))].map(subtitle => <Card key={`${title}_${subtitle}`} body>
                     {(subtitle || (repertory.filter(rep => rep.title === title).map(e => e.subtitle)).filter(subtitle => subtitle !== undefined).length < 1) ? <Form.Label>{subtitle}</Form.Label> : <Form.Control type="text" placeholder="Titre de sous-section" value={subtitle ? subtitle : ''}/>}
                     <ListGroup>
-                        {repertory.filter(rep => rep.title === title && rep.subtitle === subtitle).map(rep => <ListGroup.Item key={rep._id}>
-                            <Form.Control type="text" placeholder="Élément de répertoire" value={rep.content} onChange={e => {
+                        {repertory.filter(rep => rep.title === title && rep.subtitle === subtitle).map(rep => <ListGroup.Item variant={rep.deleted ? 'danger' : undefined} key={rep._id}>
+                            <Form.Control type="text" placeholder="Élément de répertoire" disabled={rep.deleted} value={rep.content} onChange={e => {
                                 const repCopy = [...repertory]
                                 const index = repertory.findIndex(_rep => _rep._id === rep._id)
                                 repCopy[index] = {
@@ -705,7 +708,15 @@ function Repertory() {
                                     content: e.target.value
                                 }
                                 setRepertory(repCopy)
-                            }}/>
+                            }}/>{!rep.deleted && <Button variant="danger" onClick={e => {
+                                const repCopy = [...repertory]
+                                const index = repertory.findIndex(_rep => _rep._id === rep._id)
+                                repCopy[index] = {
+                                    ...rep,
+                                    deleted: true
+                                }
+                                setRepertory(repCopy)
+                            }}>Supprimer</Button>}
                         </ListGroup.Item>)}
                     </ListGroup>
                     <Button className="mt-2" variant="outline-success" onClick={e => {
