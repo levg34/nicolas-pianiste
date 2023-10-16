@@ -164,3 +164,13 @@ app.controller('videosCtrl', function($scope,$http) {
 	}
 	$scope.loadData()
 })
+
+app.controller('repertoryCtrl', function($scope,$http) {
+	$scope.repertory = []
+	$scope.loadData = function() {
+		$http.get('/repertory').then(response => {		
+			$scope.repertory = response.data
+		}).catch(err => console.error(err))
+	}
+	$scope.loadData()
+})
