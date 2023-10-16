@@ -455,7 +455,7 @@ function Studies(props) {
                     award: '',
                     index: Object.keys(awards).length
                 }
-            })}>Ajouter un récompense</Button>}
+            })}>Ajouter une récompense</Button>}
             <hr/>
             <Button variant="primary" type="submit">
                 Valider
