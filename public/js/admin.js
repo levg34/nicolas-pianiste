@@ -663,9 +663,10 @@ function Repertory() {
     </Container>
 }
 
-function Videos() {
+function Videos(props) {
+    const feedback = props.feedback
     const [data, setData] = useState({
-        url: 'https://vimeo.com/181230350',
+        url: '',
         title: '',
         subtitle: '',
         img: '',
@@ -699,6 +700,7 @@ function Videos() {
         } else if (parsed.hostname === 'www.youtube.com') {
             fetch(`https://www.youtube.com/oembed?url=${data.url}`).then(res => res.json()).then(res => res.thumbnail_url ? setData({
                 ...data,
+                title:(!data.title && res.title) ? res.title : data.title,
                 img: res.thumbnail_url
             }) : setNotFound(true)).catch(err => {
                 console.error(err)
@@ -707,6 +709,7 @@ function Videos() {
         } else {
             fetch(`https://noembed.com/embed?url=${data.url}`).then(res => res.json()).then(res => res.thumbnail_url ? setData({
                 ...data,
+                title:(!data.title && res.title) ? res.title : data.title,
                 img: res.thumbnail_url
             }) : setNotFound(true)).catch(err => {
                 console.error(err)
