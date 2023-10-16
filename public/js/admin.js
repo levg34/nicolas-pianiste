@@ -47,6 +47,42 @@ function Header(props) {
     </Navbar>
 }
 
+class FeedbackManager {
+    constructor(setAlert,setAlertVariant) {
+        this.setAlert = setAlert
+        this.setAlertVariant = setAlertVariant
+    }
+
+    treatError(err) {
+        console.error(err)
+        if (err.response) {
+            this.setAlert(err.response.data ? err.response.data : err.response)
+            if (err.response.data && (err.response.data.data === 'Login required' || (err.response.data.data && (err.response.data.data.name === 'TokenExpiredError' || err.response.data.data.name === 'JsonWebTokenError')))) {
+                sessionStorage.clear()
+                setTimeout(() => window.location = '/admin',2500)
+            }
+        } else if (err.request) {
+            this.setAlert(err.request)
+        } else {
+            this.setAlert(err.message)
+        }
+        this.setAlertVariant('danger')
+    }
+
+    treatSuccess(success) {
+        this.setAlert(success)
+        this.setAlertVariant('success')
+        setTimeout(() => this.setAlert(null),1500)
+    }
+}
+
+function AlertFeedback(props) {
+    const {alert,alertVariant} = props.alert
+    return <div>{alert && <Alert variant={alertVariant}>
+        {alert instanceof Object ? <pre>{JSON.stringify(alert, null, 2) }</pre> : alert}
+    </Alert>}</div>
+}
+
 function MessageInfo(props) {
     const {name,email,ip,read} = props.message
 
@@ -101,27 +137,7 @@ function Messages() {
     const [alert, setAlert] = useState()
     const [alertVariant, setAlertVariant] = useState()
 
-    const treatError = err => {
-        console.error(err)
-        if (err.response) {
-            setAlert(err.response.data ? err.response.data : err.response)
-            if (err.response.data && (err.response.data.data === 'Login required' || (err.response.data.data && (err.response.data.data.name === 'TokenExpiredError' || err.response.data.data.name === 'JsonWebTokenError')))) {
-                sessionStorage.clear()
-                setTimeout(() => window.location = '/admin',2500)
-            }
-        } else if (err.request) {
-            setAlert(err.request)
-        } else {
-            setAlert(err.message)
-        }
-        setAlertVariant('danger')
-    }
-
-    const treatSuccess = success => {
-        setAlert(success)
-        setAlertVariant('success')
-        setTimeout(() => setAlert(null),1500)
-    }
+    const feedback = new FeedbackManager(setAlert,setAlertVariant)
 
     const getMessages = (showFeedback) => {
         setAlert(null)
@@ -131,12 +147,12 @@ function Messages() {
             if (response.data) {
                 setMessages(response.data)
                 if (showFeedback) {
-                    treatSuccess('Messages récupérés.')
+                    feedback.treatSuccess('Messages récupérés.')
                 }
             }
         })
         .catch(function (error) {
-            treatError(error)
+            feedback.treatError(error)
         })
         .then(function () {
         })
@@ -152,7 +168,7 @@ function Messages() {
             }
         })
         .catch(function (error) {
-            treatError(error)
+            feedback.treatError(error)
         })
     }
 
@@ -168,7 +184,7 @@ function Messages() {
             }
         })
         .catch(function (error) {
-            treatError(error)
+            feedback.treatError(error)
         })
     }
 
@@ -183,14 +199,12 @@ function Messages() {
             }
         })
         .catch(function (error) {
-            treatError(error)
+            feedback.treatError(error)
         })
     }
 
     return <Container>
-        {alert && <Alert variant={alertVariant}>
-            {alert instanceof Object ? <pre>{JSON.stringify(alert, null, 2) }</pre> : alert}
-        </Alert>}
+        <AlertFeedback alert={{alert,alertVariant}}/>
         <ButtonGroup aria-label="Basic example">
             <Button variant="primary" onClick={getMessages.bind(null,true)}>Rafraîchir</Button>
             {(selectedMessage && selectedMessage.read) && <Button variant="info" onClick={unreadMessage}>Non lu</Button>}
@@ -228,6 +242,8 @@ function Bio() {
     })
 
     const [paragraphs,setParagraphs] = useState({})
+
+    const feedback = new FeedbackManager(setAlert,setAlertVariant)
 
     const getBioData = () => {
         axios.get('/biographie').then(res => {
