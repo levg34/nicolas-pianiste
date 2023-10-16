@@ -460,7 +460,15 @@ function Concerts(props) {
         <ListGroup>
             {concerts.map(concert => <ListGroup.Item active={selectedConcert && concert._id === selectedConcert._id} key={concert._id} onClick={() => clickConcert(concert)} action>{concert.name}</ListGroup.Item>)}
         </ListGroup>
-        <Button variant="outline-success" className="mt-2">Ajouter un concert</Button>
+        {concerts.filter(c => c._id === 'new').length === 0 && <Button variant="outline-success" className="mt-2" onClick={e => {
+            const newConcert = {
+                type: 'Solo',
+                name: '',
+                _id: 'new'
+            }
+            setConcerts([...concerts,newConcert])
+            setSelectedConcert(newConcert)
+        }}>Ajouter un concert</Button>}
         <hr ref={concertInfoRef}/>
         {selectedConcert ? <ConcertEdit concert={selectedConcert} feedback={feedback} setConcert={setSelectedConcert}/>  : <p>Sélectionner un concert</p>}
     </Container>
@@ -516,8 +524,8 @@ function ConcertInfo(props) {
                 })}/>
             </Form.Group>
             <Form.Group>
-                <Form.Label>Image :</Form.Label>{' '}
-                {concert.img ? <Image onClick={selectImage} src={concert.img} thumbnail style={{maxHeight:'100px'}} alt="Image introuvable"/> : <Button variant="outline-secondary">Ajouter une image</Button>}
+                <Form.Label>Image :</Form.Label><br/>
+                {concert.img ? <Image onClick={selectImage} src={concert.img} thumbnail style={{maxHeight:'200px'}} alt="Image introuvable"/> : <Button onClick={selectImage} variant="outline-secondary">Ajouter une image</Button>}
             </Form.Group>
             <Form.Group>
                 <Form.Label>Informations supplémentaires (facultatif) :</Form.Label>
@@ -627,7 +635,7 @@ function ConcertEdit(props) {
         <Tab eventKey="edit-concert" title="Éditer le concert">
             <ConcertInfo concert={concert} feedback={feedback} setConcert={setConcert}/>
         </Tab>
-        <Tab eventKey="edit-occs" title="Éditer les occurences du concert" disabled={!concert._id}>
+        <Tab eventKey="edit-occs" title="Éditer les occurences du concert" disabled={!concert._id || concert._id === 'new'}>
             <ConcertOccurences concert={concert} feedback={feedback}/>
         </Tab>
     </Tabs>
