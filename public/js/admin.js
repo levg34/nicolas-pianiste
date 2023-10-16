@@ -417,6 +417,15 @@ function Bio(props) {
         }).catch(err => feedback.treatError(err))
     }
 
+    const deleteParagraph = p => {
+        feedback.clear()
+        axios.delete('/admin/biographie/'+p._id).then(res => {
+            console.log(res)
+            feedback.treatSuccess('Modifications effectuées !')
+            getBioData()
+        }).catch(err => feedback.treatError(err))
+    }
+
     useEffect(() => {
         getBioData()
     },[])
@@ -427,7 +436,11 @@ function Bio(props) {
             setBioData(title)
         }
         Object.values(paragraphs).filter(p => p.modified).forEach(p => {
-            setBioData(p)
+            if (!p.paragraph && p._id !== 'new') {
+                deleteParagraph(p)
+            } else {
+                setBioData(p)
+            }
         })
     }
     
@@ -451,7 +464,7 @@ function Bio(props) {
             </Form.Group>
             <hr/>
         {Object.values(paragraphs).map(p => 
-            <Form.Group key={p._id}>
+            <Form.Group key={p._id} className={(!p.paragraph && p._id !== 'new') ? 'bg-secondary' : undefined}>
                 <Form.Label>{`Paragraphe n°${p.index}`}</Form.Label>
                 <Form.Control as="textarea" rows={3} value={p.paragraph} onChange={e => setParagraphs({
                     ...paragraphs,
@@ -468,7 +481,7 @@ function Bio(props) {
                 new: {
                     _id: 'new',
                     paragraph: '',
-                    index: Object.keys(paragraphs).length
+                    index: Math.max(...Object.values(paragraphs).map(p => p.index))+1
                 }
             })}>Ajouter un paragraphe</Button>}
             <hr/>

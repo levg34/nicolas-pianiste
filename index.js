@@ -441,6 +441,15 @@ app.delete('/admin/link/:id', (req, res) => {
     })
 })
 
+app.delete('/admin/biographie/:id', (req, res) => {
+    const id = req.params.id
+
+    db.biographie.remove({ _id: id }, {}, function (err, numRemoved) {
+        if (err) res.status(500).json({err})
+        res.json({removed:numRemoved})
+    })
+})
+
 app.get('/admin/tokenvalid', (req, res) => {
     const user = {...req.user}
     const {exp} = user
