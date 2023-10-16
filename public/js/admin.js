@@ -280,14 +280,23 @@ function Carousel(props) {
 
     const submitForm = e => {
         e.preventDefault()
-        Object.values(data).filter(el => el.modified).forEach(el => {
+        Object.values(data).filter(el => el.modified && !el.deleted).forEach(el => {
             feedback.clear()
             delete el.modified
+            delete el.deleted
             const carousel = {...el}
             if (el._id.startsWith('new')) {
                 delete carousel._id
             }
             axios.post('/admin/carousel',carousel).then(res => {
+                console.log(res)
+                feedback.treatSuccess('Modifications effectuées !')
+                getData()
+            }).catch(err => feedback.treatError(err))
+        })
+        Object.values(data).filter(el => el.deleted).forEach(el => {
+            feedback.clear()
+            axios.delete('/admin/carousel/'+el._id).then(res => {
                 console.log(res)
                 feedback.treatSuccess('Modifications effectuées !')
                 getData()
@@ -322,6 +331,23 @@ function Carousel(props) {
                                 }
                             })
                         }} disabled={carouselElement.title === undefined}/>
+                        {(carouselElement.title && !(carouselElement._id && carouselElement._id.startsWith('new'))) ? !carouselElement.deleted ? <Button className="mt-2" variant="danger" onClick={e => {
+                            setData({
+                                ...data,
+                                [carouselElement._id]: {
+                                    ...carouselElement,
+                                    deleted: true
+                                }
+                            })
+                        }}>Supprimer</Button> : <Alert className="mt-2" variant="warning"><strong>Attention !</strong> cet élément sera supprimé après validation. <Alert.Link onClick={e => {
+                            setData({
+                                ...data,
+                                [carouselElement._id]: {
+                                    ...carouselElement,
+                                    deleted: false
+                                }
+                            })
+                        }}>Annuler</Alert.Link> ?</Alert> : ''}
                     </Col>
                     <Col>
                         <Form.Control as="textarea" rows={3} placeholder={carouselElement.description !== undefined ? 'Description' : ''} value={carouselElement.description} onChange={e => {
