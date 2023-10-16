@@ -4,7 +4,8 @@ const port = 3000
 
 const Datastore = require('nedb')
 const db = {}
-db.messages = new Datastore({ filename: 'data/datafile', autoload: true })
+db.messages = new Datastore({ filename: 'data/messages', autoload: true })
+db.users = new Datastore({ filename: 'data/users', autoload: true })
 
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
@@ -21,14 +22,41 @@ const RESET_TIME = 60*1000
 app.use(function(req, res, next) {
     const ip = req.ip
     const path = req.path
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
-    if (canRequest(ip,path,token)) {
+    if (path.startsWith('/admin/')) {
+        const authHeader = req.headers['authorization']
+        const token = authHeader && authHeader.split(' ')[1]
+        if (!token) {
+            res.status(401).json({
+                error: 'Access denied',
+                data: 'Login required'
+            })
+            return
+        }
+        console.log(token)
+        jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
+            if (err) {
+                res.status(403).json({
+                    error: 'Access denied',
+                    data: err
+                })
+                return
+            }
+            if (!user || !user.admin) {
+                res.status(403).json({
+                    error: 'Access denied',
+                    data: 'Not admin'
+                })
+                return
+            }
+            req.user = user
+            next()
+        })
+    } else if (canRequest(ip,path)) {
         next()
     } else {
         res.status(401).json({
             error: 'Access denied',
-            data: 'Login required'
+            data: 'Too many requests'
         })
     }
 })
@@ -52,14 +80,22 @@ app.post('/message', (req, res) => {
 })
 
 app.post('/login', (req,res) => {
-    const userData = {
-        username: 'nicolas',
-        admin: 'true'
-    }
+    const {username} = req.body
 
-    userData.token = generateAccessToken(userData)
-
-    res.json(userData)
+    db.users.findOne({username},{_id:0},(err,doc) => {
+        if (err) {
+            res.status(500).json({err})
+        } else if (doc) {
+            const userData = doc
+            userData.token = generateAccessToken(userData)
+            res.json(userData)
+        } else {
+            res.status(403).json({
+                error: 'Access denied',
+                data: 'Login failed'
+            })
+        }
+    })
 })
 
 app.get('/admin', (req, res) => {
@@ -100,16 +136,8 @@ app.post('/admin/message/delete/:id', (req, res) => {
     })
 })
 
-function canRequest(ip, path, token) {
-    if (path.startsWith('/admin')) {
-        if (token == null) return false
-        jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
-            console.log(err)
-            // if (err) return res.sendStatus(403)
-            // req.user = user
-            console.log(user)
-        })
-    } else if (path != '/message' && (!knownIps[ip] || !knownIps[ip].blocked)) {
+function canRequest(ip, path) {
+    if (path != '/message' && path != '/login' && (!knownIps[ip] || !knownIps[ip].blocked)) {
         return true
     } else if (!knownIps[ip]) {
         knownIps[ip] = {
