@@ -190,6 +190,15 @@ function ImageModal(props) {
     const url = image.destination+image.filename
     const urlControl = useRef()
 
+    const deleteImage = image => {
+        console.log(image)
+        axios.delete('/admin/image/'+image._id).then(res => {
+            console.log(res)
+            setShow(false)
+            feedback.treatSuccess('Image supprimée.')
+        }).catch(err => feedback.treatError(err))
+    }
+
     return <Modal size="lg" show={show} onHide={() => setShow(false)}>
         <Modal.Header closeButton>
             <Modal.Title>
@@ -202,6 +211,7 @@ function ImageModal(props) {
                 <Card.Body>
                     {image.banner && <Alert variant="info">Peut être utilisée dans le slider photo</Alert>}
                     {image.concerts && <Alert variant="info">Peut être utilisée pour illustrer un concert</Alert>}
+                    <div style={{overflow: 'scroll'}}>
                     <Table striped bordered hover>
                         <tbody>
                             {Object.entries(image).map(e => <tr key={e[0]}>
@@ -214,12 +224,16 @@ function ImageModal(props) {
                             </tr>
                         </tbody>
                     </Table>
+                    </div>
+                    <div className="float-right">
+                    <Button variant="danger" onClick={() => deleteImage(image)}>Supprimer</Button>{' '}
                     <Button variant="primary" onClick={e => {
                         urlControl.current.select()
                         document.execCommand('copy')
                         feedback.treatSuccess('URL de l\'image copiée dans le presse-papier')
                         setShow(false)
                     }}>Utiliser</Button>
+                    </div>
                 </Card.Body>
             </Card>
         </Modal.Body>
