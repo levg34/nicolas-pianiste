@@ -21,5 +21,5 @@ $(document).ready(function(){
 		} // End if 
 	});
 	$('[data-toggle="popover"]').popover()
-	setTimeout(() => $('[data-toggle="popover"]').popover(),1500)
+	setTimeout(() => $('[data-toggle="popover"]').popover(),5000)
 })
