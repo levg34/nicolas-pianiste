@@ -63,7 +63,7 @@ class FeedbackManager {
             text = err.response.data ? err.response.data : err.response
             if (err.response.data && (err.response.data.data === 'Login required' || (err.response.data.data && (err.response.data.data.name === 'TokenExpiredError' || err.response.data.data.name === 'JsonWebTokenError')))) {
                 sessionStorage.clear()
-                setTimeout(() => window.location = '/admin',2500)
+                setTimeout(() => window.location.reload(),2500)
             }
         } else if (err.request) {
             text = err.request
@@ -731,7 +731,7 @@ function Login() {
         axios.post('/login',{username,password}).then(response => {
             if (response.data && response.data.token) {
                 sessionStorage.setItem('token',response.data.token)
-                window.location = '/admin'
+                window.location.reload()
             } else {
                 console.error(response)
             }
