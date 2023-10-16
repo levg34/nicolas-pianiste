@@ -11,6 +11,8 @@ const dotenv = require('dotenv')
 dotenv.config()
 const port = process.env.APP_PORT || 3000
 
+const mailgun = require("mailgun-js");
+
 function generateAccessToken(userData) {
     return jwt.sign(userData, process.env.TOKEN_SECRET, { expiresIn: '30m' });
 }
@@ -74,6 +76,7 @@ app.post('/message', (req, res) => {
     message.date = new Date().toISOString()
     db.messages.insert(message, function (err, newDoc) {
         if (err) res.status(500).json(err)
+        sendEmail(newDoc)
         res.json(newDoc)
     })
 })
@@ -168,3 +171,23 @@ function canRequest(ip, path) {
 app.listen(port, () => {
     console.log(`Nicolapp listening at http://localhost:${port}`)
 })
+
+function sendEmail(emailInfo) {
+    try {
+        const mg = mailgun({apiKey: process.env.MAIL_API_KEY, domain: process.env.MAIL_DOMAIN});
+
+        const data = {
+            from: process.env.MAIL_SENDER,
+            to: process.env.ADMIN_EMAIL,
+            subject: `Nouveau message de ${emailInfo.name} <${emailInfo.email}>`,
+            text: emailInfo.message
+        }
+
+        mg.messages().send(data, function (error, body) {
+            console.error(error)
+            console.log(body)
+        })
+    } catch (error) {
+        console.error(error)
+    }
+}
