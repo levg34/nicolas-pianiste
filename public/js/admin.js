@@ -229,18 +229,35 @@ function Bio() {
 
     const [paragraphs,setParagraphs] = useState({})
 
-    useEffect(() => {
+    const getBioData = () => {
         axios.get('/biographie').then(res => {
             setTitle(res.data.find(o => o.title))
             setParagraphs(res.data.filter(o => o.paragraph).reduce((acc, cur) => {
                 return {...acc, [cur._id]: cur}
             },{}))
         }).catch(err => console.error(err))
+    }
+
+    const setBioData = (biobject) => {
+        delete biobject.modified
+        axios.post('/admin/biographie',biobject).then(res => {
+            console.log(res)
+            getBioData()
+        }).catch(err => console.error(err))
+    }
+
+    useEffect(() => {
+        getBioData()
     },[])
 
     const submitForm = e => {
         e.preventDefault()
-        console.log(e)
+        if (title.modified) {
+            setBioData(title)
+        }
+        Object.values(paragraphs).filter(p => p.modified).forEach(p => {
+            setBioData(p)
+        })
     }
     
     return <Container>
@@ -249,6 +266,7 @@ function Bio() {
                 <Form.Label>Titre de la section</Form.Label>
                 <Form.Control type="text" placeholder="Biographie" value={title.title} onChange={e => setTitle({
                     ...title,
+                    modified: true,
                     title: e.target.value
                 })}/>
             </Form.Group>
@@ -256,6 +274,7 @@ function Bio() {
                 <Form.Label>Sous-titre</Form.Label>
                 <Form.Control type="text" placeholder="..." value={title.subtitle} onChange={e => setTitle({
                     ...title,
+                    modified: true,
                     subtitle: e.target.value
                 })}/>
             </Form.Group>
@@ -267,6 +286,7 @@ function Bio() {
                     ...paragraphs,
                     [p._id]: {
                         ...p,
+                        modified: true,
                         paragraph: e.target.value
                     }
                 })}/>
