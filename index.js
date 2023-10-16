@@ -385,6 +385,13 @@ app.post('/admin/video', (req, res) => {
     }
 })
 
+app.get('/admin/tokenvalid', (req, res) => {
+    const user = {...req.user}
+    const {exp} = user
+    user.expMin = (exp - (new Date()).getTime()/1000)/60
+    res.json(user)
+})
+
 function canRequest(ip, path) {
     if (path != '/message' && path != '/login' && (!knownIps[ip] || !knownIps[ip].blocked)) {
         return true
