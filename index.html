@@ -43,6 +43,55 @@
 }
 .bg-1 h3 {color: #fff;}
 .bg-1 p {font-style: italic;}
+/* Remove rounded borders from list */
+.list-group-item:first-child {
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+}
+
+.list-group-item:last-child {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* Remove border and add padding to thumbnails */
+.thumbnail {
+    padding: 0 0 15px 0;
+    border: none;
+    border-radius: 0;
+}
+
+.thumbnail p {
+    margin-top: 15px;
+    color: #555;
+}
+
+/* Black buttons with extra padding and without rounded borders */
+.btn {
+    padding: 10px 20px;
+    background-color: #333;
+    color: #f1f1f1;
+    border-radius: 0;
+    transition: .2s;
+}
+
+/* On hover, the color of .btn will transition to white with black text */
+.btn:hover, .btn:focus {
+    border: 1px solid #333;
+    background-color: #fff;
+    color: #000;
+}
+/* Add a dark gray background color to the modal header and center text */
+.modal-header, h4, .close {
+    background-color: #333;
+    color: #fff !important;
+    text-align: center;
+    font-size: 30px;
+}
+
+.modal-header, .modal-body {
+    padding: 40px 50px;
+}
   </style>
 </head>
 <body>
@@ -109,6 +158,80 @@
     <div class="col-sm-4">
       <p><strong>Nicolas 3</strong></p><br>
       <img src="img/nicolas3.png" class="img-circle person" alt="Random Name">
+    </div>
+  </div>
+</div>
+
+<div class="bg-1">
+  <div class="container">
+    <h3 class="text-center">DATES DES CONCERTS</h3>
+    <p class="text-center">Lorem ipsum il va jouer de la musique.<br> Achetez vos tickets!</p>
+
+    <ul class="list-group">
+      <li class="list-group-item">Septembre <span class="label label-danger">Complet!</span></li>
+      <li class="list-group-item">Octobre <span class="label label-danger">Complet!</span></li> 
+      <li class="list-group-item">Novembre <span class="badge">3</span></li> 
+    </ul>
+    <div class="row text-center">
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="img/paris.jpg" alt="Paris">
+          <p><strong>Paris</strong></p>
+          <p>Ven. 27 novembre 2018</p>
+          <button class="btn" data-toggle="modal" data-target="#myModal">Réserver</button>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="img/newyork.jpg" alt="New York">
+          <p><strong>New York</strong></p>
+          <p>Sam. 28 novembre 2018</p>
+          <button class="btn" data-toggle="modal" data-target="#myModal">Réserver</button>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="thumbnail">
+          <img src="img/sanfran.jpg" alt="San Francisco">
+          <p><strong>San Francisco</strong></p>
+          <p>Dim. 29 novembre 2018</p>
+          <button class="btn" data-toggle="modal" data-target="#myModal">Réserver</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4><span class="glyphicon glyphicon-lock"></span> Tickets</h4>
+      </div>
+      <div class="modal-body">
+        <form role="form">
+          <div class="form-group">
+            <label for="psw"><span class="glyphicon glyphicon-shopping-cart"></span> Tickets : 23€ par personne</label>
+            <input type="number" class="form-control" id="psw" placeholder="How many?">
+          </div>
+          <div class="form-group">
+            <label for="usrname"><span class="glyphicon glyphicon-user"></span> Envoyer à</label>
+            <input type="text" class="form-control" id="usrname" placeholder="Enter email">
+          </div>
+          <button type="submit" class="btn btn-block">Payer 
+            <span class="glyphicon glyphicon-ok"></span>
+          </button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal">
+          <span class="glyphicon glyphicon-remove"></span> Annuler
+        </button>
+        <p>Besoin d'<a href="#">aide ?</a></p>
+      </div>
     </div>
   </div>
 </div>
