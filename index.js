@@ -13,6 +13,9 @@ const port = process.env.APP_PORT || 3000
 
 const mailgun = require("mailgun-js");
 
+const bcrypt = require('bcrypt');
+const saltRounds = 13;
+
 function generateAccessToken(userData) {
     return jwt.sign(userData, process.env.TOKEN_SECRET, { expiresIn: '30m' });
 }
@@ -82,15 +85,47 @@ app.post('/message', (req, res) => {
 })
 
 app.post('/login', (req,res) => {
-    const {username} = req.body
+    const {username,password} = req.body
 
-    db.users.findOne({username},{_id:0},(err,doc) => {
+    if (!username || !password) {
+        res.status(400).json({
+            error: 'Malformed request',
+            data: 'Need username and password.'
+        })
+        return
+    }
+
+    db.users.findOne({username},{_id:1},(err,doc) => {
         if (err) {
             res.status(500).json({err})
         } else if (doc) {
             const userData = doc
-            userData.token = generateAccessToken(userData)
-            res.json(userData)
+
+            if (!userData.password) {
+                bcrypt.hash(password, saltRounds, function(err, hash) {
+                    if (err) console.error(err)
+                    db.users.update({ _id: userData._id }, { $set: { password: hash } }, {}, function(err) {
+                        if (err) console.error(err)
+                    })
+                })
+                userData.token = generateAccessToken(userData)
+                res.json(userData)
+            } else {
+                bcrypt.compare(password, userData.password, function(err, result) {
+                    if (err) {
+                        res.status(500).json({err})
+                    } else if (result) {
+                        userData.token = generateAccessToken(userData)
+                        delete userData.password
+                        res.json(userData)
+                    } else {
+                        res.status(403).json({
+                            error: 'Access denied',
+                            data: 'Login failed'
+                        })
+                    }
+                })
+            }
         } else {
             res.status(403).json({
                 error: 'Access denied',
