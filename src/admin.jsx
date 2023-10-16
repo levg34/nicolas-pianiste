@@ -78,8 +78,10 @@ Se reconnecter ?`
             }
         } else if (err.request) {
             text = err.request
-        } else {
+        } else if (err.message) {
             text = err.message
+        } else {
+            text = err
         }
         this.setAlert({
             jsx,
@@ -120,17 +122,7 @@ function AlertFeedback(props) {
 }
 
 function ImageList(props) {
-    const {feedback} = props
-    const [images, setImages] = useState([])
-
-    const loadImages = () => {
-        axios.get('/images').then(res => {
-            setImages(res.data)
-            setFilteredImages(res.data)
-        }).catch(err => feedback.treatError(err))
-    }
-
-    useEffect(loadImages,[])
+    const {feedback, images} = props
 
     const [showModal, setShowModal] = useState(false)
     const [viewingImage, setViewingImage] = useState({})
@@ -139,6 +131,15 @@ function ImageList(props) {
         setShowModal(true)
         setViewingImage(img)
     }
+
+    useEffect(() => {
+        setFilteredImages(images)
+        setFilter({
+            banner: false,
+            concerts: false,
+            uploads: false
+        })
+    },[images])
 
     const [filter,setFilter] = useState({
         banner: false,
@@ -163,21 +164,21 @@ function ImageList(props) {
                 ...filter,
                 banner: checked
             })
-        }}/>
+        }} checked={filter.banner}/>
         <Form.Check type="checkbox" label="Images pour les concerts" onChange={e => {
             const checked = e.target.checked
             setFilter({
                 ...filter,
                 concerts: checked
             })
-        }}/>
+        }} checked={filter.concerts}/>
         <Form.Check type="checkbox" label="Images uploadées via l'interface d'admin" onChange={e => {
             const checked = e.target.checked
             setFilter({
                 ...filter,
                 uploads: checked
             })
-        }}/>
+        }} checked={filter.uploads}/>
 
         {filteredImages.map(img => <Image style={{maxHeight:'150px'}} fluid key={img._id} src={img.destination+img.filename} thumbnail onClick={e => showPhotoModal(img)}/>)}
         <ImageModal show={showModal} setShow={setShowModal} image={viewingImage} feedback={feedback}/>
@@ -229,11 +230,22 @@ function Images(props) {
     const feedback = props.feedback
 
     const fileInput = useRef()
-    const [imgData, setImgData] = useState()
+
+    const [images,setImages] = useState([])
+
+    const loadImages = () => {
+        axios.get('/images').then(res => {
+            setImages(res.data)
+        }).catch(err => feedback.treatError(err))
+    }
+
+    useEffect(loadImages,[])
 
     const handleSubmit = e => {
         e.preventDefault()
         const selectedFile = fileInput.current.files[0]
+
+        if (!selectedFile) return feedback.treatError('Vous devez d\'abord sélectionner une image.')
 
         const formData = new FormData()
         
@@ -245,14 +257,14 @@ function Images(props) {
         
         axios.post('/admin/upload', formData).then(res => {
             feedback.treatSuccess(res.data)
-            setImgData(res.data)
+            fileInput.current.value = ''
+            loadImages()
         }).catch(err => feedback.treatError(err))
     }
 
     return <Container>
         Images
-        <ImageList feedback={feedback}/>
-        {imgData && <Image src={'/uploads/'+imgData.filename} thumbnail />}
+        <ImageList feedback={feedback} images={images}/>
         <Card body>
             <Form onSubmit={handleSubmit} encType="multipart/form-data">
                 <Form.Group>
