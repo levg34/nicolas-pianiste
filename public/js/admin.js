@@ -664,8 +664,44 @@ function Repertory() {
 }
 
 function Videos() {
+    const [url, setUrl] = useState('https://vimeo.com/181230350')
+    const [img, setImg] = useState('')
+
+    const getThumbnail = () => {
+        const parsed = new URL(url)
+        if (parsed.hostname === 'vimeo.com') {
+            const id_vimeo = parsed.pathname
+            fetch(`https://vimeo.com/api/v2/video${id_vimeo}.json`).then(res => res.json()).then(res => setImg(res[0].thumbnail_large)).catch(err => {
+                console.error(err)
+                setImg('Non trouvé.')
+            })
+        } else if (parsed.hostname === 'www.youtube.com') {
+            fetch(`https://www.youtube.com/oembed?url=${url}`).then(res => res.json()).then(res => res.thumbnail_url ? setImg(res.thumbnail_url) : setImg('Non trouvé.')).catch(err => {
+                console.error(err)
+            })
+        } else {
+            fetch(`https://noembed.com/embed?url=${url}`).then(res => res.json()).then(res => res.thumbnail_url ? setImg(res.thumbnail_url) : setImg('Non trouvé.')).catch(err => {
+                console.error(err)
+            })
+        }
+    }
+
     return <Container>
         Vidéos...
+        <Form>
+            <Form.Group>
+                <Form.Label>Url</Form.Label>
+                <Form.Control type="text" onChange={e => setUrl(e.target.value)} value={url}/>
+            </Form.Group>
+            <Form.Group>
+                <Row>
+                    <Col><Form.Label>Image</Form.Label></Col>
+                    {!img && <Col><Button onClick={() => getThumbnail()} disabled={!url}>Chercher l'image</Button></Col>}
+                    <Col><Image src={img} thumbnail fluid className="float-right"/></Col>
+                </Row>
+                <Form.Control type="text" onChange={e => setImg(e.target.value)} value={img}/>
+            </Form.Group>
+        </Form>
     </Container>
 }
 
