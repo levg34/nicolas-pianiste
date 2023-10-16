@@ -1717,7 +1717,7 @@ function Newsletter(props) {
     const [subscribers,setSubscribers] = useState([])
     const [newsletter,setNewsletter] = useState({
         to: '',
-        message: '<Corps du message...>\n\nPour vous désinscrire, cliquez ici ou allez sur https://nicolasdross.fr/unsubscribe.'
+        message: '### Titre\n\n(Corps du message... *italique* et **gras**)\n\n![Alt text](img/banner/old/IMG_8146.JPG =250x250)\n\nPour vous désinscrire, [cliquez ici](https://nicolasdross.fr/unsubscribe) ou allez sur https://nicolasdross.fr/unsubscribe.'
     })
 
     const {feedback} = props
@@ -1728,11 +1728,25 @@ function Newsletter(props) {
 
     useEffect(getSubscribers,[])
 
+    const converterOptions = {
+        simplifiedAutoLink: true,
+        noHeaderId: true,
+        parseImgDimensions: true,
+        excludeTrailingPunctuationFromURLs: true,
+        strikethrough: false,
+        simpleLineBreaks: true,
+        requireSpaceBeforeHeadingText: true,
+        encodeEmails: true
+    }
+
+    const converter = new showdown.Converter(converterOptions)
+
     return <Container>
         <h2>Newsletter</h2>
         <h3>Envoyer une newsletter</h3>
         <Form onSubmit={e => {
             e.preventDefault()
+            newsletter.html = converter.makeHtml(newsletter.message)
             axios.post('/admin/newsletter',newsletter).then(res => {
                 console.log(res.data)
                 newsletter.attention = `Ce message n'a pas vraiment été envoyé. Cela viendra bientôt !`
@@ -1755,10 +1769,17 @@ function Newsletter(props) {
                 </InputGroup>
             </Form.Group>
             <Form.Group>
+                <Form.Label>Message :</Form.Label>
                 <Form.Control as="textarea" rows={5} type="text" placeholder="Texte de la newsletter..." value={newsletter.message} onChange={e => setNewsletter({
                     ...newsletter,
                     message: e.target.value
                 })}/>
+            </Form.Group>
+            <Form.Group>
+                <Form.Label>Aperçu :</Form.Label>
+                <Card>
+                    <Card.Body dangerouslySetInnerHTML={{__html: converter.makeHtml(newsletter.message)}}></Card.Body>
+                </Card>
             </Form.Group>
             <Button variant="primary" type="submit" disabled={!newsletter.to || ! newsletter.message}>
                 Envoyer
