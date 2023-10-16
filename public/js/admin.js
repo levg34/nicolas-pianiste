@@ -95,16 +95,45 @@ function Messages() {
     const [messages,setMessages] = useState([])
     const [selectedMessage,selectMessage] = useState()
 
-    const getMessages = () => {
+    const [alert, setAlert] = useState()
+    const [alertVariant, setAlertVariant] = useState()
+
+    const treatError = err => {
+        console.error(err)
+        if (err.response) {
+            setAlert(err.response.data ? err.response.data : err.response)
+            if (err.response.data && (err.response.data.data === 'Login required' || (err.response.data.data && (err.response.data.data.name === 'TokenExpiredError' || err.response.data.data.name === 'JsonWebTokenError')))) {
+                sessionStorage.clear()
+                setTimeout(() => window.location = '/admin',2500)
+            }
+        } else if (err.request) {
+            setAlert(err.request)
+        } else {
+            setAlert(err.message)
+        }
+        setAlertVariant('danger')
+    }
+
+    const treatSuccess = success => {
+        setAlert(success)
+        setAlertVariant('success')
+        setTimeout(() => setAlert(null),1500)
+    }
+
+    const getMessages = (showFeedback) => {
+        setAlert(null)
         selectMessage(null)
         axios.get('/admin/messages')
         .then(function (response) {
             if (response.data) {
                 setMessages(response.data)
+                if (showFeedback) {
+                    treatSuccess('Messages récupérés.')
+                }
             }
         })
         .catch(function (error) {
-            console.log(error)
+            treatError(error)
         })
         .then(function () {
         })
@@ -116,12 +145,11 @@ function Messages() {
         axios.delete(`/admin/message/${messageId}`)
         .then(function (response) {
             if (response.data) {
-                console.log(response.data)
                 getMessages()
             }
         })
         .catch(function (error) {
-            console.log(error)
+            treatError(error)
         })
     }
 
@@ -137,7 +165,7 @@ function Messages() {
             }
         })
         .catch(function (error) {
-            console.log(error)
+            treatError(error)
         })
     }
 
@@ -152,13 +180,16 @@ function Messages() {
             }
         })
         .catch(function (error) {
-            console.log(error)
+            treatError(error)
         })
     }
 
     return <Container>
+        {alert && <Alert variant={alertVariant}>
+            {alert instanceof Object ? <pre>{JSON.stringify(alert, null, 2) }</pre> : alert}
+        </Alert>}
         <ButtonGroup aria-label="Basic example">
-            <Button variant="primary" onClick={getMessages}>Rafraîchir</Button>
+            <Button variant="primary" onClick={getMessages.bind(null,true)}>Rafraîchir</Button>
             {(selectedMessage && selectedMessage.read) && <Button variant="info" onClick={unreadMessage}>Non lu</Button>}
             {selectedMessage && <Button variant="danger" onClick={deleteMessage}>Supprimer</Button>}
         </ButtonGroup>
