@@ -36,7 +36,7 @@ app.get('/admin', (req, res) => {
 })
 
 app.get('/admin/messages', (req, res) => {
-    db.messages.find({}, function (err, docs) {
+    db.messages.find({}).sort({date: -1}).exec(function (err, docs) {
         if (err) res.status(500).json(err)
         res.json(docs)
     })
