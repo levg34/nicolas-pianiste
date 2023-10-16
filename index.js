@@ -5,6 +5,8 @@ app.use(helmet({
     contentSecurityPolicy: false
 }))
 
+const axios = require('axios')
+
 const multer  = require('multer')
 const upload = multer({ dest: 'uploads/' })
 const path = require('path')
@@ -201,6 +203,18 @@ app.post('/message', (req, res) => {
         if (err) res.status(500).json(err)
         sendEmail(newDoc)
         res.json(newDoc)
+        axios.get(`http://ip-api.com/json/${message.ip}`).then(response => {
+            if (response.data) {
+                const ipInfos = response.data
+                if (ipInfos && ipInfos.status !== 'fail') {
+                    db.messages.update({ _id: newDoc._id }, { $set: { ipInfos } }, {}, function () {
+                        if (err) console.error(err)
+                    })
+                }
+            }
+        }).catch(err => {
+            console.error(err)
+        })
     })
 })
 
@@ -644,7 +658,7 @@ function sendEmail(emailInfo) {
         })
     
         mg.messages().send(data, function (error, body) {
-            console.error(error)
+            if (error) console.error(error)
             console.log(body)
         })
     } catch (error) {

@@ -314,17 +314,7 @@ function Message(props) {
         const {message,ip,date,_id} = _message
         const formatedDate = formatDate(new Date(date))
 
-        const [ipInfos, setIpInfos] = useState()
-
-        useEffect(() => {
-            axios.get(`http://ip-api.com/json/${ip}`).then(response => {
-                if (response.data) {
-                    setIpInfos(response.data)
-                }
-            }).catch(err => {
-                console.error(err)
-            })
-        },[_message])
+        const ipInfos = _message.ipInfos
 
         resJSX = (
             <Card>
