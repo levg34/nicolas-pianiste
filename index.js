@@ -605,7 +605,8 @@ app.delete('/admin/newsletter/:id', (req, res) => {
 })
 
 app.delete('/admin/newsletter/byip/:ip', (req, res) => {
-    const ip = req.params.ip.slice(1)
+    const ip = req.params.ip
+    // const ip = req.params.ip.slice(1)
 
     db.newsletter.remove({ ip: ip }, { multi: true }, function (err, numRemoved) {
         if (err) res.status(500).json({err})
