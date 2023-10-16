@@ -4,6 +4,7 @@ const app = express()
 const multer  = require('multer')
 const upload = multer({ dest: 'uploads/' })
 const path = require('path')
+const sizeOf = require('image-size')
 
 const Datastore = require('nedb')
 const db = {}
@@ -175,7 +176,7 @@ app.get('/uploads/:filename', (req, res) => {
 
     const fileName = req.params.filename
     res.sendFile(fileName, options, function (err) {
-        console.log(err)
+        if (err) console.log(err)
     })
 })
 
@@ -488,11 +489,24 @@ app.get('/admin/tokenvalid', (req, res) => {
 
 app.post('/admin/upload', upload.single('image'), (req, res) => {
     const {username} = req.user
-    db.images.insert({...req.file,username}, function (err, newDoc) {
+
+    const uploadData = {
+        ...req.file,
+        username
+    }
+
+    sizeOf(uploadData.destination+uploadData.filename, function (err, dimensions) {
         if (err) res.status(500).json(err)
-        console.log(newDoc)
+
+        const {width, height} = dimensions
+        const ratio = width / height
+
+        db.images.insert({...uploadData, width, height, ratio}, function (err, newDoc) {
+            if (err) res.status(500).json(err)
+            res.json(newDoc)
+        })
     })
-    res.json(req.file)
+    
 })
 
 function canRequest(ip, path) {
