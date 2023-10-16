@@ -20,7 +20,9 @@ function formatDate(date) {
 }
 
 function Header(props) {
-    const {setActivePage} = props
+    const setActivePage = page => {
+        window.location.hash = page
+    }
 
     const disconnect = () => {
         sessionStorage.clear()
@@ -653,13 +655,30 @@ function Videos() {
 }
 
 function Content(props) {
-    const {page} = props
+    const startPage = () => window.location.hash ? window.location.hash.replace('#','') : 'messages'
+
+    if (!window.location.hash) {
+        window.location.hash = startPage()
+    }
+
+    const [activePage, setActivePage] = useState(startPage())
+
+    useEffect(() => {
+        window.addEventListener("hashchange", () => {
+            setActivePage(startPage())
+        }, false)
+        return () => {
+            window.removeEventListener("hashchange", () => {
+                setActivePage(startPage())
+            }, false)
+        }
+    },[])
 
     const [alert,setAlert] = useState()
     const feedback = new FeedbackManager(setAlert)
 
     let component = 'Chargement...'
-    switch (page) {
+    switch (activePage) {
         case 'messages':
             component = <Messages feedback={feedback}/>
             break
@@ -687,7 +706,7 @@ function Content(props) {
         default:
             component = <Container>
                 <Alert variant="danger">
-                    {`Component "${page}" not found.`}
+                    {`Component "${activePage}" not found.`}
                 </Alert>
             </Container>
             break
@@ -755,10 +774,10 @@ function App() {
     const token = sessionStorage.getItem('token')
     if (token) {
         axios.defaults.headers.common['Authorization'] = 'Bearer '+token
-        const [activePage, setActivePage] = useState('messages')
+
         return <div>
-            <Header setActivePage={setActivePage}/>
-            <Content page={activePage}/>
+            <Header/>
+            <Content/>
         </div>
     } else {
         return <Login/>
