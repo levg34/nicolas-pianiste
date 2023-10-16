@@ -698,7 +698,7 @@ function ConcertOccurences(props) {
             {occurrences.map((occ, index) => <div key={occ._id ? occ._id : 'key_'+index}>
                 <Form.Label>Occurrence n°{index+1}</Form.Label>
                 {fields.map(f => <Form.Group key={f.fieldname}>
-                    {f.type === 'checkbox' ? <Form.Check type={f.type} label={f.description} checked={occ[f.fieldname]} onChange={e => {
+                    {f.type === 'checkbox' ? <Form.Check type={f.type} label={f.description} checked={occ[f.fieldname] || false} onChange={e => {
                         const occs = [...occurrences]
                         occs[index] = {
                             ...occs[index],
@@ -708,7 +708,7 @@ function ConcertOccurences(props) {
                         setOccurrences(occs)
                     }}/> : <div>
                     <Form.Label>{f.description}</Form.Label>
-                    <Form.Control type={f.type ? f.type :'text'} value={occ[f.fieldname]} onChange={e => {
+                    <Form.Control type={f.type ? f.type :'text'} value={occ[f.fieldname] ? occ[f.fieldname] : ''} onChange={e => {
                         const occs = [...occurrences]
                         occs[index] = {
                             ...occs[index],
