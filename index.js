@@ -501,6 +501,14 @@ app.post('/admin/upload', upload.single('image'), (req, res) => {
         const {width, height} = dimensions
         const ratio = width / height
 
+        if (Math.abs(9/2-ratio)<0.01) {
+            uploadData.banner = true
+        }
+
+        if (Math.abs(4/3-ratio)<0.01) {
+            uploadData.concerts = true
+        }
+
         db.images.insert({...uploadData, width, height, ratio}, function (err, newDoc) {
             if (err) res.status(500).json(err)
             res.json(newDoc)
