@@ -216,6 +216,39 @@ app.delete('/admin/message/:id', (req, res) => {
     })
 })
 
+app.post('/admin/biographie', (req, res) => {
+    const bio = req.body
+
+    const updateBio = (index) => {
+        if (bio.title) {
+            db.biographie.update({ _id: bio._id }, bio, {}, function (err, numReplaced) {
+                if (err) res.status(500).json({err})
+                res.json({ok:numReplaced})
+            })
+        } else if (index || index === 0) {
+            db.biographie.update({ _id: bio._id }, { $set: { paragraph: bio.paragraph, index } }, {}, function (err, numReplaced) {
+                if (err) res.status(500).json({err})
+                res.json({ok:numReplaced})
+            })
+        } else {
+            db.biographie.update({ _id: bio._id }, { $set: { paragraph: bio.paragraph } }, {}, function (err, numReplaced) {
+                if (err) res.status(500).json({err})
+                res.json({ok:numReplaced})
+            })
+        }
+    }
+
+    if (bio.paragraph && !bio.index && bio.index !== 0) {
+        db.biographie.count({ paragraph: { $exists: true }}, function (err, count) {
+            if (err) res.status(500).json({err})
+            updateBio(count)
+        })
+    } else {
+        updateBio()
+    }
+    
+})
+
 function canRequest(ip, path) {
     if (path != '/message' && path != '/login' && (!knownIps[ip] || !knownIps[ip].blocked)) {
         return true
