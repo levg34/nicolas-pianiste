@@ -1,9 +1,0 @@
-#force la redirection en HTTPS
-RewriteEngine on
-
-RewriteCond %{SERVER_PORT} 80 [OR]
-RewriteCond %{HTTP_HOST} ^nicolasdross\.com$ [NC]
-RewriteRule ^(.*) https://www.nicolasdross.com/$1 [QSA,L,R=301]
-
-RewriteCond %{HTTP_HOST} ^nicolasdross\.fr$ [NC]
-RewriteRule ^(.*) https://www.nicolasdross.com/$1 [QSA,L,R=301]
