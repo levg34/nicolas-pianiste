@@ -565,23 +565,26 @@
     <div class="row test">
       <div class="col-md-4">
         <p>Fan ? Laisse un message.</p>
-        <div id="sendSuccess" class="alert alert-success">
+        <div id="sendSuccess" class="alert alert-success" ng-if="sendSuccess">
           <strong>Envoyé !</strong> Message envoyé avec succès.
+        </div>
+        <div id="sendError" class="alert alert-danger" ng-if="sendError">
+          <strong>Erreur !</strong> Le message n'a pas été envoyé.
         </div>
       </div>
       <div class="col-md-8">
         <div class="row">
           <div class="col-sm-6 form-group">
-            <input class="form-control" id="name" name="name" placeholder="Nom" type="text" required>
+            <input class="form-control" id="name" name="name" placeholder="Nom" type="text" ng-model="name" required>
           </div>
           <div class="col-sm-6 form-group">
-            <input class="form-control" id="email" name="email" placeholder="Email" type="email" required>
+            <input class="form-control" id="email" name="email" placeholder="Email" type="email" ng-model="email" required>
           </div>
         </div>
-        <textarea class="form-control" id="message" name="message" placeholder="Commentaire" rows="5"></textarea>
+        <textarea class="form-control" id="message" name="message" placeholder="Commentaire" ng-model="message" rows="5"></textarea>
         <div class="row">
           <div class="col-md-12 form-group">
-            <button disabled id="sendbtn" class="btn pull-right" type="submit">Envoyer</button>
+            <button disabled id="sendbtn" class="btn pull-right" ng-click="sendMessage()">Envoyer</button>
           </div>
         </div>
       </div>
