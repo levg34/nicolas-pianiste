@@ -595,6 +595,24 @@ app.delete('/admin/concert/:id', (req, res) => {
     })
 })
 
+app.delete('/admin/newsletter/:id', (req, res) => {
+    const id = req.params.id
+
+    db.newsletter.remove({ _id: id }, {}, function (err, numRemoved) {
+        if (err) res.status(500).json({err})
+        res.json({removed:numRemoved})
+    })
+})
+
+app.delete('/admin/newsletter/byip/:ip', (req, res) => {
+    const ip = req.params.ip.slice(1)
+
+    db.newsletter.remove({ ip: ip }, { multi: true }, function (err, numRemoved) {
+        if (err) res.status(500).json({err})
+        res.json({removed:numRemoved})
+    })
+})
+
 app.get('/admin/tokenvalid', (req, res) => {
     const user = {...req.user}
     const {exp} = user
@@ -632,8 +650,10 @@ app.post('/admin/upload', upload.single('image'), (req, res) => {
     
 })
 
+const limitedPaths = ['/message', '/login', '/newsletter']
+
 function canRequest(ip, path) {
-    if (path != '/message' && path != '/login' && path != '/newsletter' && (!knownIps[ip] || !knownIps[ip].blocked)) {
+    if (!limitedPaths.includes(path)  && (!knownIps[ip] || !knownIps[ip].blocked)) {
         return true
     } else if (!knownIps[ip]) {
         knownIps[ip] = {
