@@ -8,8 +8,13 @@
   },
   "scripts": {
     "test": "echo 1",
-    "dev": "nodemon index.js",
-    "start": "node index.js"
+    "dev-server": "nodemon index.js",
+    "babel-watch": "babel --watch src --out-dir public/js --presets react-app/prod",
+    "dev": "npm-run-all --parallel dev-server babel-watch",
+    "start-server": "node index.js",
+    "babel-build": "babel src --out-dir public/js --presets react-app/prod",
+    "babel-clean": "rimraf public/js/admin.js",
+    "start": "npm-run-all --sequential babel-clean babel-build start-server"
   },
   "repository": {
     "type": "git",
@@ -30,6 +35,10 @@
     "nedb": "^1.8.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "babel-cli": "^6.26.0",
+    "babel-preset-react-app": "^3.1.2",
+    "nodemon": "^2.0.7",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^3.0.2"
   }
 }
