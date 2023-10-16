@@ -22,30 +22,3 @@ $(document).ready(function(){
 	});
 	$('#sendSuccess').hide()
 })
-
-function submitEmail() {
-	$('#sendSuccess').hide()
-	var name = $('#name').val()
-	var email = $('#email').val()
-	var message = $('#message').val()
-	if (!name||!email||!message) {
-		alert('Veuillez remplir tous les champs du formulaire.')
-		return;
-	}
-	var button = $('#sendbtn')
-	button.attr('disabled','true')
-	button.html('<i class="glyphicon glyphicon-refresh gly-spin"></i> Envoi en cours...')
-	var data = {name:name,message:message,email:email}
-	$.post('https://script.google.com/macros/s/AKfycbxFiS1UV3D5TDnD2iu2AlnSa4_Qz9KegsjO0FVu/exec',data,function(data,status) {
-		if (data.result==='success') {
-			$('#name').val('')
-			$('#message').val('')
-			$('#email').val('')
-			$('#sendSuccess').show()
-		} else {
-			alert('Erreur lors de l\'envoi.')
-		}
-		button.text('Envoyer')
-		button.removeAttr('disabled')
-	})
-}
