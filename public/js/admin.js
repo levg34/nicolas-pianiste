@@ -792,17 +792,6 @@ function Videos(props) {
 
     const [videos,setVideos] = useState([])
 
-    const newVideo = {
-        url: '',
-        title: '',
-        subtitle: '',
-        img: '',
-        alt: '',
-        description: '',
-        index: videos.length+1,
-        list: []
-    }
-
     const getVideos = () => {
         axios.get('/videos').then(res => {
             setVideos(res.data)
@@ -811,6 +800,9 @@ function Videos(props) {
 
     const setVideo = (index,video) => {
         const modifsVideo = [...videos]
+        if (!video.alt && video.title) {
+            video.alt = video.title
+        }
         modifsVideo[index] = video
         setVideos(modifsVideo)
     }
@@ -822,7 +814,21 @@ function Videos(props) {
             e.preventDefault()
             console.log(videos)
         }}>
-            {videos.map((video, index) => <VideoFormGroup key={video._id} video={video} setVideo={setVideo.bind(null,index)}/>)}
+            {videos.map((video, index) => <VideoFormGroup key={video._id ? video._id : index} video={video} setVideo={setVideo.bind(null,index)}/>)}
+            <Button className="mt-2" variant="outline-info" onClick={e => {
+                const newVideo = {
+                    url: '',
+                    title: '',
+                    subtitle: '',
+                    img: '',
+                    alt: '',
+                    description: '',
+                    index: videos.length+1,
+                    list: []
+                }
+                setVideos([...videos,newVideo])
+            }}>Ajouter une vidéo</Button>
+            <hr/>
             <Button variant="primary" type="submit">
                 Valider
             </Button>
