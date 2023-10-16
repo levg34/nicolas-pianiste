@@ -44,8 +44,10 @@ app.get('/admin/messages', (req, res) => {
 
 app.post('/admin/message/read/:id', (req, res) => {
     const id = req.params.id
-    // db.messages.update({ _id: id }, { $set: { "data.read": true}})
-    res.json({read:id})
+    db.messages.update({ _id: id }, { $set: { read: true } }, {}, function(err) {
+        if (err) res.status(500).json(err)
+        res.json({read:id})
+    })
 })
 
 app.post('/admin/message/delete/:id', (req, res) => {
