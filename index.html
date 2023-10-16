@@ -426,11 +426,11 @@
   <div class="row test">
     <div class="col-md-4">
       <p>Fan ? Laisse un message.</p>
-      <p><span class="glyphicon glyphicon-map-marker"></span>Paris, France</p>
-      <p><span class="glyphicon glyphicon-phone"></span>Téléphone: +33 151515151</p>
-      <p><span class="glyphicon glyphicon-envelope"></span>Email: mail@mail.com</p> 
+      <div id="sendSuccess" class="alert alert-success">
+        <strong>Envoyé !</strong> Message envoyé avec succès.
+      </div>
     </div>
-    <form class="col-md-8" method="POST" action=" https://script.google.com/macros/s/AKfycbxFiS1UV3D5TDnD2iu2AlnSa4_Qz9KegsjO0FVu/exec">
+    <div class="col-md-8">
       <div class="row">
         <div class="col-sm-6 form-group">
           <input class="form-control" id="name" name="name" placeholder="Nom" type="text" required>
@@ -442,10 +442,10 @@
       <textarea class="form-control" id="message" name="message" placeholder="Commentaire" rows="5"></textarea>
       <div class="row">
         <div class="col-md-12 form-group">
-          <button class="btn pull-right" type="submit">Envoyer</button>
+          <button id="sendbtn" class="btn pull-right" type="submit" onclick="submitEmail()">Envoyer</button>
         </div>
       </div> 
-    </form>
+    </div>
   </div>
 </div>
 
