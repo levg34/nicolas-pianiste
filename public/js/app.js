@@ -154,3 +154,13 @@ app.controller('contactCtrl', function($scope, $http) {
 		}
 	}
 })
+
+app.controller('videosCtrl', function($scope,$http) {
+	$scope.videos = []
+	$scope.loadData = function() {
+		$http.get('/videos').then(response => {		
+			$scope.videos = response.data
+		}).catch(err => console.error(err))
+	}
+	$scope.loadData()
+})

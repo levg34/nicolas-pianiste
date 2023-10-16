@@ -38,6 +38,8 @@ function Header(props) {
                 <Nav.Link onClick={() => setActivePage('biographie')}>Biographie</Nav.Link>
                 <Nav.Link onClick={() => setActivePage('studies')}>Études</Nav.Link>
                 <Nav.Link onClick={() => setActivePage('concerts')}>Concerts</Nav.Link>
+                <Nav.Link onClick={() => setActivePage('repertory')}>Répertoire</Nav.Link>
+                <Nav.Link onClick={() => setActivePage('videos')}>Vidéos</Nav.Link>
                 <Nav.Link onClick={() => setActivePage('links')}>Liens</Nav.Link>
             </Nav>
             <Nav className="ml-auto">
@@ -549,6 +551,18 @@ function Studies(props) {
     </Container>
 }
 
+function Repertory() {
+    return <Container>
+        Répertoire...
+    </Container>
+}
+
+function Videos() {
+    return <Container>
+        Vidéos...
+    </Container>
+}
+
 function Content(props) {
     const {page} = props
 
@@ -574,6 +588,12 @@ function Content(props) {
             break
         case 'studies':
             component = <Studies feedback={feedback}/>
+            break
+        case 'repertory':
+            component = <Repertory feedback={feedback}/>
+            break
+        case 'videos':
+            component = <Videos feedback={feedback}/>
             break
         default:
             component = <Container>
