@@ -27,20 +27,23 @@ function Header(props) {
         window.location = '/admin'
     }
 
-    return <Navbar expand="lg" bg="dark" variant="dark">
+    return <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Navbar.Brand href="#home">Adminicolas</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Nav>
-            <Nav.Link onClick={() => setActivePage('messages')}>Messages</Nav.Link>
-            <Nav.Link onClick={() => setActivePage('concerts')}>Concerts</Nav.Link>
-            <Nav.Link onClick={() => setActivePage('carousel')}>Slider photo</Nav.Link>
-            <Nav.Link onClick={() => setActivePage('biographie')}>Biographie</Nav.Link>
-            <Nav.Link onClick={() => setActivePage('links')}>Liens</Nav.Link>
-            <Nav.Link onClick={() => setActivePage('studies')}>Études</Nav.Link>
-        </Nav>
-        <Nav className="ml-auto">
-            <Nav.Link onClick={disconnect}>Se déconnecter</Nav.Link>
-        </Nav>
+        <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav>
+                <Nav.Link onClick={() => setActivePage('messages')}>Messages</Nav.Link>
+                {/*here: separator*/}
+                <Nav.Link onClick={() => setActivePage('carousel')}>Slider photo</Nav.Link>
+                <Nav.Link onClick={() => setActivePage('biographie')}>Biographie</Nav.Link>
+                <Nav.Link onClick={() => setActivePage('studies')}>Études</Nav.Link>
+                <Nav.Link onClick={() => setActivePage('concerts')}>Concerts</Nav.Link>
+                <Nav.Link onClick={() => setActivePage('links')}>Liens</Nav.Link>
+            </Nav>
+            <Nav className="ml-auto">
+                <Nav.Link onClick={disconnect}><Button variant="info">Se déconnecter</Button></Nav.Link>
+            </Nav>
+        </Navbar.Collapse>
     </Navbar>
 }
 
@@ -219,8 +222,50 @@ function Carousel() {
 }
 
 function Bio() {
+    const [title,setTitle] = useState({
+        title: '',
+        subtitle: ''
+    })
+
+    const [paragraphs,setParagraphs] = useState([])
+
+    useEffect(() => {
+        axios.get('/biographie').then(res => {
+            setTitle(res.data.find(o => o.title))
+            setParagraphs(res.data.filter(o => o.paragraph))
+        }).catch(err => console.error(err))
+    },[])
+
+    const submitForm = e => {
+        e.preventDefault()
+        console.log(e)
+    }
+    
     return <Container>
-        Bio...
+        <Form onSubmit={submitForm}>
+            <Form.Group>
+                <Form.Label>Titre de la section</Form.Label>
+                <Form.Control type="text" placeholder="Biographie" value={title.title} onChange={e => setTitle({
+                    ...title,
+                    title: e.target.value
+                })}/>
+            </Form.Group>
+            <Form.Group>
+                <Form.Label>Sous-titre</Form.Label>
+                <Form.Control type="text" placeholder="..." value={title.subtitle}/>
+            </Form.Group>
+            <hr/>
+        {paragraphs.map(p => 
+            <Form.Group controlId="exampleForm.ControlTextarea1">
+                <Form.Label>{`Paragraphe n°${p.index}`}</Form.Label>
+                <Form.Control as="textarea" rows={3} value={p.paragraph}/>
+            </Form.Group>
+        )}
+            <hr/>
+            <Button variant="primary" type="submit">
+                Valider
+            </Button>
+        </Form>
     </Container>
 }
 
@@ -310,15 +355,15 @@ function Login() {
         <Card body>
             <Form onSubmit={e => { handleSubmit(e) }}>
                 <Form.Group controlId="formGroupEmail">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" placeholder="Enter email" onChange={e => setUsername(e.target.value)} value={username} required/>
+                    <Form.Label>Adresse email</Form.Label>
+                    <Form.Control type="email" placeholder="Email" onChange={e => setUsername(e.target.value)} value={username} required/>
                 </Form.Group>
                 <Form.Group controlId="formGroupPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" onChange={e => setPassword(e.target.value)} value={password}/>
+                    <Form.Label>Mot de passe</Form.Label>
+                    <Form.Control type="password" placeholder="Mot de passe" onChange={e => setPassword(e.target.value)} value={password}/>
                 </Form.Group>
                 <Button variant="primary" type="submit">
-                    Submit
+                    Valider
                 </Button>
             </Form>
         </Card>
