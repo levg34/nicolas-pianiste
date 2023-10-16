@@ -1,1 +1,0 @@
-$("#links a").each(function() {console.log('{name:\''+$(this).text()+'\',url:\''+$(this).attr('href')+'\'}')})
