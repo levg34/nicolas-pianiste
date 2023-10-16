@@ -10,8 +10,18 @@ db.concerts.remove({}, { multi: true }, function (err, numRemoved) {
 const concertsData = require('../backup/concerts.json')
 
 Object.values(concertsData).forEach(data => {
-    db.concerts.insert(data, function (err, newDoc) {
+    const concert = {...data}
+    delete concert.occs
+    delete concert.id
+    db.concerts.insert(concert, function (err, newDoc) {
         if (err) console.error(err)
         console.log(newDoc)
+        data.occs.forEach(occ => {
+            occ.concertId = newDoc._id
+            db.concerts.insert(occ, function(err, newDoc) {
+                if (err) console.error(err)
+                console.log(newDoc)
+            })
+        })
     })
 })

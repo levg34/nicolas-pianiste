@@ -256,7 +256,7 @@ function Messages(props) {
 
 function Concerts() {
     return <Container>
-        Concerts...
+        <a href="https://potential-bassoon.firebaseapp.com" target="_blank">Ajouter et supprimer des concerts</a>
     </Container>
 }
 
