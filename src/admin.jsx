@@ -1,4 +1,5 @@
-const { Container, Jumbotron, Navbar, Nav, ListGroup, Row, Col, Card, ButtonGroup, Button, Form, Alert, Image, Toast, Modal, Table } = ReactBootstrap
+const { Container, Jumbotron, Navbar, Nav, ListGroup, Row, Col, Card, ButtonGroup, Button, Form, Alert, Image, Toast, Modal, Table, Media } = ReactBootstrap
+
 const { useState, useEffect, useRef } = React
 
 function stringToColour(str) {
@@ -436,10 +437,39 @@ function Messages(props) {
     </Container>
 }
 
-function Concerts() {
+function Concerts(props) {
+    const {feedback} = props
+
+    const [concerts,setConcerts] = useState([])
+
+    useEffect(() => {
+        axios.get('/concerts').then(res => setConcerts(res.data.filter(c => c.name))).catch(err => feedback.treatError(err))
+    },[])
+
+    const concertInfoRef = useRef()
+
+    const [selectedConcert, setSelectedConcert] = useState()
+
+    const clickConcert = concert => {
+        setSelectedConcert(concert)
+        concertInfoRef.current.scrollIntoView({behavior: 'smooth'})
+    }
+
     return <Container>
-        <a href="https://potential-bassoon.firebaseapp.com" target="_blank">Ajouter et supprimer des concerts</a>
+        <h2>Concerts</h2>
+        <ListGroup>
+            {concerts.map(concert => <ListGroup.Item active={selectedConcert && concert._id === selectedConcert._id} key={concert._id} onClick={() => clickConcert(concert)} action>{concert.name}</ListGroup.Item>)}
+        </ListGroup>
+        <Button variant="outline-success" className="mt-2">Ajouter un concert</Button>
+        <hr ref={concertInfoRef}/>
+        <ConcertInfo concert={selectedConcert} feedback={feedback}/>
     </Container>
+}
+
+function ConcertInfo(props) {
+    const {feedback, concert} = props
+
+    return concert ? <p>Concert : {concert.name}</p> : <p>Sélectionner un concert</p>
 }
 
 function Carousel(props) {
