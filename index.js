@@ -204,6 +204,21 @@ app.get('/uploads/:filename', (req, res) => {
     })
 })
 
+app.get('/newsletter/subscribers', (req, res) => {
+    db.newsletter.count({$not:{unsubscribed: true}}, (err,  subscribers) => {
+        if (err) return res.status(500).json({error: err})
+        res.json({subscribers})
+    })
+})
+
+app.get('/messages/count', (req, res) => {
+    db.messages.count({}, (err,  messages) => {
+        if (err) return res.status(500).json({error: err})
+        res.json({messages})
+    })
+})
+
+
 app.put('/unsubscribe/:email', (req, res) => {
     const email = req.params.email
     db.newsletter.update({$and:[{email},{$not:{unsubscribed: true}}]}, {$set:{unsubscribed:true}}, {multi: true}, (err, numReplaced) => {
