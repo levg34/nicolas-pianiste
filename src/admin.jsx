@@ -124,7 +124,10 @@ function ImageList(props) {
     const [images, setImages] = useState([])
 
     const loadImages = () => {
-        axios.get('/images').then(res => setImages(res.data)).catch(err => feedback.treatError(err))
+        axios.get('/images').then(res => {
+            setImages(res.data)
+            setFilteredImages(res.data)
+        }).catch(err => feedback.treatError(err))
     }
 
     useEffect(loadImages,[])
@@ -137,8 +140,46 @@ function ImageList(props) {
         setViewingImage(img)
     }
 
+    const [filter,setFilter] = useState({
+        banner: false,
+        concerts: false,
+        uploads: false
+    })
+
+    const [filteredImages,setFilteredImages] = useState([])
+
+    useEffect(() => {
+        if (Object.values(filter).filter(f => f).length === 0) {
+            setFilteredImages([...images])
+        } else {
+            setFilteredImages([...images.filter(img => (filter.banner && img.banner) || (filter.concerts && img.concerts) || (filter.uploads && img.fieldname))])
+        }
+    },[filter])
+
     return <Container>
-        {images.map(img => <Image style={{maxHeight:'150px'}} fluid key={img._id} src={img.destination+img.filename} thumbnail onClick={e => showPhotoModal(img)}/>)}
+        <Form.Check type="checkbox" label="Images pour le slider photo" onChange={e => {
+            const checked = e.target.checked
+            setFilter({
+                ...filter,
+                banner: checked
+            })
+        }}/>
+        <Form.Check type="checkbox" label="Images pour les concerts" onChange={e => {
+            const checked = e.target.checked
+            setFilter({
+                ...filter,
+                concerts: checked
+            })
+        }}/>
+        <Form.Check type="checkbox" label="Images uploadées via l'interface d'admin" onChange={e => {
+            const checked = e.target.checked
+            setFilter({
+                ...filter,
+                uploads: checked
+            })
+        }}/>
+
+        {filteredImages.map(img => <Image style={{maxHeight:'150px'}} fluid key={img._id} src={img.destination+img.filename} thumbnail onClick={e => showPhotoModal(img)}/>)}
         <ImageModal show={showModal} setShow={setShowModal} image={viewingImage} feedback={feedback}/>
     </Container>
 }
