@@ -747,12 +747,21 @@ function Videos() {
             <Form.Group>
                 <Form.Label>List</Form.Label>
                 <ListGroup>
-                    {data.list.forEach(li => <ListGroup.Item key={li}><Form.Control type="text" value={li} onChange={e => setData({
-                    ...data,
-                    list: [e.target.value]
-                })}/></ListGroup.Item>)}
+                    {data.list.map((li,index) => <ListGroup.Item key={index}><Form.Control type="text" value={li} onChange={e => {
+                        const newList = [...data.list]
+                        newList[index] = e.target.value
+                        setData({
+                            ...data,
+                            list: newList
+                        })
+                    }}/></ListGroup.Item>)}
                 </ListGroup>
+                <Button className="mt-2" variant="outline-success" onClick={e => setData({
+                    ...data,
+                    list: [...data.list,'']
+                })}>Ajouter un élément de liste</Button>
             </Form.Group>
+            <hr/>
             <Button variant="primary" type="submit">
                 Valider
             </Button>
