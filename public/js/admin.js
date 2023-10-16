@@ -665,7 +665,7 @@ function Studies(props) {
     </Container>
 }
 
-function Repertory() {
+function Repertory(props) {
     const [repertory, setRepertory] = useState([])
 
     const getRepertory = () => {
@@ -678,11 +678,41 @@ function Repertory() {
 
     const titles = new Set(repertory.map(e => e.title))
 
+    const feedback = props.feedback
+
+    const saveRepertoryItem = rep => {
+        feedback.clear()
+        axios.post('/admin/repertory',rep).then(res => {
+            console.log(res)
+            feedback.treatSuccess('Modifications effectuées !')
+            getRepertory()
+        }).catch(err => feedback.treatError(err))
+    }
+
+    const deleteRepertoryItem = rep => {
+        feedback.clear()
+        axios.delete('/admin/repertory/'+rep._id).then(res => {
+            console.log(res)
+            feedback.treatSuccess('Modifications effectuées !')
+            getRepertory()
+        }).catch(err => feedback.treatError(err))
+    }
+
     return <Container>
         Répertoire
         <Form onSubmit={e => {
             e.preventDefault()
-            console.log(repertory)
+            repertory.filter(rep => rep.modified).forEach(rep => {
+                delete rep.modified
+                const repCopy = {...rep}
+                if (rep._id.startsWith('new')) {
+                    delete repCopy._id
+                }
+                saveRepertoryItem(repCopy)
+            })
+            repertory.filter(rep => rep.deleted).forEach(rep => {
+                deleteRepertoryItem(rep)
+            })
         }}>
             {[...titles].map(title => <Card key={title} body>
             {title ? <Form.Label>{title}</Form.Label> : <Form.Control type="text" placeholder="Titre de section" value={title} onChange={e => {
@@ -691,7 +721,8 @@ function Repertory() {
                     const index = repertory.findIndex(_rep => _rep._id === rep._id)
                     repCopy[index] = {
                         ...rep,
-                        title: e.target.value
+                        title: e.target.value,
+                        modified: true
                     }
                     setRepertory(repCopy)
                 })
@@ -705,7 +736,8 @@ function Repertory() {
                                 const index = repertory.findIndex(_rep => _rep._id === rep._id)
                                 repCopy[index] = {
                                     ...rep,
-                                    content: e.target.value
+                                    content: e.target.value,
+                                    modified: true
                                 }
                                 setRepertory(repCopy)
                             }}/>{!rep.deleted && <Button variant="danger" onClick={e => {
@@ -725,7 +757,8 @@ function Repertory() {
                             title,
                             subtitle,
                             content: '',
-                            index: repertory.length+1
+                            index: repertory.length+1,
+                            modified: true
                         }
                         setRepertory([...repertory,newPiece])
                     }}>Ajouter une œuvre</Button>
@@ -736,7 +769,8 @@ function Repertory() {
                         title,
                         subtitle: '',
                         content: '',
-                        index: repertory.length+1
+                        index: repertory.length+1,
+                        modified: true
                     }
                     setRepertory([...repertory,newPiece])
                 }}>Ajouter une sous-section</Button>
@@ -746,7 +780,8 @@ function Repertory() {
                     _id: `new_${repertory.length+1}`,
                     title: '',
                     content: '',
-                    index: repertory.length+1
+                    index: repertory.length+1,
+                    modified: true
                 }
                 setRepertory([...repertory,newPiece])
             }}>Ajouter une section</Button>
