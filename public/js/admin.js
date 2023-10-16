@@ -227,12 +227,14 @@ function Bio() {
         subtitle: ''
     })
 
-    const [paragraphs,setParagraphs] = useState([])
+    const [paragraphs,setParagraphs] = useState({})
 
     useEffect(() => {
         axios.get('/biographie').then(res => {
             setTitle(res.data.find(o => o.title))
-            setParagraphs(res.data.filter(o => o.paragraph))
+            setParagraphs(res.data.filter(o => o.paragraph).reduce((acc, cur) => {
+                return {...acc, [cur._id]: cur}
+            },{}))
         }).catch(err => console.error(err))
     },[])
 
@@ -258,10 +260,16 @@ function Bio() {
                 })}/>
             </Form.Group>
             <hr/>
-        {paragraphs.map(p => 
+        {Object.values(paragraphs).map(p => 
             <Form.Group key={p._id} controlId="exampleForm.ControlTextarea1">
                 <Form.Label>{`Paragraphe n°${p.index}`}</Form.Label>
-                <Form.Control as="textarea" rows={3} value={p.paragraph} onChange={e => setParagraphs(paragraphs)}/>
+                <Form.Control as="textarea" rows={3} value={p.paragraph} onChange={e => setParagraphs({
+                    ...paragraphs,
+                    [p._id]: {
+                        ...p,
+                        paragraph: e.target.value
+                    }
+                })}/>
             </Form.Group>
         )}
             <hr/>
