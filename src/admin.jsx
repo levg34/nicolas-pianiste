@@ -667,18 +667,29 @@ function ConcertEdit(props) {
             <ConcertInfo concert={concert} feedback={feedback} setConcert={setConcert} getConcerts={getConcerts}/>
         </Tab>
         <Tab eventKey="edit-occs" title="Éditer les occurences du concert" disabled={!concert._id || concert._id === 'new'}>
-            <ConcertOccurences concert={concert} feedback={feedback}/>
+            <ConcertOccurences concert={concert} feedback={feedback} getConcerts={getConcerts}/>
         </Tab>
     </Tabs>
 }
 
 function ConcertOccurences(props) {
-    const {concert,feedback} = props
+    const {concert,feedback, getConcerts} = props
 
     const [occurrences, setOccurrences] = useState([])
 
     const getOccurences = () => {
-        axios.get('/concerts').then(res => setOccurrences(res.data.filter(c => c.concertId && c.concertId === concert._id))).catch(err => feedback.treatError(err))
+        axios.get('/concerts').then(res => setOccurrences(res.data.filter(c => c.concertId && c.concertId === concert._id).sort((a,b) => new Date(`${a.date} ${a.time}`) - new Date(`${b.date} ${b.time}`)))).catch(err => feedback.treatError(err))
+    }
+
+    const saveOccurence = occ => {
+        feedback.clear()
+        delete occ.modified
+        axios.post('/admin/concerts',occ).then(res => {
+            console.log(res)
+            feedback.treatSuccess('Modifications effectuées !')
+            getConcerts()
+            getOccurences()
+        }).catch(err => feedback.treatError(err))
     }
 
     const fields = [
@@ -732,7 +743,7 @@ function ConcertOccurences(props) {
     return <Container>
         <Form onSubmit={e => {
             e.preventDefault()
-            console.log(occurrences)
+            occurrences.filter(o => o.modified).forEach(occ => saveOccurence(occ))
         }}>
             {occurrences.map((occ, index) => <div key={occ._id ? occ._id : 'key_'+index}>
                 <Form.Label>Occurrence n°{index+1}</Form.Label>
