@@ -117,6 +117,7 @@
       <span ng-repeat="concert in concertList | filter: concertIsOn">
       <p id="{{concert.id}}_avenir">
         <b>{{concert.name}}</b>
+        <span ng-show="concert.info"><br><span style="font-style:italic; margin-left: 15px;">{{concert.info}}</span></span>
         <span ng-repeat="artist in concert.details.artists"><br>{{artist.name}}, {{artist.instrument}}</span>
       </p>
       <ul ng-repeat="piece in concert.details.pieces">
@@ -133,6 +134,7 @@
       <span ng-repeat="concert in concertList | orderBy:'-' | filter: {type:  'Solo'}">
       <p id="{{concert.id}}">
         <b>{{concert.name}}</b>
+        <span ng-show="concert.info"><br><span style="font-style:italic; margin-left: 15px;">{{concert.info}}</span></span>
         <span ng-repeat="artist in concert.details.artists"><br>{{artist.name}}, {{artist.instrument}}</span>
       </p>
       <ul ng-repeat="piece in concert.details.pieces">
@@ -196,6 +198,7 @@
       <span ng-repeat="concert in concertList | orderBy:'-' | filter: {type:  'Trio éphémère'}">
       <p id="{{concert.id}}">
         <b>{{concert.name}}</b>
+        <span ng-show="concert.info"><br><span style="font-style:italic; margin-left: 15px;">{{concert.info}}</span></span>
         <span ng-repeat="artist in concert.details.artists"><br>{{artist.name}}, {{artist.instrument}}</span>
       </p>
       <ul ng-repeat="piece in concert.details.pieces">
@@ -223,6 +226,7 @@
       <span ng-repeat="concert in concertList | orderBy:'-' | filter: {type:  'Duo éphémère'}">
       <p id="{{concert.id}}">
         <b>{{concert.name}}</b>
+        <span ng-show="concert.info"><br><span style="font-style:italic; margin-left: 15px;">{{concert.info}}</span></span>
         <span ng-repeat="artist in concert.details.artists"><br>{{artist.name}}, {{artist.instrument}}</span>
       </p>
       <ul ng-repeat="piece in concert.details.pieces">
@@ -278,6 +282,7 @@
       <span ng-repeat="concert in concertList | orderBy:'-' | filter: {type:  'Musique vocale et spectacles'}">
       <p id="{{concert.id}}">
         <b>{{concert.name}}</b>
+        <span ng-show="concert.info"><br><span style="font-style:italic; margin-left: 15px;">{{concert.info}}</span></span>
         <span ng-repeat="artist in concert.details.artists"><br>{{artist.name}}, {{artist.instrument}}</span>
       </p>
       <ul ng-repeat="piece in concert.details.pieces">
@@ -454,6 +459,7 @@
     <span ng-repeat="concert in concertList | orderBy:'-' | filter: {type:  'Composition'}">
       <p id="{{concert.id}}">
         <b>{{concert.name}}</b>
+        <span ng-show="concert.info"><br><span style="font-style:italic; margin-left: 15px;">{{concert.info}}</span></span>
         <span ng-repeat="artist in concert.details.artists"><br>{{artist.name}}, {{artist.instrument}}</span>
       </p>
       <ul ng-repeat="piece in concert.details.pieces">
