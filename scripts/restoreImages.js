@@ -172,7 +172,7 @@ if (DB_CORRUPTED) {
                 }
     
                 
-                const {width, height} = dimensions
+                const {width, height, type} = dimensions
                 const ratio = width / height
                 
                 if (Math.abs(4/3-ratio)<0.01) {
@@ -183,7 +183,7 @@ if (DB_CORRUPTED) {
                     uploadData.banner = true
                 }
                 
-                console.log({...uploadData, width, height, ratio})
+                console.log({...uploadData, width, height, ratio, type})
                 db.images.insert({...uploadData, width, height, ratio}, function (err, newDoc) {
                     if (err) return console.error(err)
                     console.log(newDoc)
