@@ -1,4 +1,4 @@
-const { Container, Jumbotron, Navbar, Nav, NavDropdown, ListGroup, Row, Col, Card, ButtonGroup, Button } = ReactBootstrap
+const { Container, Jumbotron, Navbar, Nav, NavDropdown, ListGroup, Row, Col, Card, ButtonGroup, Button, Form } = ReactBootstrap
 const { useState, useEffect } = React
 
 function stringToColour(str) {
@@ -173,11 +173,37 @@ function Content() {
     </Container>
 }
 
+function Login() {
+    return <Container>
+        <Card body>
+            <Form>
+                <Form.Group controlId="formGroupEmail">
+                    <Form.Label>Email address</Form.Label>
+                    <Form.Control type="email" placeholder="Enter email" />
+                </Form.Group>
+                <Form.Group controlId="formGroupPassword">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control type="password" placeholder="Password" />
+                </Form.Group>
+                <Button variant="primary" type="submit">
+                    Submit
+                </Button>
+            </Form>
+        </Card>
+    </Container>
+}
+
 function App() {
-    return <div>
-        <Header/>
-        <Content/>
-    </div>
+    const token = sessionStorage.getItem('token')
+    if (token) {
+        axios.defaults.headers.common['Authorization'] = 'Bearer '+token
+        return <div>
+            <Header/>
+            <Content/>
+        </div>
+    } else {
+        return <Login/>
+    }
 }
 
 ReactDOM.render(<App/>,document.getElementById('root'))
