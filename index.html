@@ -444,13 +444,6 @@
       <li>Lieder de Schubert (Winterreise), Schumann (Liederkreis op.39), Beethoven</li>
       <li>Songs de Britten, Quilter, Guastavino</li>
     </ul>
-
-    <h4>Orchestre</h4>
-    <ul>
-      <li>Ohana - Cantigas</li>
-      <li>Debussy - Nocturnes (extraits : Nuages et Fêtes), Jeux</li>
-      <li>Ravel - Daphnis et Chloé, suite n° 2</li>
-    </ul>
   </div>
 
   <div id="compos" class="container" ng-controller="tourCtrl">
@@ -487,6 +480,26 @@
       <div class="row text-center">
         <div class="col-sm-4">
           <div class="thumbnail">
+            <a target="_blank" href="https://youtube.com/playlist?list=PL4K1mNvjCpY0GerRJti2J-cT5l69bxJoo">
+            <img src="https://i.ytimg.com/vi/9hPrAWI_KOM/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLCpyo6_xdvY87vo7Gio1xn_NWUCcg" alt="Collaborations">
+              <p>
+                <strong>Au CNSM</strong><br> <b>2015-2020</b>
+              </p>
+              <p>Concerts qui ont rythmé mes études parisiennes.</p></a>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="thumbnail">
+            <a target="_blank" href="https://youtube.com/playlist?list=PL4K1mNvjCpY06DOif7u9O5sfhQQYHMlpM">
+            <img src="https://i.ytimg.com/vi/VcQcHb-uppA/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLDTXebejHXeNo0masvEmUUoU4DGdQ" alt="Collaborations">
+              <p>
+                <strong>Confinement</strong><br> <b>2020</b>
+              </p>
+              <p>Enregistrements « faits-maison » dans le sud de la France.</p></a>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="thumbnail">
             <a target="_blank" href="https://vimeo.com/181230350"> <img src="https://i.vimeocdn.com/video/589738601_1280x720.jpg" alt="Liszt">
               <p>
                 <strong>Liszt - Rapsodie hongroise no.6 (extrait)</strong><br> <b>Août 2016</b>
@@ -509,7 +522,7 @@
             <a target="_blank" href="https://www.youtube.com/playlist?list=PL4K1mNvjCpY3_OrZDdAzg1727ZKHfihhJ">
             <img src="https://i.ytimg.com/vi/L0A6eK5d-mo/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLC5k_hc7OAPBrMBjhq9ZDzzY46NdQ" alt="Concours">
               <p>
-                <strong>Concours Alain Marinaro</strong><br> <b">Juillet 2015</b>
+                <strong>Concours Alain Marinaro</strong><br> <b>Juillet 2015</b>
               </p>
               <p>Programme</p>
               <ul style="text-align: left">
@@ -525,7 +538,7 @@
             <a target="_blank" href="https://www.youtube.com/playlist?list=PL4K1mNvjCpY0f3sxtjDDJv8FEnWpehWSP">
             <img src="https://i.ytimg.com/vi/DJEaSn-Sv5o/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLDraBe6ffdDInlCQsB2Ujp9lmWzAQ" alt="14-15">
               <p>
-                <strong>Extraits de concerts</strong><br> <b">2014-2015</b>
+                <strong>Extraits de concerts</strong><br> <b>2014-2015</b>
               </p>
               <p>Cassan 2014 - Beethoven, Debussy, Rachmaninov et 2015 - Brahms</p></a>
           </div>
@@ -535,7 +548,7 @@
             <a target="_blank" href="https://www.youtube.com/playlist?list=PL4K1mNvjCpY0yU04ie-iKPf38Mu6U_VTM">
             <img src="https://i.ytimg.com/vi/tOZOEMUPLjM/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLBq_0pajc85QbTiFIVuDuoN2JKu9g" alt="Collaborations">
               <p>
-                <strong>Collaborations</strong><br> <b">divers</b>
+                <strong>Collaborations</strong><br> <b>divers</b>
               </p>
               <p>Collaboration avec compositeurs, chambristes etc…</p></a>
           </div>
@@ -568,7 +581,7 @@
         <textarea class="form-control" id="message" name="message" placeholder="Commentaire" rows="5"></textarea>
         <div class="row">
           <div class="col-md-12 form-group">
-            <button id="sendbtn" class="btn pull-right" type="submit" onclick="submitEmail()">Envoyer</button>
+            <button disabled id="sendbtn" class="btn pull-right" type="submit">Envoyer</button>
           </div>
         </div>
       </div>
@@ -601,7 +614,7 @@
   </div>
 
   <div id="music" class="container">
-    <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/575613921&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
+    <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/575613921&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"><a href="https://soundcloud.com/nicolas-dross-587682986" title="Nicolas Dross" target="_blank" style="color: #cccccc; text-decoration: none;">Nicolas Dross</a> · <a href="https://soundcloud.com/nicolas-dross-587682986/sets/piano" title="Piano" target="_blank" style="color: #cccccc; text-decoration: none;">Piano</a></div>
   </div>
 
   <footer class="text-center">
