@@ -41,6 +41,7 @@ app.get('/messages', (req, res) => {
 app.post('/message', (req, res) => {
     const message = req.body
     message.ip = req.ip
+    message.date = new Date().toISOString()
     db.messages.insert(message, function (err, newDoc) {
         if (err) res.status(500).json(err)
         res.json(newDoc)
