@@ -8,6 +8,8 @@ db.users = new Datastore({ filename: 'data/users', autoload: true })
 db.users.ensureIndex({ fieldName: 'username', unique: true }, function (err) {
     if (err) console.error(err)
 })
+db.carousel = new Datastore({ filename: 'data/carousel', autoload: true })
+db.links = new Datastore({ filename: 'data/links', autoload: true })
 
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
@@ -74,6 +76,20 @@ app.use(express.json())
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/view/index.html')
+})
+
+app.get('/links', (req, res) => {
+    db.links.find({}).sort({type: 1, name: 1}).exec(function (err, docs) {
+        if (err) res.status(500).json(err)
+        res.json(docs)
+    })
+})
+
+app.get('/carousel', (req, res) => {
+    db.carousel.find({}).sort({active: -1}).exec(function (err, docs) {
+        if (err) res.status(500).json(err)
+        res.json(docs)
+    })
 })
 
 app.post('/message', (req, res) => {
