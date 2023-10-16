@@ -1,7 +1,9 @@
 const express = require('express')
 const app = express()
 const helmet = require("helmet")
-app.use(helmet())
+app.use(helmet({
+    contentSecurityPolicy: false
+}))
 
 const multer  = require('multer')
 const upload = multer({ dest: 'uploads/' })
