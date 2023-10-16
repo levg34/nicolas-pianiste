@@ -1,2 +1,4 @@
 # nicolas-pianiste
-Website for my brother, pianist
+Website for Nicolas, pianist
+
+First and second version
