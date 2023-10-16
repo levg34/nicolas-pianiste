@@ -531,11 +531,19 @@ function Links(props) {
             if (l._id.startsWith('new')) {
                 delete link._id
             }
-            axios.post('/admin/links',link).then(res => {
-                console.log(res)
-                feedback.treatSuccess('Modifications effectuées !')
-                getLinks()
-            }).catch(err => feedback.treatError(err))
+            if (!l.name && l._id) {
+                axios.delete('/admin/link/'+link._id).then(res => {
+                    console.log(res)
+                    feedback.treatSuccess('Modifications effectuées !')
+                    getLinks()
+                }).catch(err => feedback.treatError(err))
+            } else {
+                axios.post('/admin/links',link).then(res => {
+                    console.log(res)
+                    feedback.treatSuccess('Modifications effectuées !')
+                    getLinks()
+                }).catch(err => feedback.treatError(err))
+            }
         })
     }
 
@@ -543,7 +551,7 @@ function Links(props) {
         <Form onSubmit={submitForm}>
             {linkTypes.map(type => <Form.Group key={type[0]}>
                 <Row><Form.Label>{type[1]}</Form.Label></Row>
-            {Object.values(links).filter(link => link.type === type[0]).map(link => <Row key={link._id}>
+            {Object.values(links).filter(link => link.type === type[0]).map(link => <Row className={(!link.name && !link._id.startsWith('new')) ? 'bg-secondary' : undefined} key={link._id}>
                 <Col xs={4}>
                     <Form.Label>Nom</Form.Label>
                     <Form.Control placeholder="Nom" value={link.name} onChange={e => nameChange(e,link)}/>
