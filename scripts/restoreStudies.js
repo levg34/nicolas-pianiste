@@ -22,6 +22,7 @@ paragraphs.forEach(data => {
     ++index
 })
 
+index = 0
 awards.forEach(data => {
     insertInDB({
         award: data,
