@@ -158,6 +158,8 @@ function ImageModal(props) {
             <Card>
                 <Card.Img variant="top" src={url} />
                 <Card.Body>
+                    {image.banner && <Alert variant="info">Peut être utilisée dans le slider photo</Alert>}
+                    {image.concerts && <Alert variant="info">Peut être utilisée pour illustrer un concert</Alert>}
                     <Table striped bordered hover>
                         <tbody>
                             {Object.entries(image).map(e => <tr key={e[0]}>
