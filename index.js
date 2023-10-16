@@ -6,6 +6,8 @@ const upload = multer({ dest: 'uploads/' })
 const path = require('path')
 const sizeOf = require('image-size')
 
+const fs = require('fs')
+
 const Datastore = require('nedb')
 const db = {}
 db.messages = new Datastore({ filename: 'data/messages', autoload: true })
@@ -484,6 +486,35 @@ app.delete('/admin/studies/:id', (req, res) => {
     db.studies.remove({ _id: id }, {}, function (err, numRemoved) {
         if (err) res.status(500).json({err})
         res.json({removed:numRemoved})
+    })
+})
+
+app.delete('/admin/image/:id', (req, res) => {
+    const id = req.params.id
+
+    db.images.findOne({_id: id}, (err, image) => {
+        if (!image) {
+            res.status(404).json({
+                error: 'Not found',
+                data: 'File not found.'
+            })
+        } else if (!image.fieldname) {
+            res.status(403).json({
+                error: 'Access denied',
+                data: 'Cannot delete versioned files.'
+            })
+        } else {
+            fs.unlink(image.path, function (err) {
+                if (err) {
+                    res.status(403).json({error: err})
+                } else {
+                    db.images.remove({ _id: id }, {}, function (err, numRemoved) {
+                        if (err) res.status(500).json({err})
+                        res.json({removed:numRemoved})
+                    })
+                }
+            })
+        }
     })
 })
 
