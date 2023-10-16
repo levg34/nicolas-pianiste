@@ -207,18 +207,20 @@ function Images(props) {
     }
 
     return <Container>
-        Images...
+        Images
         <ImageList feedback={feedback}/>
         {imgData && <Image src={'/uploads/'+imgData.filename} thumbnail />}
-        <Form onSubmit={handleSubmit} encType="multipart/form-data">
-            <Form.Group>
-                <Form.Label>Sélectionner une image</Form.Label>
-                <Form.Control type="file" label="Image" name="image" ref={fileInput}/>
-            </Form.Group>
-            <Button variant="primary" type="submit">
-                Valider
-            </Button>
-        </Form>
+        <Card body>
+            <Form onSubmit={handleSubmit} encType="multipart/form-data">
+                <Form.Group>
+                    <Form.Label>Ajouter une image</Form.Label>
+                    <Form.Control type="file" label="Image" name="image" ref={fileInput}/>
+                </Form.Group>
+                <Button variant="primary" type="submit">
+                    Valider
+                </Button>
+            </Form>
+        </Card>
     </Container>
 }
 
