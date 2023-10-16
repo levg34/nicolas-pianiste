@@ -1,5 +1,5 @@
 const { Container, Jumbotron, Navbar, Nav, ListGroup, Row, Col, Card, ButtonGroup, Button, Form, Alert, Image, Toast } = ReactBootstrap
-const { useState, useEffect } = React
+const { useState, useEffect, useRef } = React
 
 function stringToColour(str) {
     if (!str) return
@@ -206,6 +206,8 @@ function Messages(props) {
 
     useEffect(getMessages,[])
 
+    const messageRef = useRef()
+
     const handleClickMessage = (message) => {
         message.read = true
         selectMessage(message)
@@ -218,6 +220,7 @@ function Messages(props) {
         .catch(function (error) {
             feedback.treatError(error)
         })
+        messageRef.current.scrollIntoView({behavior: 'smooth'})
     }
 
     const unreadMessage = () => {
@@ -247,7 +250,7 @@ function Messages(props) {
                 {messages.map(message => <ListGroup.Item active={selectedMessage && selectedMessage._id === message._id} variant={message.read ? 'secondary' : 'primary'} onClick={() => handleClickMessage(message)} action key={message._id}><MessageInfo message={message}/></ListGroup.Item>)}
                 </ListGroup>
             </Col>
-            <Col>
+            <Col ref={messageRef}>
                 <Message message={selectedMessage}/>
             </Col>
         </Row>
