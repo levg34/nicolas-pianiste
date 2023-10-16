@@ -1342,7 +1342,7 @@ function Repertory(props) {
                 deleteRepertoryItem(rep)
             })
         }}>
-            {[...titles].map(title => <Card key={title} body>
+            {[...titles].map((title, titi) => <Card key={'title-'+titi} body>
             <Form.Control type="text" placeholder="Titre de section" value={title} onChange={e => {
                 const repCopy = [...repertory]
                 repertory.filter(rep => rep.title === title).forEach(rep => {
@@ -1355,7 +1355,7 @@ function Repertory(props) {
                     setRepertory(repCopy)
                 })
             }}/>
-                {[...new Set(repertory.filter(rep => rep.title === title).map(e => e.subtitle))].map(subtitle => <Card key={`${title}_${subtitle}`} body>
+                {[...new Set(repertory.filter(rep => rep.title === title).map(e => e.subtitle))].map((subtitle, tits) => <Card key={`subtitle-${titi}_${tits}`} body>
                     {((repertory.filter(rep => rep.title === title).map(e => e.subtitle)).filter(subtitle => subtitle !== undefined).length < 1) ? <Form.Label>{subtitle}</Form.Label> : <Form.Control type="text" placeholder="Titre de sous-section" value={subtitle ? subtitle : ''} onChange={e => {
                         const repCopy = [...repertory]
                         repertory.filter(rep => rep.title === title && rep.subtitle === subtitle).forEach(rep => {
