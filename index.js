@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const port = 3000
+const port = 3001
 
 const Datastore = require('nedb')
 const db = {}
@@ -31,7 +31,11 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/view/index.html')
 })
 
-app.get('/messages', (req, res) => {
+app.get('/admin', (req, res) => {
+    res.sendFile(__dirname + '/view/admin.html')
+})
+
+app.get('/admin/messages', (req, res) => {
     db.messages.find({}, function (err, docs) {
         if (err) res.status(500).json(err)
         res.json(docs)
