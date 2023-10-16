@@ -879,8 +879,12 @@ function VideoFormGroup(props) {
         }
     }
 
-    return <div>
-        <Form.Label>{`Vidéo n°${video.index}`}</Form.Label>
+    return <div className={video.deleted ? "bg-secondary" : undefined}>
+        <Form.Label>{`Vidéo n°${video.index}`}</Form.Label><br/>
+        <Button variant={video.deleted ? 'warning' : "danger"} onClick={e => setVideo({
+            ...video,
+            deleted: !video.deleted
+        })}>{video.deleted ? 'Annuler la suppression' : 'Supprimer'}</Button>
         <Form.Group>
             <Form.Label>Url de la vidéo</Form.Label>
             <Form.Control type="url" onChange={e => setVideo({
@@ -1001,13 +1005,34 @@ function Videos(props) {
             },{}))
         }).catch(err => feedback.treatError(err))
     }
+
+    const deleteVideo = video => {
+        feedback.clear()
+        axios.delete('/admin/video/'+video._id).then(res => {
+            console.log(res)
+            feedback.treatSuccess('Modifications effectuées !')
+            getVideos()
+            setUpdated(Object.keys(videos).reduce((acc,curr) => {
+                return {
+                    ...acc,
+                    [curr]: 0
+                }
+            },{}))
+        }).catch(err => feedback.treatError(err))
+    }
     
     return <Container>
         <Form onSubmit={e => {
             e.preventDefault()
             console.log(videos)
             Object.entries(updated).filter(e => e[1]).forEach(e => {
-                saveVideo(videos[e[0]])
+                const video = videos[e[0]]
+                if (video.deleted) {
+                    deleteVideo(video)
+                } else {
+                    delete video.deleted
+                    saveVideo(video)
+                }
             })
         }}>
             {videos.map((video, index) => <VideoFormGroup key={video._id ? video._id : index} video={video} setVideo={setVideo.bind(null,index)}/>)}
@@ -1019,7 +1044,7 @@ function Videos(props) {
                     img: '',
                     alt: '',
                     description: '',
-                    index: videos.length+1,
+                    index: videos[videos.length-1].index+1,
                     list: []
                 }
                 setVideos([...videos,newVideo])
