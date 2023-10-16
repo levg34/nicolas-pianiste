@@ -30,6 +30,10 @@ db.concerts = new Datastore({ filename: 'data/concerts', autoload: true })
 db.videos = new Datastore({ filename: 'data/videos', autoload: true })
 db.repertory = new Datastore({ filename: 'data/repertory', autoload: true })
 db.images = new Datastore({ filename: 'data/images', autoload: true })
+db.newsletter = new Datastore({ filename: 'data/newsletter', autoload: true })
+db.newsletter.ensureIndex({ fieldName: 'email', unique: true }, function (err) {
+    if (err) console.error(err)
+})
 
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
@@ -209,6 +213,28 @@ app.post('/message', (req, res) => {
                 const ipInfos = response.data
                 if (ipInfos && ipInfos.status !== 'fail') {
                     db.messages.update({ _id: newDoc._id }, { $set: { ipInfos } }, {}, function () {
+                        if (err) console.error(err)
+                    })
+                }
+            }
+        }).catch(err => {
+            console.error(err)
+        })
+    })
+})
+
+app.post('/newsletter', (req, res) => {
+    const newsletter = req.body
+    newsletter.ip = req.ip
+    newsletter.date = new Date().toISOString()
+    db.newsletter.insert(newsletter, function (err, newDoc) {
+        if (err) res.status(500).json(err)
+        res.json(newDoc)
+        axios.get(`http://ip-api.com/json/${newsletter.ip}`).then(response => {
+            if (response.data) {
+                const ipInfos = response.data
+                if (ipInfos && ipInfos.status !== 'fail') {
+                    db.newsletter.update({ _id: newDoc._id }, { $set: { ipInfos } }, {}, function () {
                         if (err) console.error(err)
                     })
                 }
@@ -600,7 +626,7 @@ app.post('/admin/upload', upload.single('image'), (req, res) => {
 })
 
 function canRequest(ip, path) {
-    if (path != '/message' && path != '/login' && (!knownIps[ip] || !knownIps[ip].blocked)) {
+    if (path != '/message' && path != '/login' && path != '/newsletter' && (!knownIps[ip] || !knownIps[ip].blocked)) {
         return true
     } else if (!knownIps[ip]) {
         knownIps[ip] = {
