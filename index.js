@@ -124,6 +124,10 @@ app.get('/videos', (req, res) => {
     })
 })
 
+app.get('/repertory', (req, res) => {
+    res.sendFile(__dirname + '/backup/repertory.json')
+})
+
 app.post('/message', (req, res) => {
     const message = req.body
     message.ip = req.ip
