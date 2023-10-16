@@ -517,6 +517,14 @@ function ConcertInfo(props) {
         if (concertBd._id.startsWith('new')) {
             delete concertBd._id
         }
+        if (concert.details) {
+            if (concert.details.artists instanceof Array) {
+                concert.details.artists = concert.details.artists.filter(artist => artist.name || artist.instrument)
+            }
+            if (concert.details.pieces instanceof Array) {
+                concert.details.pieces = concert.details.pieces.filter(piece => piece.title || piece.composer)
+            }
+        }
         axios.post('/admin/concerts',concertBd).then(res => {
             console.log(res)
             feedback.treatSuccess('Modifications effectuées !')
@@ -557,7 +565,7 @@ function ConcertInfo(props) {
                 })}/>
             </Form.Group>
             <Form.Label>Détails (facultatifs) : </Form.Label><br/>
-            {(concert.details && concert.details.artists && concert.details.artists.length) && <Card body>
+            {(concert.details && concert.details.artists && concert.details.artists.length > 0) && <Card body>
                 <Form.Label>Artistes :</Form.Label>
                 {concert.details.artists.map((artist,artIndex) => <Card key={'artist-'+artIndex} body>
                     <Form.Group>
@@ -609,7 +617,7 @@ function ConcertInfo(props) {
                     }
                 })
             }}>Ajouter un artiste</Button>{' '}
-            {(concert.details && concert.details.pieces && concert.details.pieces.length) && <Card body className="mt-2">
+            {(concert.details && concert.details.pieces && concert.details.pieces.length > 0) && <Card body className="mt-2">
                 <Form.Label>Œuvres :</Form.Label>
                 {concert.details.pieces.map((piece,pIndex) => <Card key={'piece-'+pIndex} body>
                     <Form.Group>
