@@ -1727,7 +1727,7 @@ function Newsletter(props) {
     }
 
     const extractSubscribers = () => {
-        axios.post('/admin/extract_newsletter',subscribers).then(res => console.log(res.data)).catch(err => feedback.treatError(err))
+        axios.post('/admin/extract_newsletter',subscribers).then(res => feedback.treatSuccess(res.data)).catch(err => feedback.treatError(err))
     }
 
     useEffect(getSubscribers,[])
