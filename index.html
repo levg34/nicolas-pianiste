@@ -1,488 +1,502 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <title>Nicolas DROSS - Pianiste</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" href="style/style.css">
-  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="js/script.js"></script>
+<title>Nicolas DROSS - Pianiste</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="style/style.css">
+<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="js/script.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+<script src="js/app.js"></script>
 </head>
-<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50">
+<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="50" ng-app="app">
 
-<nav class="navbar navbar-default navbar-fixed-top">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span> 
-      </button>
-      <a class="navbar-brand" href="#">Nicolas DROSS</a>
-    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#music"><b><i style="color: orange;font-size: 17px" class="glyphicon glyphicon-volume-up"></i></b></a></li>
-        <li><a href="#myCarousel">ACCUEIL</a></li>
-        <li><a href="#band">BIOGRAPHIE</a></li>
-        <li><a href="#studies">ÉTUDES</a></li>
-        <li><a href="#tour">CONCERTS</a></li>
-        <li><a href="#repertory">RÉPERTOIRE</a></li>
-        <li><a href="#videos">VIDEOS</a></li>
-        <li><a href="#contact">CONTACT</a></li>
-        <li class="dropdown">
-          <a class="dropdown-toggle" data-toggle="dropdown" href="#links">LIENS
-            <span class="caret"></span>
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Nicolas DROSS</a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#music"><b><i style="color: orange; font-size: 17px" class="glyphicon glyphicon-volume-up"></i></b></a></li>
+          <li><a href="#myCarousel">ACCUEIL</a></li>
+          <li><a href="#band">BIOGRAPHIE</a></li>
+          <li><a href="#studies">ÉTUDES</a></li>
+          <li><a href="#tour">CONCERTS</a></li>
+          <li><a href="#repertory">RÉPERTOIRE</a></li>
+          <li><a href="#videos">VIDEOS</a></li>
+          <li><a href="#contact">CONTACT</a></li>
+          <li class="dropdown" ng-controller="linkCtrl"><a class="dropdown-toggle" data-toggle="dropdown" href="#">LIENS <span class="caret"></span>
           </a>
-          <ul class="dropdown-menu">
-            <li><a href="https://www.youtube.com/channel/UC_Dc8B2UXdrtJvKTHudeZXQ">YouTube</a></li>
-            <li><a href="https://soundcloud.com/nicolas-dross-587682986">SoundCloud</a></li>
-          </ul>
-        </li>
+            <ul class="dropdown-menu">
+              <li ng-repeat="pl in personalLinks"><a href="{{pl.url}}">{{pl.name}}</a></li>
+              <li><a href="#links">Autres</a>
+            </ul></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div id="myCarousel" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+      <li data-target="#myCarousel" data-slide-to="1"></li>
+      <li data-target="#myCarousel" data-slide-to="2"></li>
+      <li data-target="#myCarousel" data-slide-to="3"></li>
+      <li data-target="#myCarousel" data-slide-to="4"></li>
+      <li data-target="#myCarousel" data-slide-to="5"></li>
+      <li data-target="#myCarousel" data-slide-to="6"></li>
+    </ol>
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+      <div class="item active">
+        <img src="img/banner/Portrait 9x2.JPG" alt="Nicolas">
+      </div>
+
+      <div class="item">
+        <img src="img/banner/Carcassonne 9x2.JPG" alt="Nicolas">
+        <div class="carousel-caption">
+          <h3>Carcassonne</h3>
+          <p>Duo/Trio Éphémère</p>
+        </div>
+      </div>
+
+      <div class="item">
+        <img src="img/banner/Fontainebleau 9x2.jpeg" alt="Nicolas">
+        <div class="carousel-caption">
+          <h3>Fontainebleau</h3>
+          <p>Création de Vicente Hanser Atria, Nicky Swett, Nash Rider</p>
+        </div>
+      </div>
+
+      <div class="item">
+        <img src="img/banner/Nicolas piano Belesta 9x2.jpg" alt="Nicolas">
+        <div class="carousel-caption">
+          <h3>Belesta</h3>
+          <p>2014</p>
+        </div>
+      </div>
+
+      <div class="item">
+        <img src="img/banner/Petit palais 2017 9x2.JPG" alt="Nicolas">
+        <div class="carousel-caption">
+          <h3>Petit palais</h3>
+          <p>2017</p>
+        </div>
+      </div>
+
+      <div class="item">
+        <img src="img/banner/Saluts augusta 2018 9x2.jpg" alt="Nicolas">
+        <div class="carousel-caption">
+          <h3>Versailles</h3>
+          <p>2018</p>
+        </div>
+      </div>
+
+      <div class="item">
+        <img src="img/banner/Schubert 9x2.jpg" alt="Nicolas">
+        <div class="carousel-caption">
+          <h3>Maison Heinrich Heine</h3>
+          <p>28 janvier 2018</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Left and right controls -->
+    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span> <span class="sr-only">Previous</span>
+    </a> <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> <span class="sr-only">Next</span>
+    </a>
+  </div>
+
+  <div id="band" class="container text-center">
+    <h3>Biographie</h3>
+    <h2>
+      <em>Pianiste, compositeur, arrangeur, enseignant en devenir</em>
+    </h2>
+    <p>C’est bien la curiosité qui a guidé la vie musicale de Nicolas Dross. Lors de ses études de piano à Montpellier, il s’initie en autodidacte à la composition, puis prends des cours d’écriture dans le but d’être compositeur. Sa rencontre avec Denis Pascal lui fait prendre conscience de la richesse de la littérature pour piano, ainsi que l’exigence de l’interprétation d’un langage musical, et dès lors il se passionne pour ses études pianistiques. Il entre en 2015 au Conservatoire Supérieur de Paris, dans la classe de Denis Pascal.</p>
+    <p>Très sensible et à l’écoute, Nicolas est apprécié autant dans ses concerts soliste que dans ses multiples récitals de musique de chambre. En 2013, il remporte à la fois le concours interrégional de piano de Pennautier et le concours Les saisons de la voix à Gordes en duo avec la soprano Lalaïna Garreta. Il fait la rencontre de Jeff Cohen, qui lui ouvre les portes de l’interprétation dans l’accompagnement vocal. Il participe aussi à la création de diverses œuvres, notamment dans les Ecoles d’Art Américaines de Fontainebleau en 2016, véritable lieu de créativité et d’inspiration, où il crée l’électrique trio Speleology de Vicente Hanser Atria.</p>
+  </div>
+
+  <div id="studies" class="container text-center bg-1">
+    <h3>Études</h3>
+    <p>Issu d’une famille de mélomanes, Nicolas commence les cours de piano à 4 ans à l’école de musique de Clermont l’Hérault, dans la classe de Guilhem Puech. Après quelques années d’apprentissage, il est redirigé vers le Conservatoire à Rayonnement Régional de Montpellier, où il rentre à l’age de 7 ans.</p>
+    <p>Commence alors une longue floraison dans cet établissement, en commençant par la classe de piano de Sophie Grattard qui lui permet de s’exprimer dans des styles très différents, le chœur et les classes de solfège (jusqu’au DEM avec Dominique Millet), puis dès le lycée les classes d’écriture et d’analyse de Bernard Maurin, et celles de musique de chambre avec Claire Stroll, Bernard Pozzera, et Michel Raynié. Initié à l’accompagnement et le jeu en orchestre dès le plus jeune âge par Guilhem Puech, Nicolas entre en cursus d’accompagnement chez Corinne Paoletti où il pratique réduction de quatuor, lecture à vue et accompagne les élèves chanteurs de Nicolas Domingues. En parallèle, il suit un baccalauréat
+      Technique de la Musique et de la Danse, où sont dispensés cours d’Histoire de la musique, de Physique du son, de Littérature et d’Histoire de l’art entre autres (il l’obtient en 2012). C’est à cette période qu’il rencontre Denis Pascal, à l’occasion des master-classes organisées au sein du conservatoire.</p>
+    <p>Après sa remise de Certificats de Fin d’Études Musicales, Nicolas tente différents concours et est admis en 2014 à la Haute École de Musique de Genève chez Sylvianne Deferne, où il entre en contact avec la méthode Jaques-Dalcroze et l’environnement d’une école supérieure. Il y suit quelques cours de musiques de chambre (James Alexander, Gui-Michel Caillat), de technique corporelle (Valerie Morand-Sanchez) et participe à une master-classes de lieder par Jeanne Roth et Gottlieb Wallisch. Il y crée, au sein de l’Ensemble contemporain de la Haute École de Musique de Genève, une œuvre de Loïc Silvestre sous la baguette de Pierre Bleuse.</p>
+    <p>Finalement reçu en 2015 au Conservatoire Supérieur de Paris, il y suit l’enseignement pointu de Denis Pascal, accompagné de ses assistants Sébastien Vichard et Varduhi Yeritsyan, des cours de lecture à vue avec Jonas Vitaud, d’harmonisation au clavier avec Isabelle Duha, ainsi qu’une année de master-classes sur piano anciens par Cyril Huvé. Il y est encouragé à continuer sa recherche dans le domaine corporel (avec les cours de Thechnique Alexander par Agnès de Brunhoff), accompagnement (classe Mélodie et Lied par Jeff Cohen, précédemment rencontré au concours Les Saisons de la Voix à Gordes, et Leontina Vaduva rencontrée à Lausanne), musique de chambre (classes d’Itamar GOLAN, Làszlo HADADY, David
+      WALTER et Haruko UEDA), mais surtout érudition avec son entrée en cursus d’Écriture supérieur (Harmonie chez Fabien Waksman) et en Analyse théorique et appliquée (Claude Ledoux).</p>
+    <p>Actuellement titulaire d’un Diplôme National Supérieur Professionnel de Musicien en piano et d’un Prix d’Harmonie, il continue ses études en master de piano, d’écriture, d’analyse, et poursuit un cursus pour obtenir son Diplôme d’État de professeur de musique.</p>
+    <p style="text-align: left">
+      <b>Récompenses</b>
+    </p>
+    <p>
+    <ul style="text-align: left">
+      <li>Concours interrégional de Pennautier : Prix Alain Marinaro (2013)</li>
+      <li>Les saisons de la voix : Avec <a href="http://fr.viadeo.com/fr/profile/lalaïna.garreta">Lalaïna Garreta</a>, Duo lauréat du Concours international de chant lied et mélodie (2013)
+      </li>
+    </ul>
+    </p>
+  </div>
+
+  <div id="tour">
+    <div class="container">
+      <h3 class="text-center">DATES DES CONCERTS</h3>
+      <p class="text-center">
+        Il va jouer de la musique.<br> Achetez vos tickets!
+      </p>
+
+      <div class="row text-center">
+        <div class="col-sm-4">
+          <div class="thumbnail">
+            <a href="#holmes"> <img src="img/concerts/Holmes 43.jpg" alt="Holmes">
+              <p>
+                <strong>Salle Ravel, Levallois</strong><br> <b class="title">Au salon d'Augusta Holmès</b>
+              </p>
+              <p>Dim. 7 octobre 2018</p></a> <a href="https://www.ville-levallois.fr/au-salon-daugusta-holmes/" class="btn">Info réservation</a>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="thumbnail">
+            <a href="#compositrices"> <img src="img/concerts/Compositrices 43.png" alt="Compositrices">
+              <p>
+                <strong>MINES ParisTech</strong><br> <b class="title">Les Femmes Compositrices</b>
+              </p>
+              <p>Mer. 21 novembre 2018</p></a>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="thumbnail">
+            <a href="#winterreise"> <img src="img/concerts/Winterreise 43.jpg" alt="Winterreise">
+              <p>
+                <strong>TBD</strong><br> <b class="title">Winterreise</b>
+              </p>
+              <p>Hiver 2018/2019</p></a>
+          </div>
+        </div>
+      </div>
+
+      <h4>Solo</h4>
+      <p>
+        <b>Au fil de l’eau</b>
+      </p>
+      <ul>
+        <li>T. Takemitsu – Rain Tree Sketch II</li>
+        <li>L. Berio – Wasserklavier</li>
+        <li>M. Ravel – Ondine, Une barque sur l’océan, Jeux d’eau</li>
+        <li>C. Debussy – Reflets dans l’eau, Poissons d’or</li>
+        <li>A. Scriabine – Sonate n°2 (Sonate-Fantaisie)</li>
+        <li>C. Scott – Lotus Land op.47 n°1</li>
+        <li>F. Liszt – Au bord d’une source</li>
+        <li>J.-P. Rameau – Les tourbillons</li>
+      </ul>
+      <ul class="list-group">
+        <li class="list-group-item">07/09/2017 : Petit Palais, Paris <span class="label label-warning">Terminé</span></li>
+        <li class="list-group-item">28/08/2017 : Château Malmont, Villeneuvette <span class="label label-warning">Terminé</span></li>
+      </ul>
+
+      <p>
+        <b>Contraintes libératrices</b>
+      </p>
+      <ul>
+        <li>J.-S. Bach – Chromatische Fantasie und Fuge</li>
+        <li>R. Schumann – Carnaval op.9</li>
+        <li>E. Satie – Avant-dernières pensées</li>
+      </ul>
+      <ul class="list-group">
+        <li class="list-group-item">21/12/2016 : Hôtel Magnol, Montpellier <span class="label label-warning">Terminé</span></li>
+      </ul>
+
+      <p>
+        <b>Concert de piano</b>
+      </p>
+      <ul>
+        <li>A. Scriabine – Sonate n°2 (Sonate-Fantaisie</li>
+        <li>S. Rachmaninov – Prélude op.23 n°6, Études-tableaux op.33 n°2 et 6</li>
+        <li>M. Ravel – Valses nobles et sentimentales</li>
+      </ul>
+      <ul class="list-group">
+        <li class="list-group-item">10/10/2015 : Château Saint-Martin de la Garrigue, Montagnac <span class="label label-warning">Terminé</span></li>
+      </ul>
+
+      <h4>Duo/Trio Éphémère</h4>
+
+      <p>
+        <b>Trio avec Charlotte Saluste-Bridoux et Frankie Carr</b>
+      </p>
+      <ul>
+        <li>Ravel - Trio</li>
+        <li>Schubert - Trio no.2 op.100, D.929</li>
+      </ul>
+      <ul class="list-group">
+        <li class="list-group-item">21/12/2017 : Chapelle des Jésuites, Carcassonne <span class="label label-warning">Terminé</span></li>
+      </ul>
+
+      <p>
+        <b>Violon et piano avec Charlotte Saluste-Bridoux</b>
+      </p>
+      <ul>
+        <li>Beethoven – Sonate no.10 op.96</li>
+        <li>Grieg – Sonate no.2 op.13</li>
+        <li>Ravel – Sonate en Sol</li>
+      </ul>
+      <ul class="list-group">
+        <li class="list-group-item">28/10/2017 : Hôtel Magnol, Montpellier <span class="label label-warning">Terminé</span></li>
+        <li class="list-group-item">29/09/2017 : Château Rieutort, Saint-Pargoire <span class="label label-warning">Terminé</span></li>
+        <li class="list-group-item">23/08/2017 : Château Cicéron, Ribaute <span class="label label-warning">Terminé</span></li>
+      </ul>
+
+      <ul>
+        <li>L.V. Beethoven – Sonate n°8 en sol majeur, op.30 n°3</li>
+        <li>R. Schumann – Fantasie en ut majeur, op.131</li>
+        <li>G. Enescu – Sonate n°3 en la mineur</li>
+      </ul>
+      <ul class="list-group">
+        <li class="list-group-item">09/08/2016 : Château Planères, Saint-Jean-Lasseille <span class="label label-warning">Terminé</span></li>
+      </ul>
+
+      <ul>
+        <li>Bach – Sonate pour violon et clavecin BWV 1018</li>
+        <li>Brahms – Sonate pour piano et violon no.3 op.108</li>
+        <li>Ravel – Sonate en sol</li>
+      </ul>
+      <ul class="list-group">
+        <li class="list-group-item">14/08/2015 : Château de Cassan, Roujan <span class="label label-warning">Terminé</span></li>
+      </ul>
+
+      <h4 id="holmes">Musique vocale et spectacles</h4>
+      <p>
+        <b>Au salon d'Augusta Holmès</b><br> <a href="http://www.agence-annealvarescorrea.com/artiste.cfm/33155-brigitte_fossey.html">Brigitte Fossey</a>, comédienne<br> <a href="https://www.operamusica.com/artist/natacha-hummel/">Natacha Hummel</a> , mezzo-soprano<br> <a href="https://www.operamusica.com/artist/lauriane-vidal/">Lauriane Vidal</a>, soprano<br> Nicolas Dross, pianiste<br>
+      </p>
+      <ul>
+        <li>Œuvres d’ A. Holmès, C. Saint-Saëns, J. Massenet, F. Liszt et C. Franck.</li>
+      </ul>
+      <ul class="list-group" id="compositrices">
+        <li class="list-group-item">07/10/2018 : Salle Ravel, Levallois <span class="label label-success">À venir</span> <span class="label "><a href="https://www.ville-levallois.fr/au-salon-daugusta-holmes/">infos réservation</a></span></li>
+        <li class="list-group-item">16/03/2018 : Salon de l'Hôtel de Ville, Versailles <span class="label label-warning">Terminé</span></li>
+      </ul>
+
+      <p>
+        <b>Les Femmes Compositrices</b><br> <a href="https://www.operamusica.com/artist/natacha-hummel/">Natacha Hummel</a> , mezzo-soprano<br> Anaëlle Gregorutti, soprano<br> Nicolas Dross et <a href="http://www.isabelle-aboulker.com/">Isabelle Aboulker</a> , piano<br>
+      </p>
+      <ul>
+        <li>Clara Schumann, Pauline Viardot, Maria Malibran, Augusta Holmes et Isabelle Aboulker</li>
+      </ul>
+      <ul class="list-group" id="winterreise">
+        <li class="list-group-item">21/11/2018 : MINES ParisTech <span class="label label-success">À venir</span></li>
+        <li class="list-group-item">4/09/2017 : MINES ParisTech <span class="label label-warning">Terminé</span></li>
+      </ul>
+      <p>
+        <b>Winterreise</b><br> <a href="https://www.maison-heinrich-heine.org/intervenant/myrianne-fleur-le-ralle-soprano">Myrianne-Fleur Le Ralle</a>, soprano<br> <a href="https://www.maison-heinrich-heine.org/intervenant/j/alexandre-jamar-tenor">Alexandre Jamar</a>, tenor<br> <a href="http://www.paletuviens.fr/halidou-nombre">Halidou Nombre</a>, baryton<br> <a href="https://www.collectiflacapsule.com/paul-meynieux/">Paul Meynieux</a>, mise en scène<br>
+      </p>
+      <ul class="list-group">
+        <li class="list-group-item">prochaine représentation hiver 2018/2019 <span class="label label-success">À venir</span></li>
+        <li class="list-group-item">27/01/2018 : Maison Heinrich Heine, Paris <span class="label label-warning">Terminé</span> <span class="label "><a href="https://www.maison-heinrich-heine.org/manifestations-culturelles/2018/janvier/die-winterreise#gallery-1-picture-0">photos</a></span></li>
+        <li class="list-group-item">20/01/2018 : Fondation Biermans-Lapôtre <span class="label label-warning">Terminé</span></li>
+        <li class="list-group-item">11/01/2018 : Conservatoire Paul Dukas <span class="label label-warning">Terminé</span></li>
       </ul>
     </div>
   </div>
-</nav>
 
-<div id="myCarousel" class="carousel slide" data-ride="carousel">
-  <!-- Indicators -->
-  <ol class="carousel-indicators">
-    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-    <li data-target="#myCarousel" data-slide-to="1"></li>
-    <li data-target="#myCarousel" data-slide-to="2"></li>
-    <li data-target="#myCarousel" data-slide-to="3"></li>
-    <li data-target="#myCarousel" data-slide-to="4"></li>
-    <li data-target="#myCarousel" data-slide-to="5"></li>
-    <li data-target="#myCarousel" data-slide-to="6"></li>
-  </ol>
+  <div id="repertory" class="container bg-1">
+    <h3 class="text-center">RÉPERTOIRE</h3>
+    <h4>Solo</h4>
+    <ul>
+      <li>Bach JS - Prélude et fugue chromatique BWV 903, Clavier bien tempéré I et II (extraits)</li>
+      <li>Rameau - Pièces de clavecin</li>
+      <li>Mozart - Sonate KV.332, Fantaisie en do mineur KV.475</li>
+      <li>Beethoven - Sonate no.11 op.22</li>
+      <li>Schubert - Moments musicaux, Impromptus,</li>
+      <li>Brahms - Klavierstüke op.119</li>
+      <li>Chopin - Scherzos no.2 et 4, Nocturnes (extraits), Etudes (extraits)</li>
+      <li>Liszt - Leggerezza, Légendes, Rhapsodies hongroises n°2 et 6</li>
+      <li>Rachmaninov - Sonate no.2, Etudes-tableaux op.39/26</li>
+      <li>Ravel - Jeux d'eau, Miroirs, Valses nobles et sentimentales, Ondine, Tombeau de Couperin (extraits)</li>
+      <li>Debussy - Etudes, Images II, Préludes (extraits)</li>
+      <li>Franck - Prélude, choral et fugue</li>
+      <li>Babadjanian - Capriccio</li>
+      <li>Copland - Piano variations</li>
+      <li>Berio - Sequenza, Encores (extraits)</li>
+      <li>Dutilleux - Jeu des contraires</li>
+      <li>Takemitsu - Rain tree sketch II</li>
+      <li>Escaich - Trois études baroques</li>
+      <li>Waksman - Tsukihime</li>
+    </ul>
 
-  <!-- Wrapper for slides -->
-  <div class="carousel-inner" role="listbox">
-    <div class="item active">
-      <img src="img/banner/Portrait 9x2.JPG" alt="Nicolas">
-    </div>
-    
-    <div class="item">
-      <img src="img/banner/Carcassonne 9x2.JPG" alt="Nicolas">
-      <div class="carousel-caption">
-        <h3>Carcassonne</h3>
-        <p>Duo/Trio Éphémère</p>
-      </div> 
-    </div>
-    
-    <div class="item">
-      <img src="img/banner/Fontainebleau 9x2.jpeg" alt="Nicolas">
-      <div class="carousel-caption">
-        <h3>Fontainebleau</h3>
-        <p>Création de Vicente Hanser Atria, Nicky Swett, Nash Rider</p>
-      </div> 
-    </div>
-    
-    <div class="item">
-      <img src="img/banner/Nicolas piano Belesta 9x2.jpg" alt="Nicolas">
-      <div class="carousel-caption">
-        <h3>Belesta</h3>
-        <p>2014</p>
-      </div> 
-    </div>
-    
-    <div class="item">
-      <img src="img/banner/Petit palais 2017 9x2.JPG" alt="Nicolas">
-      <div class="carousel-caption">
-        <h3>Petit palais</h3>
-        <p>2017</p>
-      </div> 
-    </div>
-    
-    <div class="item">
-      <img src="img/banner/Saluts augusta 2018 9x2.jpg" alt="Nicolas">
-      <div class="carousel-caption">
-        <h3>Versailles</h3>
-        <p>2018</p>
-      </div> 
-    </div>
-    
-    <div class="item">
-      <img src="img/banner/Schubert 9x2.jpg" alt="Nicolas">
-      <div class="carousel-caption">
-        <h3>Maison Heinrich Heine</h3>
-        <p>28 janvier 2018</p>
-      </div> 
-    </div>
+    <h4>Concerto</h4>
+    <ul>
+      <li>Mozart - Concerto no.24 et 27</li>
+      <li>Beethoven - Concerto no.3</li>
+    </ul>
+
+    <h4>Musique de chambre</h4>
+    <p>
+      <b>Cordes</b>
+    </p>
+    <ul>
+      <li>Beethoven - Sonate no.10 op.96, Sonate n°8 op.30 n°3</li>
+      <li>Schubert - Trio no.2</li>
+      <li>Ravel - Trio, Sonate pour violon</li>
+      <li>Enescu - Sonate pour violon no.3</li>
+      <li>Grieg - Sonate pour violon no.2 op.13</li>
+      <li>Beach - Romance pour violon, Summer dreams (4 mains)</li>
+      <li>Brahms - Sonate pour violon no.3, Sonate pour violoncelle en mi mineur</li>
+      <li>Glinka - Trio pathétique</li>
+      <li>L. Boulanger - D'un matin de printemps, D'un soir triste</li>
+      <li>F. Bridge – Sonate pour violoncelle et piano</li>
+      <li>Piazzola - Summer, Winter</li>
+    </ul>
+
+    <p>
+      <b>Vents</b>
+    </p>
+    <ul>
+      <li>Mozart - Quintette avec vents</li>
+      <li>R. Schumann – Fantasiestücke op.73</li>
+      <li>S. Prokofiev - Sonate pour flûte op.94</li>
+      <li>György Vukán – 13 Bagatelles for clarinet and piano : Prayer, Let’s do it, Rag-music</li>
+      <li>Péter Zombola – Institutio n°2 for bass clarinet and piano</li>
+    </ul>
+
+    <p>
+      <b>Mixte</b>
+    </p>
+    <ul>
+      <li>Piazzola/Sirodeau - La Camorra, Oblivion</li>
+    </ul>
+
+    <p>
+      <b>Duo de pianistes</b>
+    </p>
+    <ul>
+      <li>Brahms - Sonate pour deux pianos</li>
+      <li>Dutilleux - Figures de rhttps://philharmoniedeparis.fr/fr/activite/concert-performance/19353-piano-orchestraésonnances (2 pianos)</li>
+      <li>Lutoslawski - Variations paganini (2 pianos)</li>
+      <li>G. Fauré – Dolly suite op.56</li>
+      <li>Grieg – Peer Gynt suite n°1 op.46</li>
+      <li>F. Schubert – Fantaisie en Fa mineur D.940</li>
+    </ul>
+
+    <p>
+      <b>Musique vocale</b>
+    </p>
+    <ul>
+      <li>Mélodies de Poulenc, Ravel (Histoires naturelles, Mélodies populaires grecques, A, Caplet, Messiean, Debussy</li>
+      <li>Lieder de Schubert (Winterreise), Schumann (Liederkreis op.39), Beethoven</li>
+      <li>Songs de Britten, Quilter, Guastavino</li>
+    </ul>
+
+    <h4>Orchestre</h4>
+    <ul>
+      <li>Ohana - Cantigas</li>
+      <li>Debussy - Nocturnes (extraits : Nuages et Fêtes), Jeux</li>
+      <li>Ravel - Daphnis et Chloé, suite n° 2</li>
+    </ul>
   </div>
 
-  <!-- Left and right controls -->
-  <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
-</div>
-
-<div id="band" class="container text-center">
-  <h3>Biographie</h3>
-  <h2><em>Pianiste, compositeur, arrangeur, enseignant en devenir</em></h2>
-  <p>C’est bien la curiosité qui a guidé la vie musicale de Nicolas Dross. Lors de ses études de piano à Montpellier, il s’initie en autodidacte à la composition, puis prends des cours d’écriture dans le but d’être compositeur. Sa rencontre avec Denis Pascal lui fait prendre conscience de la richesse de la littérature pour piano, ainsi que l’exigence de l’interprétation d’un langage musical, et dès lors il se passionne pour ses études pianistiques. Il entre en 2015 au Conservatoire Supérieur de Paris, dans la classe de Denis Pascal.</p>
-  <p>Très sensible et à l’écoute, Nicolas est apprécié autant dans ses concerts soliste que dans ses multiples récitals de musique de chambre. En 2013, il remporte à la fois le concours interrégional de piano de Pennautier et le concours Les saisons de la voix à Gordes en duo avec la soprano Lalaïna Garreta. Il fait la rencontre de Jeff Cohen, qui lui ouvre les portes de l’interprétation dans l’accompagnement vocal. Il participe aussi à la création de diverses œuvres, notamment dans les Ecoles d’Art Américaines de Fontainebleau en 2016, véritable lieu de créativité et d’inspiration, où il crée l’électrique trio Speleology de Vicente Hanser Atria.</p>
-</div>
-
-<div id="studies" class="container text-center bg-1">
-  <h3>Études</h3>
-  <p>Issu d’une famille de mélomanes, Nicolas commence les cours de piano à 4 ans à l’école de musique de Clermont l’Hérault, dans la classe de Guilhem Puech. Après quelques années d’apprentissage, il est redirigé vers le Conservatoire à Rayonnement Régional de Montpellier, où il rentre à l’age de 7 ans.</p>
-  <p>Commence alors une longue floraison dans cet établissement, en commençant par la classe de piano de Sophie Grattard qui lui permet de s’exprimer dans des styles très différents, le chœur et les classes de solfège (jusqu’au DEM avec Dominique Millet), puis dès le lycée les classes d’écriture et d’analyse de Bernard Maurin, et celles de musique de chambre avec Claire Stroll, Bernard Pozzera, et Michel Raynié. Initié à l’accompagnement et le jeu en orchestre dès le plus jeune âge par Guilhem Puech, Nicolas entre en cursus d’accompagnement chez Corinne Paoletti où il pratique réduction de quatuor, lecture à vue et accompagne les élèves chanteurs de Nicolas Domingues. En parallèle, il suit un baccalauréat Technique de la Musique et de la Danse, où sont dispensés cours d’Histoire de la musique, de Physique du son, de Littérature et d’Histoire de l’art entre autres (il l’obtient en 2012). C’est à cette période qu’il rencontre Denis Pascal, à l’occasion des master-classes organisées au sein du conservatoire.</p>
-  <p>Après sa remise de Certificats de Fin d’Études Musicales, Nicolas tente différents concours et est admis en 2014 à la Haute École de Musique de Genève chez Sylvianne Deferne, où il entre en contact avec la méthode Jaques-Dalcroze et l’environnement d’une école supérieure. Il y suit quelques cours de musiques de chambre (James Alexander, Gui-Michel Caillat), de technique corporelle (Valerie Morand-Sanchez) et participe à une master-classes de lieder par Jeanne Roth et Gottlieb Wallisch. Il y crée, au sein de l’Ensemble contemporain de la Haute École de Musique de Genève, une œuvre de Loïc Silvestre sous la baguette de Pierre Bleuse.</p>
-  <p>Finalement reçu en 2015 au Conservatoire Supérieur de Paris, il y suit l’enseignement pointu de Denis Pascal, accompagné de ses assistants Sébastien Vichard et Varduhi Yeritsyan, des cours de lecture à vue avec Jonas Vitaud, d’harmonisation au clavier avec Isabelle Duha, ainsi qu’une année de master-classes sur piano anciens par Cyril Huvé. Il y est encouragé à continuer sa recherche dans le domaine corporel (avec les cours de Thechnique Alexander par Agnès de Brunhoff), accompagnement (classe Mélodie et Lied par Jeff Cohen, précédemment rencontré au concours Les Saisons de la Voix à Gordes, et Leontina Vaduva rencontrée à Lausanne), musique de chambre (classes d’Itamar GOLAN, Làszlo HADADY, David WALTER et Haruko UEDA), mais surtout érudition avec son entrée en cursus d’Écriture supérieur (Harmonie chez Fabien Waksman) et en Analyse théorique et appliquée (Claude Ledoux).</p>
-  <p>Actuellement titulaire d’un Diplôme National Supérieur Professionnel de Musicien en piano et d’un Prix d’Harmonie, il continue ses études en master de piano, d’écriture, d’analyse, et poursuit un cursus pour obtenir son Diplôme d’État de professeur de musique.</p>
-  <p style="text-align:left"><b>Récompenses</b></p>
-  <p>
-    <ul style="text-align:left">
-      <li>Concours interrégional de Pennautier : Prix Alain Marinaro (2013)</li>
-      <li>Les saisons de la voix : Avec <a href="http://fr.viadeo.com/fr/profile/lalaïna.garreta">Lalaïna Garreta</a>, Duo lauréat du Concours international de chant lied et mélodie (2013)</li>
-    </ul>
-  </p>
-</div>
-
-<div id="tour">
-  <div class="container">
-    <h3 class="text-center">DATES DES CONCERTS</h3>
-    <p class="text-center">Il va jouer de la musique.<br> Achetez vos tickets!</p>
-
-    <div class="row text-center">
-      <div class="col-sm-4">
-        <div class="thumbnail">
-          <a href="#holmes">
-          <img src="img/concerts/Holmes 43.jpg" alt="Holmes">
-          <p><strong>Salle Ravel, Levallois</strong><br>
-          <b class="title">Au salon d'Augusta Holmès</b></p>
-          <p>Dim. 7 octobre 2018</p></a>
-          <a href="https://www.ville-levallois.fr/au-salon-daugusta-holmes/" class="btn">Info réservations</a>
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="thumbnail">
-          <a href="#compositrices">
-          <img src="img/concerts/Compositrices 43.png" alt="Compositrices">
-          <p><strong>MINES ParisTech</strong><br>
-          <b class="title">Les Femmes Compositrices</b></p>
-          <p>Mer. 21 novembre 2018</p></a>
-        </div>
-      </div>
-      <div class="col-sm-4">
-        <div class="thumbnail">
-          <a href="#winterreise">
-          <img src="img/concerts/Winterreise 43.jpg" alt="Winterreise">
-          <p><strong>TBD</strong><br>
-          <b class="title">Winterreise</b></p>
-          <p>Hiver 2018/2019</p></a>
-        </div>
-      </div>
-    </div>
-
-    <h4>Solo</h4>
-    <p><b>Au fil de l’eau</b></p>
-    <ul>
-      <li>T. Takemitsu – Rain Tree Sketch II</li>
-      <li>L. Berio – Wasserklavier</li>
-      <li>M. Ravel – Ondine, Une barque sur l’océan, Jeux d’eau</li>
-      <li>C. Debussy – Reflets dans l’eau, Poissons d’or</li>
-      <li>A. Scriabine – Sonate n°2 (Sonate-Fantaisie)</li>
-      <li>C. Scott – Lotus Land op.47 n°1</li>
-      <li>F. Liszt – Au bord d’une source</li>
-      <li>J.-P. Rameau – Les tourbillons</li>
-    </ul>
-	<ul class="list-group">
-      <li class="list-group-item">07/09/2017 : Petit Palais, Paris <span class="label label-warning">Terminé</span></li>
-      <li class="list-group-item">28/08/2017 : Château Malmont, Villeneuvette <span class="label label-warning">Terminé</span></li>
-    </ul>
-
-    <p><b>Contraintes libératrices</b></p>
-    <ul>
-      <li>J.-S. Bach – Chromatische Fantasie und Fuge</li>
-      <li>R. Schumann – Carnaval op.9</li>
-      <li>E. Satie – Avant-dernières pensées</li>
-    </ul>
-	<ul class="list-group">
-      <li class="list-group-item">21/12/2016 : Hôtel Magnol, Montpellier <span class="label label-warning">Terminé</span></li>
-    </ul>
-
-    <p><b>Concert de piano</b></p>
-    <ul>
-      <li>A. Scriabine – Sonate n°2 (Sonate-Fantaisie</li>
-      <li>S. Rachmaninov – Prélude op.23 n°6, Études-tableaux op.33 n°2 et 6</li>
-      <li>M. Ravel – Valses nobles et sentimentales</li>
-    </ul>
-	<ul class="list-group">
-      <li class="list-group-item">10/10/2015 : Château Saint-Martin de la Garrigue, Montagnac <span class="label label-warning">Terminé</span></li>
-    </ul>
-
-    <h4>Duo/Trio Éphémère</h4>
-
-    <p><b>Trio avec Charlotte Saluste-Bridoux et Frankie Carr</b></p>
-    <ul>
-      <li>Ravel - Trio</li>
-      <li>Schubert - Trio no.2 op.100, D.929</li>
-    </ul>
-	<ul class="list-group">
-      <li class="list-group-item">21/12/2017 : Chapelle des Jésuites, Carcassonne <span class="label label-warning">Terminé</span></li>
-    </ul>
-
-    <p><b>Violon et piano avec Charlotte Saluste-Bridoux</b></p>
-    <ul>
-      <li>Beethoven – Sonate no.10 op.96</li>
-      <li>Grieg – Sonate no.2 op.13</li>
-      <li>Ravel – Sonate en Sol</li>
-    </ul>
-	<ul class="list-group">
-      <li class="list-group-item">28/10/2017 : Hôtel Magnol, Montpellier <span class="label label-warning">Terminé</span></li>
-      <li class="list-group-item">29/09/2017 : Château Rieutort, Saint-Pargoire <span class="label label-warning">Terminé</span></li>
-      <li class="list-group-item">23/08/2017 : Château Cicéron, Ribaute <span class="label label-warning">Terminé</span></li>
-    </ul>
-
-    <ul>
-      <li>L.V. Beethoven – Sonate n°8 en sol majeur, op.30 n°3</li>
-      <li>R. Schumann – Fantasie en ut majeur, op.131</li>
-      <li>G. Enescu – Sonate n°3 en la mineur</li>
-    </ul>
-	<ul class="list-group">
-      <li class="list-group-item">09/08/2016 : Château Planères, Saint-Jean-Lasseille <span class="label label-warning">Terminé</span></li>
-    </ul>
-
-    <ul>
-      <li>Bach – Sonate pour violon et clavecin BWV 1018</li>
-      <li>Brahms – Sonate pour piano et violon no.3 op.108</li>
-      <li>Ravel – Sonate en sol</li>
-    </ul>
-	<ul class="list-group">
-      <li class="list-group-item">14/08/2015 : Château de Cassan, Roujan <span class="label label-warning">Terminé</span></li>
-    </ul>
-
-    <h4 id="holmes">Musique vocale et spectacles</h4>
+  <div id="compos" class="container">
+    <h3 class="text-center">COMPOSITION</h3>
     <p>
-      <b>Au salon d'Augusta Holmès</b><br>
-      <a href="http://www.agence-annealvarescorrea.com/artiste.cfm/33155-brigitte_fossey.html">Brigitte Fossey</a>, comédienne<br>
-      <a href="https://www.operamusica.com/artist/natacha-hummel/">Natacha Hummel</a> , mezzo-soprano<br>
-      <a href="https://www.operamusica.com/artist/lauriane-vidal/">Lauriane Vidal</a>, soprano<br>
-      Nicolas Dross, pianiste<br>
-    </p>
-    <ul>
-      <li>Œuvres d’ A. Holmès,  C. Saint-Saëns, J. Massenet,  F. Liszt et C. Franck.</li>
-    </ul>
-    <ul class="list-group" id="compositrices">
-      <li class="list-group-item">07/10/2018 : Salle Ravel, Levallois <span class="label label-success">À venir</span> <span class="label "><a href="https://www.ville-levallois.fr/au-salon-daugusta-holmes/">infos réservations</a></span></li>
-      <li class="list-group-item">16/03/2018 : Salon de l'Hôtel de Ville, Versailles <span class="label label-warning">Terminé</span></li>
-    </ul>
-    
-    <p>
-        <b>Les Femmes Compositrices</b><br>
-        <a href="https://www.operamusica.com/artist/natacha-hummel/">Natacha Hummel</a> , mezzo-soprano<br>
-        Anaëlle Gregorutti, soprano<br>
-        Nicolas Dross et <a href="http://www.isabelle-aboulker.com/">Isabelle Aboulker</a> , piano<br>
-    </p>
-    <ul>
-      <li>Clara Schumann, Pauline Viardot, Maria Malibran, Augusta Holmes et Isabelle Aboulker</li>
-    </ul>
-    <ul class="list-group" id="winterreise">
-      <li class="list-group-item">21/11/2018 : MINES ParisTech <span class="label label-success">À venir</span></li>
-      <li class="list-group-item">4/09/2017 : MINES ParisTech <span class="label label-warning">Terminé</span></li>
-    </ul>
-    <p>
-      <b>Winterreise</b><br>
-      <a href="https://www.maison-heinrich-heine.org/intervenant/myrianne-fleur-le-ralle-soprano">Myrianne-Fleur Le Ralle</a>, soprano<br>
-      <a href="https://www.maison-heinrich-heine.org/intervenant/j/alexandre-jamar-tenor">Alexandre Jamar</a>, tenor<br>
-      <a href="http://www.paletuviens.fr/halidou-nombre">Halidou Nombre</a>, baryton<br>
-      <a href="https://www.collectiflacapsule.com/paul-meynieux/">Paul Meynieux</a>, mise en scène<br>
+      <b>Participation en tant que compositeur</b><br> Piano Orchestra
     </p>
     <ul class="list-group">
-      <li class="list-group-item">prochaine représentation hiver 2018/2019 <span class="label label-success">À venir</span></li>
-      <li class="list-group-item">27/01/2018 : Maison Heinrich Heine, Paris <span class="label label-warning">Terminé</span> <span class="label "><a href="https://www.maison-heinrich-heine.org/manifestations-culturelles/2018/janvier/die-winterreise#gallery-1-picture-0">photos</a></span></li>
-      <li class="list-group-item">20/01/2018 : Fondation Biermans-Lapôtre <span class="label label-warning">Terminé</span></li>
-      <li class="list-group-item">11/01/2018 : Conservatoire Paul Dukas <span class="label label-warning">Terminé</span></li>
+      <li class="list-group-item">Dimanche 7 avril 2019 — 15h00, cité de la musique <span class="label label-success">À venir</span> <span class="label"><a href="https://philharmoniedeparis.fr/fr/activite/concert-performance/19353-piano-orchestra">info réservation</a></span></li>
     </ul>
   </div>
-</div>
 
-<div id="repertory" class="container bg-1">
-  <h3 class="text-center">RÉPERTOIRE</h3>
-  <h4>Solo</h4>
-  <ul>
-    <li>Bach JS - Prélude et fugue chromatique BWV 903, Clavier bien tempéré I et II (extraits)</li>
-    <li>Rameau - Pièces de clavecin</li>
-    <li>Mozart - Sonate KV.332, Fantaisie en do mineur KV.475</li>
-    <li>Beethoven - Sonate no.11 op.22</li>
-    <li>Schubert - Moments musicaux, Impromptus,</li>
-    <li>Brahms - Klavierstüke op.119</li>
-    <li>Chopin - Scherzos no.2 et 4, Nocturnes (extraits), Etudes (extraits)</li>
-    <li>Liszt - Leggerezza, Légendes, Rhapsodies hongroises n°2 et 6</li>
-    <li>Rachmaninov - Sonate no.2, Etudes-tableaux op.39/26</li>
-    <li>Ravel - Jeux d'eau, Miroirs, Valses nobles et sentimentales, Ondine, Tombeau de Couperin (extraits)</li>
-    <li>Debussy - Etudes, Images II, Préludes (extraits)</li>
-    <li>Franck - Prélude, choral et fugue</li>
-    <li>Babadjanian - Capriccio</li>
-    <li>Copland - Piano variations</li>
-    <li>Berio - Sequenza, Encores (extraits)</li>
-    <li>Dutilleux - Jeu des contraires</li>
-    <li>Takemitsu - Rain tree sketch II</li>
-    <li>Escaich - Trois études baroques</li>
-    <li>Waksman - Tsukihime</li>
-  </ul>
-
-  <h4>Concerto</h4>
-  <ul>
-    <li>Mozart - Concerto no.24 et 27</li>
-    <li>Beethoven - Concerto no.3</li>
-  </ul>
-
-  <h4>Musique de chambre</h4>
-  <p><b>Cordes</b></p>
-  <ul>
-    <li>Beethoven - Sonate no.10 op.96, Sonate n°8 op.30 n°3</li>
-    <li>Schubert - Trio no.2</li>
-    <li>Ravel - Trio, Sonate pour violon</li>
-    <li>Enescu - Sonate pour violon no.3</li>
-    <li>Grieg - Sonate pour violon no.2 op.13</li>
-    <li>Beach - Romance pour violon, Summer dreams (4 mains)</li>
-    <li>Brahms - Sonate pour violon no.3, Sonate pour violoncelle en mi mineur</li>
-    <li>Glinka - Trio pathétique</li>
-    <li>L. Boulanger - D'un matin de printemps, D'un soir triste</li>
-    <li>F. Bridge – Sonate pour violoncelle et piano</li>
-    <li>Piazzola - Summer, Winter</li>
-  </ul>
-
-  <p><b>Vents</b></p>
-  <ul>
-    <li>Mozart - Quintette avec vents</li>
-    <li>R. Schumann – Fantasiestücke op.73</li>
-    <li>S. Prokofiev - Sonate pour flûte op.94</li>
-    <li>György Vukán – 13 Bagatelles for clarinet and piano : Prayer, Let’s do it, Rag-music</li>
-    <li>Péter Zombola – Institutio n°2 for bass clarinet and piano</li>
-  </ul>
-
-  <p><b>Mixte</b></p>
-  <ul>
-    <li>Piazzola/Sirodeau - La Camorra, Oblivion</li>
-  </ul>
-
-  <p><b>Duo de pianistes</b></p>
-  <ul>
-    <li>Brahms - Sonate pour deux pianos</li>
-    <li>Dutilleux - Figures de rhttps://philharmoniedeparis.fr/fr/activite/concert-performance/19353-piano-orchestraésonnances (2 pianos)</li>
-    <li>Lutoslawski - Variations paganini (2 pianos)</li>
-    <li>G. Fauré – Dolly suite op.56</li>
-    <li>Grieg – Peer Gynt suite n°1 op.46</li>
-    <li>F. Schubert – Fantaisie en Fa mineur D.940</li>
-  </ul>
-
-  <p><b>Musique vocale</b></p>
-  <ul>
-    <li>Mélodies de Poulenc, Ravel (Histoires naturelles, Mélodies populaires grecques, A, Caplet, Messiean, Debussy</li>
-    <li>Lieder de Schubert (Winterreise), Schumann (Liederkreis op.39), Beethoven</li>
-    <li>Songs de Britten, Quilter, Guastavino</li>
-  </ul>
-
-  <h4>Orchestre</h4>
-  <ul>
-    <li>Ohana - Cantigas</li>
-    <li>Debussy - Nocturnes (extraits : Nuages et Fêtes), Jeux</li>
-    <li>Ravel - Daphnis et Chloé, suite n° 2</li>
-  </ul>
-</div>
-
-<div id="compos" class="container">
-  <h3 class="text-center">COMPOSITION</h3>
-  <p><b>Participation en tant que compositeur</b><br>
-  Piano Orchestra</p>
-  <ul class="list-group">
-      <li class="list-group-item">Dimanche 7 avril 2019 — 15h00, cité de la musique <span class="label label-success">À venir</span> <span class="label"><a href="https://philharmoniedeparis.fr/fr/activite/concert-performance/19353-piano-orchestra">info réservations</a></span></li>
-    </ul>
-</div>
-
-<div id="videos" class="bg-1">
-  <div class="container">
-    <h3 class="text-center">Vidéos</h3>
-    <div class="embed-responsive embed-responsive-16by9">
-      <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/vDPdZAJeRuo" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  <div id="videos" class="bg-1">
+    <div class="container">
+      <h3 class="text-center">Vidéos</h3>
+      <div class="embed-responsive embed-responsive-16by9">
+        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/vDPdZAJeRuo" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      </div>
+      <br>
+      <div class="embed-responsive embed-responsive-16by9">
+        <iframe src="https://player.vimeo.com/video/170437467?title=0&portrait=0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+        <script src="https://player.vimeo.com/api/player.js"></script>
+        <a href="https://vimeo.com/170437467">Nicolas Dross interpr&egrave;te la sonate K.332 de Mozart - mvt n&deg;1</a>
+      </div>
     </div>
+  </div>
+
+  <div id="contact" class="container">
+    <h3 class="text-center">Contact</h3>
+    <p class="text-center">
+      <em>On adore Nicolas !</em>
+    </p>
+    <div class="row test">
+      <div class="col-md-4">
+        <p>Fan ? Laisse un message.</p>
+        <div id="sendSuccess" class="alert alert-success">
+          <strong>Envoyé !</strong> Message envoyé avec succès.
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-sm-6 form-group">
+            <input class="form-control" id="name" name="name" placeholder="Nom" type="text" required>
+          </div>
+          <div class="col-sm-6 form-group">
+            <input class="form-control" id="email" name="email" placeholder="Email" type="email" required>
+          </div>
+        </div>
+        <textarea class="form-control" id="message" name="message" placeholder="Commentaire" rows="5"></textarea>
+        <div class="row">
+          <div class="col-md-12 form-group">
+            <button id="sendbtn" class="btn pull-right" type="submit" onclick="submitEmail()">Envoyer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="links" class="container bg-1" ng-controller="linkCtrl">
+    <h3 class="text-center">Liens</h3>
+    <!--  perso -->
+    <h4>Liens personnels</h4>
+    <ul>
+      <li ng-repeat="pl in personalLinks"><a href="{{pl.url}}">{{pl.name}}</a></li>
+    </ul>
+    <div class="row">
+      <!-- autres -->
+      <div class="col-sm-6">
+        <h4>Liens autres</h4>
+        <ul>
+          <li ng-repeat="l in otherLinks"><a href="{{l.url}}">{{l.name}}</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-6">
+        <!-- presse -->
+        <h4>Presse</h4>
+        <ul>
+          <li ng-repeat="ml in mediaLinks"><a href="{{ml.url}}">{{ml.name}}</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="music" class="container">
+    <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/575613921&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
+  </div>
+
+  <footer class="text-center">
+    <a class="up-arrow" href="#myPage" data-toggle="tooltip" title="HAUT DE PAGE"> <span class="glyphicon glyphicon-chevron-up"></span>
+    </a><br>
     <br>
-    <div class="embed-responsive embed-responsive-16by9">
-      <iframe src="https://player.vimeo.com/video/170437467?title=0&portrait=0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-      <script src="https://player.vimeo.com/api/player.js"></script>
-      <a href="https://vimeo.com/170437467">Nicolas Dross interpr&egrave;te la sonate K.332 de Mozart - mvt n&deg;1</a>
-    </div>
-  </div>
-</div>
-
-<div id="contact" class="container">
-  <h3 class="text-center">Contact</h3>
-  <p class="text-center"><em>On adore Nicolas !</em></p>
-  <div class="row test">
-    <div class="col-md-4">
-      <p>Fan ? Laisse un message.</p>
-      <div id="sendSuccess" class="alert alert-success">
-        <strong>Envoyé !</strong> Message envoyé avec succès.
-      </div>
-    </div>
-    <div class="col-md-8">
-      <div class="row">
-        <div class="col-sm-6 form-group">
-          <input class="form-control" id="name" name="name" placeholder="Nom" type="text" required>
-        </div>
-        <div class="col-sm-6 form-group">
-          <input class="form-control" id="email" name="email" placeholder="Email" type="email" required>
-        </div>
-      </div>
-      <textarea class="form-control" id="message" name="message" placeholder="Commentaire" rows="5"></textarea>
-      <div class="row">
-        <div class="col-md-12 form-group">
-          <button id="sendbtn" class="btn pull-right" type="submit" onclick="submitEmail()">Envoyer</button>
-        </div>
-      </div> 
-    </div>
-  </div>
-</div>
-
-<div id="links" class="container bg-1">
-  <h3 class="text-center">Liens</h3>
-  <ul>
-    <li><a href="https://www.youtube.com/channel/UC_Dc8B2UXdrtJvKTHudeZXQ">YouTube</a></li>
-    <li><a href="https://soundcloud.com/nicolas-dross-587682986">SoundCloud</a></li>
-  </ul>
-  <ul>
-    <li><a href="https://www.jeunes-talents.org/musiciens/1572/Nicolas-Dross">jeunes-talents.org</a></li>
-    <li><a href="http://www.alainmarinaro.fr/teams/nicolas-dross-pianiste/">alainmarinaro.fr</a></li>
-    <li><a href="https://www.operamusica.com/artist/nicolas-dross/">operamusica.com</a></li>
-    <li><a href="https://www.maison-heinrich-heine.org/intervenant/nicolas-dross-piano">maison-heinrich-heine.org</a></li>
-    <li><a href="https://www.lindependant.fr/2013/06/01/nicolas-dross-se-produit-au-caveau-arnaud-de-villeneuve,1759956.php">lindependant.fr</a></li>
-    <li><a href="https://versaillesplus.com/tag/nicolas-dross/">versaillesplus.com</a></li>
-    <li><a href="https://www.hotelmagnol.com/single-post/2018/01/24/100218-Raphael-Pidoux-Les-Concerts-de-Magnol">hotelmagnol.com</a></li>
-    <li><a href="http://www.herault-tribune.com/articles/38444/agde-concert-jeunes-talents/">herault-tribune.com</a></li>
-    <li><a href="http://www.ciup.fr/non-classe/concert-classique-ravel-et-caplet-71762/">ciup.fr</a></li>
-    <li><a href="http://ffjs.org/projets/-403">ffjs.org</a></li>
-    <li><a href="http://www.theatre.carcassonne.org/manifestations/ravel-schubert-le-trio-ephemere-trois-jeunes-talents">theatre.carcassonne.org</a></li>
-    <li><a href="http://www.opera-orchestre-montpellier.fr/evenement/recital-flute-et-piano">opera-orchestre-montpellier.fr</a></li>
-    <li><a href="http://paris.by-night.fr/soiree/pause-piano-de-nicolas-dross--338313.html">paris.by-night.fr</a></li>
-    <li><a href="http://www.montpellier3m.fr/evenement-agenda/2-et-3-avril-classe-de-ma%C3%AEtre-de-serge-cyferstein-chant">montpellier3m.fr</a></li>
-    <li><a href="http://www.fbl-paris.org/fr/actualites/details/die-winterreise-franz-schubert.130.html">fbl-paris.org</a></li>
-  </ul>
-</div>
-
-<div id="music" class="container">
-  <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/575613921&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true"></iframe>
-</div>
-
-<footer class="text-center">
-  <a class="up-arrow" href="#myPage" data-toggle="tooltip" title="HAUT DE PAGE">
-    <span class="glyphicon glyphicon-chevron-up"></span>
-  </a><br><br>
-  <p id="photocreds"></p>
-  <p><a href="https://levg34.github.io" data-toggle="tooltip" title="Visit my website">Author : levg34</a></p> 
-</footer>
+    <p id="photocreds"></p>
+    <p>
+      <a href="https://levg34.github.io" data-toggle="tooltip" title="Visit my website">Author : levg34</a>
+    </p>
+  </footer>
 
 </body>
 </html>
