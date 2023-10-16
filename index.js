@@ -231,7 +231,7 @@ app.post('/message', (req, res) => {
     message.date = new Date().toISOString()
     db.messages.insert(message, function (err, newDoc) {
         if (err) res.status(500).json(err)
-        sendEmail(newDoc).then(res => console.log(res?.data))
+        sendEmail(newDoc).then(res => console.log(res?.data)).catch(err => console.log(err))
         res.json(newDoc)
         axios.get(`http://ip-api.com/json/${message.ip}`).then(response => {
             if (response.data) {
@@ -734,7 +734,10 @@ app.listen(port, () => {
 })
 
 function sendEmail({name, email, message}) {
-    return axios.post(process.env.MAIL_HOOK, {name, email, message})
+    if (process.env.MAIL_HOOK) {
+        return axios.post(process.env.MAIL_HOOK, {name, email, message})
+    }
+    return Promise.reject('No email hook found')
 }
 
 function sendNewsletter(newsletter) {
