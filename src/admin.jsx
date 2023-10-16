@@ -1,4 +1,4 @@
-const { Container, Jumbotron, Navbar, Nav, ListGroup, Row, Col, Card, ButtonGroup, Button, Form, Alert, Image, Toast } = ReactBootstrap
+const { Container, Jumbotron, Navbar, Nav, ListGroup, Row, Col, Card, ButtonGroup, Button, Form, Alert, Image, Toast, Modal, Table } = ReactBootstrap
 const { useState, useEffect, useRef } = React
 
 function stringToColour(str) {
@@ -119,6 +119,62 @@ function AlertFeedback(props) {
     </Container>
 }
 
+function ImageList(props) {
+    const {feedback} = props
+    const [images, setImages] = useState([])
+
+    const loadImages = () => {
+        axios.get('/images').then(res => setImages(res.data)).catch(err => feedback.treatError(err))
+    }
+
+    useEffect(loadImages,[])
+
+    const [showModal, setShowModal] = useState(false)
+    const [viewingImage, setViewingImage] = useState({})
+
+    const showPhotoModal = img => {
+        setShowModal(true)
+        setViewingImage(img)
+    }
+
+    return <Container>
+        {images.map(img => <Image style={{maxHeight:'150px'}} fluid key={img._id} src={img.destination+img.filename} thumbnail onClick={e => showPhotoModal(img)}/>)}
+        <ImageModal show={showModal} setShow={setShowModal} image={viewingImage}/>
+    </Container>
+}
+
+function ImageModal(props) {
+    const {image,show,setShow} = props
+    const url = image.destination+image.filename
+    return <Modal size="lg" show={show} onHide={() => setShow(false)}>
+        <Modal.Header closeButton>
+            <Modal.Title>
+                {image.originalname}
+            </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <Card>
+                <Card.Img variant="top" src={url} />
+                <Card.Body>
+                    <Table striped bordered hover>
+                        <tbody>
+                            {Object.entries(image).map(e => <tr key={e[0]}>
+                                <th>{e[0]}</th>
+                                <td>{e[1]}</td>
+                            </tr>)}
+                            <tr key="url">
+                                <th>url</th>
+                                <td><Form.Control value={url} readOnly/></td>
+                            </tr>
+                        </tbody>
+                    </Table>
+                    <Button variant="primary" onClick={e => setShow(false)}>Utiliser</Button>
+                </Card.Body>
+            </Card>
+        </Modal.Body>
+    </Modal>
+}
+
 function Images(props) {
     const feedback = props.feedback
 
@@ -145,6 +201,7 @@ function Images(props) {
 
     return <Container>
         Images...
+        <ImageList feedback={feedback}/>
         {imgData && <Image src={'/uploads/'+imgData.filename} thumbnail />}
         <Form onSubmit={handleSubmit} encType="multipart/form-data">
             <Form.Group>
