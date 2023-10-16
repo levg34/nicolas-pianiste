@@ -102,6 +102,10 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/view/index.html')
 })
 
+app.get('/unsubscribe', (req, res) => {
+    res.sendFile(__dirname + '/view/unsubscribe.html')
+})
+
 app.get('/links', (req, res) => {
     db.links.find({}).sort({type: 1, name: 1}).exec(function (err, docs) {
         if (err) res.status(500).json(err)
@@ -197,6 +201,14 @@ app.get('/uploads/:filename', (req, res) => {
     const fileName = req.params.filename
     res.sendFile(fileName, options, function (err) {
         if (err) console.log(err)
+    })
+})
+
+app.put('/unsubscribe/:email', (req, res) => {
+    const email = req.params.email
+    db.newsletter.update({email}, {$set:{unsubscribed:true}}, {multi: true}, (err, numReplaced) => {
+        if (err) return res.status(500).json({err})
+        res.json({updated: numReplaced})
     })
 })
 
@@ -654,7 +666,7 @@ app.post('/admin/upload', upload.single('image'), (req, res) => {
 const limitedPaths = ['/message', '/login', '/newsletter']
 
 function canRequest(ip, path) {
-    if (!limitedPaths.includes(path)  && (!knownIps[ip] || !knownIps[ip].blocked)) {
+    if (!limitedPaths.includes(path) && !path.startsWith('/unsubscribe/') && (!knownIps[ip] || !knownIps[ip].blocked)) {
         return true
     } else if (!knownIps[ip]) {
         knownIps[ip] = {
