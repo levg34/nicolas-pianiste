@@ -663,6 +663,129 @@ function Repertory() {
     </Container>
 }
 
+function VideoFormGroup(props) {
+    const {video, setVideo} = props
+
+    const [useList,setUseList] = useState(video.list.length > 0)
+
+    const [notFound,setNotFound] = useState(false)
+
+    useEffect(() => {
+        setNotFound(false)
+        setVideo({
+            ...video,
+            img: ''
+        })
+    },[video.url])
+
+    const getThumbnail = () => {
+        setNotFound(false)
+        const parsed = new URL(video.url)
+        if (parsed.hostname === 'vimeo.com') {
+            const id_vimeo = parsed.pathname
+            fetch(`https://vimeo.com/api/v2/video${id_vimeo}.json`).then(res => res.json()).then(res => setVideo({
+                ...video,
+                img: res[0].thumbnail_large
+            })).catch(err => {
+                console.error(err)
+                setNotFound(true)
+            })
+        } else if (parsed.hostname === 'www.youtube.com') {
+            fetch(`https://www.youtube.com/oembed?url=${video.url}`).then(res => res.json()).then(res => res.thumbnail_url ? setVideo({
+                ...video,
+                title:(!video.title && res.title) ? res.title : video.title,
+                img: res.thumbnail_url
+            }) : setNotFound(true)).catch(err => {
+                console.error(err)
+                setNotFound(true)
+            })
+        } else {
+            fetch(`https://noembed.com/embed?url=${video.url}`).then(res => res.json()).then(res => res.thumbnail_url ? setVideo({
+                ...video,
+                title:(!video.title && res.title) ? res.title : video.title,
+                img: res.thumbnail_url
+            }) : setNotFound(true)).catch(err => {
+                console.error(err)
+                setNotFound(true)
+            })
+        }
+    }
+
+    return <div>
+        <Form.Group>
+            <Form.Label>Url de la vidéo</Form.Label>
+            <Form.Control type="url" onChange={e => setVideo({
+                ...video,
+                url: e.target.value
+            })} value={video.url}/>
+        </Form.Group>
+        <Form.Group>
+            <Form.Label>Titre</Form.Label>
+            <Form.Control type="text" onChange={e => setVideo({
+                ...video,
+                title: e.target.value
+            })} value={video.title}/>
+        </Form.Group>
+        <Form.Group>
+            <Form.Label>Sous-titre</Form.Label>
+            <Form.Control type="text" onChange={e => setVideo({
+                ...video,
+                subtitle: e.target.value
+            })} value={video.subtitle}/>
+        </Form.Group>
+        <Form.Group>
+            <Row>
+                <Col><Form.Label>Image</Form.Label></Col>
+                {!video.img && <Col><Button onClick={() => getThumbnail()} disabled={!video.url}>Chercher l'image</Button>{notFound && <Alert variant="warning">Image non trouvée.</Alert>}</Col>}
+                {video.img && <Col><Image src={video.img} thumbnail fluid className="float-right"/></Col>}
+            </Row>
+            <Form.Control type="url" onChange={e => setVideo({
+                ...video,
+                img: e.target.value
+            })} value={video.img} disabled={!notFound}/>
+        </Form.Group>
+        <Form.Group>
+            <Form.Label>Description</Form.Label>
+            <Form.Control type="text" as={useList ? 'input' : "textarea"} rows="3" onChange={e => setVideo({
+                ...video,
+                description: e.target.value
+            })} value={video.description}/>
+            <Form.Check type="checkbox" label="Utiliser une liste" value={useList} onChange={e => {
+                setUseList(e.target.checked)
+                if (!e.target.checked) {
+                    setVideo({
+                        ...video,
+                        list: []
+                    })
+                } else {
+                    setVideo({
+                        ...video,
+                        list: ['']
+                    })
+                }
+            }}/>
+        </Form.Group>
+        {useList && <Form.Group>
+            <Form.Label>Liste</Form.Label>
+            <ListGroup>
+                {video.list.map((li,index) => <ListGroup.Item key={index}><Form.Control type="text" value={li} onChange={e => {
+                    const newList = [...video.list]
+                    newList[index] = e.target.value
+                    setVideo({
+                        ...video,
+                        list: newList
+                    })
+                }}/></ListGroup.Item>)}
+            </ListGroup>
+            <Button className="mt-2" variant="outline-success" onClick={e => setVideo({
+                ...video,
+                list: [...video.list,'']
+            })}>Ajouter un élément de liste</Button>
+        </Form.Group>}
+        <hr/>
+    </div>
+}
+
 function Videos(props) {
     const feedback = props.feedback
     const [data, setData] = useState({
@@ -674,113 +797,14 @@ function Videos(props) {
         description: '',
         list: []
     })
-
-    const [notFound,setNotFound] = useState(false)
-
-    useEffect(() => {
-        setNotFound(false)
-        setData({
-            ...data,
-            img: ''
-        })
-    },[data.url])
-
-    const getThumbnail = () => {
-        setNotFound(false)
-        const parsed = new URL(data.url)
-        if (parsed.hostname === 'vimeo.com') {
-            const id_vimeo = parsed.pathname
-            fetch(`https://vimeo.com/api/v2/video${id_vimeo}.json`).then(res => res.json()).then(res => setData({
-                ...data,
-                img: res[0].thumbnail_large
-            })).catch(err => {
-                console.error(err)
-                setNotFound(true)
-            })
-        } else if (parsed.hostname === 'www.youtube.com') {
-            fetch(`https://www.youtube.com/oembed?url=${data.url}`).then(res => res.json()).then(res => res.thumbnail_url ? setData({
-                ...data,
-                title:(!data.title && res.title) ? res.title : data.title,
-                img: res.thumbnail_url
-            }) : setNotFound(true)).catch(err => {
-                console.error(err)
-                setNotFound(true)
-            })
-        } else {
-            fetch(`https://noembed.com/embed?url=${data.url}`).then(res => res.json()).then(res => res.thumbnail_url ? setData({
-                ...data,
-                title:(!data.title && res.title) ? res.title : data.title,
-                img: res.thumbnail_url
-            }) : setNotFound(true)).catch(err => {
-                console.error(err)
-                setNotFound(true)
-            })
-        }
-    }
-
+    
     return <Container>
         Vidéos...
         <Form onSubmit={e => {
             e.preventDefault()
             console.log(data)
         }}>
-            <Form.Group>
-                <Form.Label>Url</Form.Label>
-                <Form.Control type="url" onChange={e => setData({
-                    ...data,
-                    url: e.target.value
-                })} value={data.url}/>
-            </Form.Group>
-            <Form.Group>
-                <Form.Label>Title</Form.Label>
-                <Form.Control type="text" onChange={e => setData({
-                    ...data,
-                    title: e.target.value
-                })} value={data.title}/>
-            </Form.Group>
-            <Form.Group>
-                <Form.Label>Subtitle</Form.Label>
-                <Form.Control type="text" onChange={e => setData({
-                    ...data,
-                    subtitle: e.target.value
-                })} value={data.subtitle}/>
-            </Form.Group>
-            <Form.Group>
-                <Row>
-                    <Col><Form.Label>Image</Form.Label></Col>
-                    {!data.img && <Col><Button onClick={() => getThumbnail()} disabled={!data.url}>Chercher l'image</Button>{notFound && <Alert variant="warning">Image non trouvée.</Alert>}</Col>}
-                    {data.img && <Col><Image src={data.img} thumbnail fluid className="float-right"/></Col>}
-                </Row>
-                <Form.Control type="url" onChange={e => setData({
-                    ...data,
-                    img: e.target.value
-                })} value={data.img} disabled={!notFound}/>
-            </Form.Group>
-            <Form.Group>
-                <Form.Label>Description</Form.Label>
-                <Form.Control type="text" as="textarea" rows="3" onChange={e => setData({
-                    ...data,
-                    description: e.target.value
-                })} value={data.description}/>
-            </Form.Group>
-            <Form.Group>
-                <Form.Label>List</Form.Label>
-                <ListGroup>
-                    {data.list.map((li,index) => <ListGroup.Item key={index}><Form.Control type="text" value={li} onChange={e => {
-                        const newList = [...data.list]
-                        newList[index] = e.target.value
-                        setData({
-                            ...data,
-                            list: newList
-                        })
-                    }}/></ListGroup.Item>)}
-                </ListGroup>
-                <Button className="mt-2" variant="outline-success" onClick={e => setData({
-                    ...data,
-                    list: [...data.list,'']
-                })}>Ajouter un élément de liste</Button>
-            </Form.Group>
-            <hr/>
+            <VideoFormGroup video={data} setVideo={setData}/>
             <Button variant="primary" type="submit">
                 Valider
             </Button>
