@@ -6,3 +6,5 @@ deploy.sh
 node_modules/
 data/
 package-lock.json
+
+.env
