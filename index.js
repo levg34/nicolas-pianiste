@@ -641,6 +641,16 @@ app.delete('/admin/newsletter/byip/:ip', (req, res) => {
     })
 })
 
+app.post('/admin/newsletter', (req, res) => {
+    const {to, message} = req.body
+    sendNewsletter({to, message}).then(_res => {
+        res.json(_res)
+    }).catch(err => {
+        console.error(err)
+        res.status(500).json({error: err})
+    })
+})
+
 app.get('/admin/tokenvalid', (req, res) => {
     const user = {...req.user}
     const {exp} = user
@@ -746,4 +756,29 @@ function sendEmail(emailInfo) {
     } catch (error) {
         console.error(error)
     }
+}
+
+function sendNewsletter(newsletter) {
+    const data = {
+        from: process.env.MAIL_SENDER,
+        to: process.env.ADMIN_EMAIL,
+        subject: `Newsletter à transférer à : ${newsletter.to}`,
+        text: newsletter.message
+    }
+
+    return new Promise((resolve,reject) => {
+        try {
+            const mg = mailgun({
+                apiKey: process.env.MAIL_API_KEY,
+                domain: process.env.MAIL_DOMAIN
+            })
+        
+            mg.messages().send(data, function (error, body) {
+                if (error) reject(error)
+                resolve(body)
+            })
+        } catch (error) {
+            reject(error)
+        }
+    })
 }
