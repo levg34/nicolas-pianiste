@@ -1,0 +1,419 @@
+[
+    {
+        "type": "Solo",
+        "name": "Les claviéristes français, de Couperin à… Fauré",
+        "img": "uploads/96df297bd3aa01c19069dcb9f8016055",
+        "details": {
+            "artists": [],
+            "pieces": [
+                {
+                    "composer": "Rameau",
+                    "title": "Allemande, Gavotte et 6 doubles (Nouvelles Suites de Pièces de Clavecin, suite en la)"
+                },
+                {
+                    "composer": "Couperin",
+                    "title": "25e ordre"
+                },
+                {
+                    "composer": "Franck",
+                    "title": "Prélude, Choral et Fugue"
+                },
+                {
+                    "composer": "Saint-Saëns",
+                    "title": "Toccata op.111"
+                },
+                {
+                    "composer": "Ravel",
+                    "title": "Ondine"
+                },
+                {
+                    "composer": "Fauré",
+                    "title": "L'horizon chimérique"
+                }
+            ]
+        },
+        "_id": "1LrUZyb1NIMMRyX5",
+        "occs": [
+            {
+                "concertId": "1LrUZyb1NIMMRyX5",
+                "show": true,
+                "date": "2021-08-08",
+                "time": "17:00",
+                "city": "Rueil-Malmaison",
+                "place": "Château de la petite Malmaison",
+                "_id": "uq3cUrQF3vgrx4cd",
+                "irUrl": "https://www.petitemalmaison.fr/",
+                "info": "Réservation possible par téléphone ou par mail (voir le contact sur le site web de la petite Malmaison)"
+            }
+        ]
+    },
+    {
+        "type": "Musique vocale et spectacles",
+        "name": "Duo violon-piano",
+        "details": {
+            "artists": [
+                {
+                    "name": "Maria Hara",
+                    "instrument": "violon"
+                },
+                {
+                    "name": "Nicolas Dross",
+                    "instrument": "piano"
+                }
+            ],
+            "pieces": [
+                {
+                    "composer": "Saint-Saëns",
+                    "title": "Danse macabre, Introduction et rondo capriccioso"
+                },
+                {
+                    "composer": "Beethoven",
+                    "title": "Sonate pour violon et piano no.7 en do mineur, op.30 no.2"
+                },
+                {
+                    "composer": "Brahms",
+                    "title": "Sonate pour violon et piano no.3 en ré mineur, op.108"
+                }
+            ]
+        },
+        "_id": "5obhVAEPMbI5WQwt",
+        "img": "uploads/c2441b301dd9091b23e45bc4e57a06ef",
+        "occs": [
+            {
+                "concertId": "5obhVAEPMbI5WQwt",
+                "show": true,
+                "date": "2021-08-01",
+                "time": "17:00",
+                "city": "Rueil-Malmaison",
+                "place": "Château de la petite Malmaison",
+                "info": "Plus d'informations et réservation à venir !",
+                "_id": "GJhXhEOzafbKL3ya"
+            }
+        ]
+    },
+    {
+        "details": {
+            "artists": [
+                {
+                    "instrument": "sopranos",
+                    "name": "Adèle Clermont et Pauline Nachman"
+                },
+                {
+                    "instrument": "barython",
+                    "name": "Antoine Amariuté"
+                },
+                {
+                    "instrument": "ténor",
+                    "name": "Abel Zamora"
+                },
+                {
+                    "instrument": "Piano",
+                    "name": "Nicolas Dross"
+                }
+            ],
+            "pieces": [
+                {
+                    "composer": "Debussy, Ravel",
+                    "title": "œuvres pour piano"
+                },
+                {
+                    "composer": "Brahms, Schubert, Schumann, Wolf, Mendelsohn",
+                    "title": "lieder et mélodies"
+                }
+            ]
+        },
+        "img": "https://www.billetreduc.com/zg/n180/vz-579D0262-97FA-464D-AE1C-59741C3DEA24.jpeg",
+        "name": "Loreley",
+        "type": "Musique vocale et spectacles",
+        "_id": "7LJQwDkL5D9Af6qR",
+        "occs": [
+            {
+                "cancel": false,
+                "city": "Paris",
+                "date": "2020-01-22",
+                "irUrl": "https://www.billetreduc.com/244334/evt.htm?nr=1",
+                "place": "Musée Gustave Moreau",
+                "show": true,
+                "time": "20:00",
+                "concertId": "7LJQwDkL5D9Af6qR",
+                "_id": "9MNvm48we6ofEut7"
+            }
+        ]
+    },
+    {
+        "details": {
+            "artists": [
+                {
+                    "instrument": "Piano",
+                    "name": "Nicolas Dross"
+                },
+                {
+                    "instrument": "Soprano",
+                    "name": "Lalaïna Garreta"
+                },
+                {
+                    "instrument": "Mezzo-soprano",
+                    "name": "Natacha Hummel"
+                },
+                {
+                    "instrument": "Récitant",
+                    "name": "Comte Stefan C. Czarnecki"
+                }
+            ],
+            "pieces": [
+                {
+                    "composer": "Hector Berlioz",
+                    "title": "Nuits d'été, extraits d'opéras (Bérédice et Bénédicte, la Damnation de Faust), Le Bal (transcription de Liszt)..."
+                }
+            ]
+        },
+        "img": "http://www.hberlioz.com/Cartoons/concert.jpg",
+        "name": "Hector Berlioz – Les amours et la musique (concert lecture)",
+        "type": "Musique vocale et spectacles",
+        "_id": "9TLHXfnFn2ZlpMCl",
+        "occs": [
+            {
+                "cancel": false,
+                "city": "Rueil-Malmaison",
+                "date": "2019-07-28",
+                "place": "Château de la petite Malmaison",
+                "show": true,
+                "time": "17:00",
+                "concertId": "9TLHXfnFn2ZlpMCl",
+                "_id": "sI5YPI9yQMbOsqyB"
+            }
+        ]
+    },
+    {
+        "details": {
+            "artists": [
+                {
+                    "instrument": "soprano",
+                    "name": "Adèle Clermont"
+                },
+                {
+                    "instrument": "mezzo-soprano",
+                    "name": "Solène Lorent"
+                },
+                {
+                    "instrument": "pianiste",
+                    "name": "Nicolas Dross"
+                }
+            ],
+            "pieces": [
+                {
+                    "composer": "Richard Strauss",
+                    "title": "Ophélie Lieder"
+                },
+                {
+                    "composer": "Gustav Mahler",
+                    "title": "Lieder eines fahrenden Gesellen"
+                }
+            ]
+        },
+        "img": "img/concerts/RChant 43.jpg",
+        "name": "Audition classe d'accompagnement vocal",
+        "type": "Musique vocale et spectacles",
+        "_id": "IfV2AMOXuLOkLbVt",
+        "occs": [
+            {
+                "city": "Paris",
+                "date": "2019-03-15",
+                "place": "Conservatoire régional de Paris, Salle Fauré",
+                "show": true,
+                "time": "15:30",
+                "concertId": "IfV2AMOXuLOkLbVt",
+                "_id": "xc7zZdgOzcvqvhAS"
+            }
+        ]
+    },
+    {
+        "details": {
+            "pieces": [
+                {
+                    "composer": "François Couperin",
+                    "title": "Pièces de Clavecin, Vingt-cinquième Ordre"
+                },
+                {
+                    "composer": "Franz Liszt",
+                    "title": "Études d’exécution transcendante, S.139  n° 6 : « Vision »  n° 11 : « Harmonies du soir »"
+                },
+                {
+                    "composer": "Alexandre Scriabine",
+                    "title": "Sonate n° 5, op. 53"
+                },
+                {
+                    "composer": "Béla Bartók",
+                    "title": "Szabadban, Sz 81, 2e partie"
+                }
+            ]
+        },
+        "name": "Abendempfindung",
+        "type": "Solo",
+        "_id": "LBKeYg4WhWtcqbmX",
+        "occs": [
+            {
+                "cancel": true,
+                "city": "Paris",
+                "date": "2020-07-15",
+                "irUrl": "https://www.conservatoiredeparis.fr/fr/recherche-et-editions/editions-et-publications/recitals-imaginaires/nicolas-dross",
+                "place": "CNSM",
+                "show": true,
+                "time": "14:00",
+                "concertId": "LBKeYg4WhWtcqbmX",
+                "_id": "LNXUCxJ65R6GxGpH"
+            }
+        ]
+    },
+    {
+        "details": {
+            "artists": [
+                {
+                    "instrument": "Clarinettes",
+                    "name": "Masako Mayuko"
+                },
+                {
+                    "instrument": "Contrebasse",
+                    "name": "Norbert Laurenge"
+                },
+                {
+                    "instrument": "Piano",
+                    "name": "Nicolas Dross"
+                }
+            ]
+        },
+        "img": "http://petitemalmaison.fr/images/com_droppics/1/51b0c7d55ced7.jpg",
+        "info": "Dans ce récital à la formation originale, vous découvrirez un programme allant des ballades médiévales, aux œuvres romantiques de concert.",
+        "name": "Rosemary & Thyme - Musique britanique au fil des siècles",
+        "type": "Musique vocale et spectacles",
+        "_id": "PjPflJGSZsWWqLCQ",
+        "occs": [
+            {
+                "cancel": false,
+                "city": "Rueil-Malmaison",
+                "date": "2019-08-25",
+                "irUrl": "http://petitemalmaison.fr/",
+                "place": "Château de la Petite Malmaison",
+                "show": true,
+                "time": "17:00",
+                "concertId": "PjPflJGSZsWWqLCQ",
+                "_id": "ihWMukud2zptp0nP"
+            }
+        ]
+    },
+    {
+        "type": "Musique vocale et spectacles",
+        "name": "Duo d'oro",
+        "details": {
+            "artists": [
+                {
+                    "name": "Lalaïna Garreta",
+                    "instrument": "soprano"
+                },
+                {
+                    "name": "Philippe Gregori",
+                    "instrument": "baryton"
+                },
+                {
+                    "name": "Nicolas Dross",
+                    "instrument": "pianiste"
+                }
+            ],
+            "pieces": []
+        },
+        "_id": "W5KRzz8SmlEsZDiZ",
+        "info": "L’été vous donne des ailes, et vous vous sentez prêts à tomber amoureux ? Le duo d’oro vous propose un programme juste pour vous ! Des mélodies charmantes et passionnées, des airs d’opéras virtuoses, éperdus et splendides, le tout lié par des improvisations originales au synthétiseur. Entrée libre avec participation au chapeau, possibilité de réserver la forme concert-repas par téléphone (voir le lien ci-dessous)",
+        "img": "uploads/4096b973ebf6159e0653bff0ce78192c",
+        "occs": [
+            {
+                "concertId": "W5KRzz8SmlEsZDiZ",
+                "show": true,
+                "date": "2021-07-17",
+                "time": "20:00",
+                "city": "Saint-Martin de Clelles, 38930",
+                "place": "Camping La Chabannerie",
+                "_id": "rxyvhA3RiMTpe1xH",
+                "irUrl": "https://m.facebook.com/Campinglachabannerie/photos/a.144197577240256/337987044527974/?type=3&source=48",
+                "info": "Entrée libre avec participation au chapeau, concert-repas sur réservation par téléphone (20€)"
+            }
+        ]
+    },
+    {
+        "details": {
+            "artists": [
+                {
+                    "instrument": "soprano",
+                    "name": "Adèle Clermont"
+                }
+            ],
+            "pieces": [
+                {
+                    "composer": "Richard Strauss",
+                    "title": "Drei Lieder der Ophelia op. 67"
+                },
+                {
+                    "composer": "Trio en la mineur Don Quichotte, Chants populaires",
+                    "title": "Maurice Ravel"
+                }
+            ]
+        },
+        "img": "https://philharmoniedeparis.fr/sites/default/files/styles/fancybox_limit/public/recital_piano-gsc_w-beaucardet-14.jpg?itok=gVZGfmjV",
+        "name": "Prélude aux concerts de l'orchestre de Paris",
+        "type": "Musique vocale et spectacles",
+        "_id": "e9PuwTV7dJK782Px",
+        "occs": [
+            {
+                "cancel": false,
+                "city": "Paris",
+                "date": "2019-03-21",
+                "irUrl": "https://philharmoniedeparis.fr/fr/activite/prelude/20028-prelude-aux-concerts-de-lorchestre-de-paris",
+                "place": "Philharmonie",
+                "show": true,
+                "time": "18:00",
+                "concertId": "e9PuwTV7dJK782Px",
+                "_id": "RwJXAWeA5ItCxHRt"
+            }
+        ]
+    },
+    {
+        "details": {
+            "artists": [
+                {
+                    "instrument": "",
+                    "name": "Chœurs et ensemble vocal de Rueil-Malmaison"
+                },
+                {
+                    "instrument": "direction",
+                    "name": "Jacqueline Blondin"
+                }
+            ],
+            "pieces": [
+                {
+                    "composer": "Mozart et Mendelson",
+                    "title": "Diverses œuvres"
+                },
+                {
+                    "composer": "",
+                    "title": "Chants traditionnels"
+                }
+            ]
+        },
+        "img": "//a53.idata.over-blog.com/1/64/70/15/CONCERT-DU-07-04-2009/CONCERT-DU-07-04-2009_1834R.jpg",
+        "name": "Concert des chœurs de Jacqueline Blondin",
+        "type": "Musique vocale et spectacles",
+        "_id": "rNAsFh8MA2GC86RM",
+        "occs": [
+            {
+                "city": "Rueil-Malmaison",
+                "date": "2019-04-02",
+                "info": "entrée libre",
+                "irUrl": "http://crr.mairie-rueilmalmaison.fr/",
+                "place": "Conservatoire à Rayonnement Régional",
+                "show": true,
+                "time": "20:30",
+                "concertId": "rNAsFh8MA2GC86RM",
+                "_id": "iBQsc4Mc3SttAXqo"
+            }
+        ]
+    }
+]
