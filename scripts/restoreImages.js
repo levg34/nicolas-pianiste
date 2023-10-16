@@ -95,7 +95,7 @@ fs.readdir(directoryPath, function (err, files) {
             const {width, height} = dimensions
             const ratio = width / height
             
-            if (Math.abs(4/3-ratio)<0.01) {
+            if (Math.abs(4/3-ratio)<0.003) {
                 uploadData.concerts = true
             }
             
