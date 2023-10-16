@@ -11,13 +11,13 @@ const dotenv = require('dotenv')
 dotenv.config()
 const port = process.env.APP_PORT || 3000
 
-const mailgun = require("mailgun-js");
+const mailgun = require("mailgun-js")
 
-const bcrypt = require('bcrypt');
-const saltRounds = 13;
+const bcrypt = require('bcrypt')
+const saltRounds = 13
 
 function generateAccessToken(userData) {
-    return jwt.sign(userData, process.env.TOKEN_SECRET, { expiresIn: '30m' });
+    return jwt.sign(userData, process.env.TOKEN_SECRET, { expiresIn: '30m' })
 }
 
 const knownIps = {}
@@ -208,16 +208,19 @@ app.listen(port, () => {
 })
 
 function sendEmail(emailInfo) {
+    const data = {
+        from: process.env.MAIL_SENDER,
+        to: process.env.ADMIN_EMAIL,
+        subject: `Nouveau message de ${emailInfo.name} <${emailInfo.email}>`,
+        text: emailInfo.message
+    }
+    
     try {
-        const mg = mailgun({apiKey: process.env.MAIL_API_KEY, domain: process.env.MAIL_DOMAIN});
-
-        const data = {
-            from: process.env.MAIL_SENDER,
-            to: process.env.ADMIN_EMAIL,
-            subject: `Nouveau message de ${emailInfo.name} <${emailInfo.email}>`,
-            text: emailInfo.message
-        }
-
+        const mg = mailgun({
+            apiKey: process.env.MAIL_API_KEY,
+            domain: process.env.MAIL_DOMAIN
+        })
+    
         mg.messages().send(data, function (error, body) {
             console.error(error)
             console.log(body)
