@@ -114,8 +114,8 @@
       </div>
       
       <h4>A venir</h4>
-      <span ng-repeat="concert in concertList">
-      <p id="{{concert.id}}">
+      <span ng-repeat="concert in concertList | filter: concertIsOn">
+      <p id="{{concert.id}}_avenir">
         <b>{{concert.name}}</b>
         <span ng-repeat="artist in concert.details.artists"><br>{{artist.name}}, {{artist.instrument}}</span>
       </p>
@@ -130,6 +130,21 @@
       </span>
 
       <h4>Solo</h4>
+      <span ng-repeat="concert in concertList | orderBy:'-' | filter: {type:  'Solo'}">
+      <p id="{{concert.id}}">
+        <b>{{concert.name}}</b>
+        <span ng-repeat="artist in concert.details.artists"><br>{{artist.name}}, {{artist.instrument}}</span>
+      </p>
+      <ul ng-repeat="piece in concert.details.pieces">
+        <li>{{piece.composer}} – {{piece.title}}</li>
+      </ul>
+      <ul class="list-group">
+        <li ng-repeat="occ in concert.occs" class="list-group-item">{{occ.date | date:'dd/MM/yyyy'}} : {{occ.place}}, {{occ.city}} <span ng-show="state(occ)=='on'"><span class="label label-success">À venir</span> <span ng-show="occ.irUrl" class="label "><a target="_blank" href="{{occ.irUrl}}">infos réservation</a></span></span>
+                                                                                                               <span ng-show="state(occ)=='off'" class="label label-warning">Terminé</span>
+                                                                                                               <span ng-show="state(occ)=='cancel'" class="label label-danger">Annulé</span></li>
+      </ul>
+      </span>
+      
       <p>
         <b>Au fil de l’eau</b>
       </p>
@@ -177,6 +192,21 @@
       <p>
         <b>Trio avec Charlotte Saluste-Bridoux et Frankie Carr</b>
       </p>
+      
+      <span ng-repeat="concert in concertList | orderBy:'-' | filter: {type:  'Trio éphémère'}">
+      <p id="{{concert.id}}">
+        <b>{{concert.name}}</b>
+        <span ng-repeat="artist in concert.details.artists"><br>{{artist.name}}, {{artist.instrument}}</span>
+      </p>
+      <ul ng-repeat="piece in concert.details.pieces">
+        <li>{{piece.composer}} – {{piece.title}}</li>
+      </ul>
+      <ul class="list-group">
+        <li ng-repeat="occ in concert.occs" class="list-group-item">{{occ.date | date:'dd/MM/yyyy'}} : {{occ.place}}, {{occ.city}} <span ng-show="state(occ)=='on'"><span class="label label-success">À venir</span> <span ng-show="occ.irUrl" class="label "><a target="_blank" href="{{occ.irUrl}}">infos réservation</a></span></span>
+                                                                                                               <span ng-show="state(occ)=='off'" class="label label-warning">Terminé</span>
+                                                                                                               <span ng-show="state(occ)=='cancel'" class="label label-danger">Annulé</span></li>
+      </ul>
+      </span>
 
       <ul>
         <li>Ravel - Trio</li>
@@ -189,6 +219,21 @@
       <p>
         <b>Violon et piano avec Charlotte Saluste-Bridoux</b>
       </p>
+      
+      <span ng-repeat="concert in concertList | orderBy:'-' | filter: {type:  'Duo éphémère'}">
+      <p id="{{concert.id}}">
+        <b>{{concert.name}}</b>
+        <span ng-repeat="artist in concert.details.artists"><br>{{artist.name}}, {{artist.instrument}}</span>
+      </p>
+      <ul ng-repeat="piece in concert.details.pieces">
+        <li>{{piece.composer}} – {{piece.title}}</li>
+      </ul>
+      <ul class="list-group">
+        <li ng-repeat="occ in concert.occs" class="list-group-item">{{occ.date | date:'dd/MM/yyyy'}} : {{occ.place}}, {{occ.city}} <span ng-show="state(occ)=='on'"><span class="label label-success">À venir</span> <span ng-show="occ.irUrl" class="label "><a target="_blank" href="{{occ.irUrl}}">infos réservation</a></span></span>
+                                                                                                               <span ng-show="state(occ)=='off'" class="label label-warning">Terminé</span>
+                                                                                                               <span ng-show="state(occ)=='cancel'" class="label label-danger">Annulé</span></li>
+      </ul>
+      </span>
       
       <ul>
         <li>Beethoven – Sonate pour violon et piano no.3</li>
@@ -229,6 +274,21 @@
       </ul>
       
       <h4>Musique vocale et spectacles</h4>
+      
+      <span ng-repeat="concert in concertList | orderBy:'-' | filter: {type:  'Musique vocale et spectacles'}">
+      <p id="{{concert.id}}">
+        <b>{{concert.name}}</b>
+        <span ng-repeat="artist in concert.details.artists"><br>{{artist.name}}, {{artist.instrument}}</span>
+      </p>
+      <ul ng-repeat="piece in concert.details.pieces">
+        <li>{{piece.composer}} – {{piece.title}}</li>
+      </ul>
+      <ul class="list-group">
+        <li ng-repeat="occ in concert.occs" class="list-group-item">{{occ.date | date:'dd/MM/yyyy'}} : {{occ.place}}, {{occ.city}} <span ng-show="state(occ)=='on'"><span class="label label-success">À venir</span> <span ng-show="occ.irUrl" class="label "><a target="_blank" href="{{occ.irUrl}}">infos réservation</a></span></span>
+                                                                                                               <span ng-show="state(occ)=='off'" class="label label-warning">Terminé</span>
+                                                                                                               <span ng-show="state(occ)=='cancel'" class="label label-danger">Annulé</span></li>
+      </ul>
+      </span>
       
       <p id="rchant">
         <b>Récital de chant</b><br> Solène Lorent et Adèle Clermont, soprani<br> Nicolas Dross, piano
@@ -388,13 +448,29 @@
     </ul>
   </div>
 
-  <div id="compos" class="container">
+  <div id="compos" class="container" ng-controller="tourCtrl">
     <h3 class="text-center">COMPOSITION</h3>
+
+    <span ng-repeat="concert in concertList | orderBy:'-' | filter: {type:  'Composition'}">
+      <p id="{{concert.id}}">
+        <b>{{concert.name}}</b>
+        <span ng-repeat="artist in concert.details.artists"><br>{{artist.name}}, {{artist.instrument}}</span>
+      </p>
+      <ul ng-repeat="piece in concert.details.pieces">
+        <li>{{piece.composer}} – {{piece.title}}</li>
+      </ul>
+      <ul class="list-group">
+        <li ng-repeat="occ in concert.occs" class="list-group-item">{{occ.date | date:'dd/MM/yyyy'}} : {{occ.place}}, {{occ.city}} <span ng-show="state(occ)=='on'"><span class="label label-success">À venir</span> <span ng-show="occ.irUrl" class="label "><a target="_blank" href="{{occ.irUrl}}">infos réservation</a></span></span>
+                                                                                                               <span ng-show="state(occ)=='off'" class="label label-warning">Terminé</span>
+                                                                                                               <span ng-show="state(occ)=='cancel'" class="label label-danger">Annulé</span></li>
+      </ul>
+    </span>
+    
     <p>
       <b>Participation en tant que compositeur</b><br> Piano Orchestra
     </p>
     <ul class="list-group">
-      <li class="list-group-item">Dimanche 7 avril 2019 — 15h00, cité de la musique <span class="label label-success">À venir</span> <span class="label"><a target="_blank" href="https://philharmoniedeparis.fr/fr/activite/concert-performance/19353-piano-orchestra">info réservation</a></span></li>
+      <li class="list-group-item">Dimanche 7 avril 2019 — 15h00, cité de la musique <span class="label label-warning">Terminé</span> <span class="label"><a target="_blank" href="https://philharmoniedeparis.fr/fr/activite/concert-performance/19353-piano-orchestra">info réservation</a></span></li>
     </ul>
   </div>
 
@@ -417,7 +493,7 @@
           <div class="thumbnail">
             <a target="_blank" href="https://vimeo.com/disruptivefactory/nicolasdross-sonatek332-mozart"> <img src="https://i.vimeocdn.com/video/575512226_1280x720.jpg" alt="Mozart">
               <p>
-                <strong>Mozart - Sonate K.332 (premier mouvement)</strong><br> <b">Janvier 2016</b>
+                <strong>Mozart - Sonate K.332 (premier mouvement)</strong><br> <b>Janvier 2016</b>
               </p>
               <p>Test écran, filmé chez un particulier dans le cadre du court-métrage Hartz dirigé par Marie Cheignon</p></a>
           </div>
