@@ -206,7 +206,7 @@ app.get('/uploads/:filename', (req, res) => {
 
 app.put('/unsubscribe/:email', (req, res) => {
     const email = req.params.email
-    db.newsletter.update({email}, {$set:{unsubscribed:true}}, {multi: true}, (err, numReplaced) => {
+    db.newsletter.update({$and:[{email},{$not:{unsubscribed: true}}]}, {$set:{unsubscribed:true}}, {multi: true}, (err, numReplaced) => {
         if (err) return res.status(500).json({err})
         res.json({updated: numReplaced})
     })
