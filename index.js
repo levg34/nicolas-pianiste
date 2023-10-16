@@ -642,8 +642,8 @@ app.delete('/admin/newsletter/byip/:ip', (req, res) => {
 })
 
 app.post('/admin/newsletter', (req, res) => {
-    const {to, message} = req.body
-    sendNewsletter({to, message}).then(_res => {
+    const {to, message, html} = req.body
+    sendNewsletter({to, message, html}).then(_res => {
         res.json(_res)
     }).catch(err => {
         console.error(err)
@@ -763,7 +763,8 @@ function sendNewsletter(newsletter) {
         from: process.env.MAIL_SENDER,
         to: process.env.ADMIN_EMAIL,
         subject: `Newsletter à transférer à : ${newsletter.to}`,
-        text: newsletter.message
+        text: newsletter.message,
+        html: newsletter.html
     }
 
     return new Promise((resolve,reject) => {
