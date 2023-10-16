@@ -666,8 +666,64 @@ function Studies(props) {
 }
 
 function Repertory() {
+    const [repertory, setRepertory] = useState([])
+
+    const getRepertory = () => {
+        axios.get('/repertory?raw').then(res => {
+            setRepertory(res.data)
+        })
+    }
+
+    useEffect(getRepertory,[])
+
+    const titles = new Set(repertory.map(e => e.title))
+
     return <Container>
-        Répertoire...
+        Répertoire
+        <Form>
+            {[...titles].map(title => <Card key={title} body>
+            {title ? <Form.Label>{title}</Form.Label> : <Form.Control type="text" placeholder="Titre de section" value={title}/>}
+                {[...new Set(repertory.filter(rep => rep.title === title).map(e => e.subtitle))].map(subtitle => <Card key={`${title}_${subtitle}`} body>
+                    {subtitle ? <Form.Label>{subtitle}</Form.Label> : <Form.Control type="text" placeholder="Titre de sous-section" value={subtitle}/>}
+                    <ListGroup>
+                        {repertory.filter(rep => rep.title === title && rep.subtitle === subtitle).map(rep => <ListGroup.Item key={rep._id}>
+                            <Form.Control type="text" placeholder="Élément de répertoire" value={rep.content}/>
+                        </ListGroup.Item>)}
+                    </ListGroup>
+                    <Button className="mt-2" variant="outline-success" onClick={e => {
+                        const newPiece = {
+                            title,
+                            subtitle,
+                            content: '',
+                            index: repertory.length+1
+                        }
+                        setRepertory([...repertory,newPiece])
+                    }}>Ajouter une œuvre</Button>
+                </Card>)}
+                <Button className="mt-2" variant="outline-info" onClick={e => {
+                    const newPiece = {
+                        title,
+                        subtitle: '',
+                        content: '',
+                        index: repertory.length+1
+                    }
+                    setRepertory([...repertory,newPiece])
+                }}>Ajouter une sous-section</Button>
+            </Card>)}
+            <Button className="mt-2" variant="outline-warning" onClick={e => {
+                                        const newPiece = {
+                                            title: '',
+                                            subtitle: '',
+                                            content: '',
+                                            index: repertory.length+1
+                                        }
+                                        setRepertory([...repertory,newPiece])
+            }}>Ajouter une section</Button>
+            <hr/>
+            <Button variant="primary" type="submit">
+                Valider
+            </Button>
+        </Form>
     </Container>
 }
 
