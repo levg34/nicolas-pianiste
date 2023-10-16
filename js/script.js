@@ -20,13 +20,6 @@ $(document).ready(function(){
 			});
 		} // End if 
 	});
-	var credits = ['Bernard DROSS','Bernard DROSS','Joseph Kerr','Bernard DROSS','Elisabeth Villefranche','Hugues Tennenbaum','Maison Heinrich Heine']
-	var creds = 'Crédits photos :<br>'
-	$('.carousel-inner img').each(function(i){
-		var photoName = $(this).attr('src').split('/').pop().split('9x2').shift()
-		creds += photoName + ' : ' + (credits[i]?credits[i]:'?') +'<br>'
-	})
-	$('#photocreds').html(creds)
 	$('#sendSuccess').hide()
 })
 
