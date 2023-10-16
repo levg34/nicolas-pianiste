@@ -702,7 +702,7 @@ function Repertory(props) {
         Répertoire
         <Form onSubmit={e => {
             e.preventDefault()
-            repertory.filter(rep => rep.modified).forEach(rep => {
+            repertory.filter(rep => rep.modified && !rep.deleted).forEach(rep => {
                 delete rep.modified
                 const repCopy = {...rep}
                 if (rep._id.startsWith('new')) {
@@ -757,7 +757,7 @@ function Repertory(props) {
                             title,
                             subtitle,
                             content: '',
-                            index: repertory.length+1,
+                            index: repertory[repertory.length-1].index+1,
                             modified: true
                         }
                         setRepertory([...repertory,newPiece])
@@ -769,7 +769,7 @@ function Repertory(props) {
                         title,
                         subtitle: '',
                         content: '',
-                        index: repertory.length+1,
+                        index: repertory[repertory.length-1].index+1,
                         modified: true
                     }
                     setRepertory([...repertory,newPiece])
@@ -780,7 +780,7 @@ function Repertory(props) {
                     _id: `new_${repertory.length+1}`,
                     title: '',
                     content: '',
-                    index: repertory.length+1,
+                    index: repertory[repertory.length-1].index+1,
                     modified: true
                 }
                 setRepertory([...repertory,newPiece])
