@@ -262,8 +262,11 @@ function Bio(params) {
     }
 
     const setBioData = (biobject) => {
-        delete biobject.modified
         feedback.clear()
+        delete biobject.modified
+        if (biobject._id === 'new') {
+            delete biobject._id
+        }
         axios.post('/admin/biographie',biobject).then(res => {
             console.log(res)
             feedback.treatSuccess('Modifications effectuées !')
@@ -305,7 +308,7 @@ function Bio(params) {
             </Form.Group>
             <hr/>
         {Object.values(paragraphs).map(p => 
-            <Form.Group key={p._id} controlId="exampleForm.ControlTextarea1">
+            <Form.Group key={p._id ? p._id : 'new'} controlId="exampleForm.ControlTextarea1">
                 <Form.Label>{`Paragraphe n°${p.index}`}</Form.Label>
                 <Form.Control as="textarea" rows={3} value={p.paragraph} onChange={e => setParagraphs({
                     ...paragraphs,
@@ -317,6 +320,14 @@ function Bio(params) {
                 })}/>
             </Form.Group>
         )}
+            {(!paragraphs.new) && <Button className="mt-2" variant="outline-success" onClick={e => setParagraphs({
+                ...paragraphs,
+                new: {
+                    _id: 'new',
+                    paragraph: '',
+                    index: Object.keys(paragraphs).length
+                }
+            })}>Ajouter un paragraphe</Button>}
             <hr/>
             <Button variant="primary" type="submit">
                 Valider
