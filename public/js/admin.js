@@ -336,9 +336,63 @@ function Bio(props) {
     </Container>
 }
 
-function Links() {
+function Links(props) {
+    const feedback = props.feedback
+
+    const [links,setLinks] = useState({})
+
+    const linkTypes = [
+        ['personal', 'Liens personnels'],
+        ['media', 'Liens presse'],
+        ['other', 'Liens autres'],
+    ]
+
+    const getLinks = () => {
+        axios.get('/links').then(res => {
+            setLinks(res.data.reduce((acc, cur) => {
+                return {...acc, [cur._id]: cur}
+            },{}))
+        }).catch(err => feedback.treatError(err))
+    }
+
+    useEffect(getLinks,[])
+
+    const nameChange = (e,link) => {
+        setLinks({
+            ...links,
+            [link._id]: {
+                ...link,
+                modified: true,
+                name: e.target.value
+            }
+        })
+    }
+
+    const urlChange = (e,link) => {
+        setLinks({
+            ...links,
+            [link._id]: {
+                ...link,
+                modified: true,
+                url: e.target.value
+            }
+        })
+    }
+
     return <Container>
-        Links...
+        <Form>
+            {linkTypes.map(type => <Form.Group key={type[0]}><Row><Form.Label>{type[1]}</Form.Label></Row>
+            {Object.values(links).filter(link => link.type === type[0]).map(link => <Row key={link._id}>
+                <Col xs={3}>
+                    <Form.Label>Nom</Form.Label>
+                    <Form.Control placeholder="Nom" value={link.name} onChange={e => nameChange(e,link)}/>
+                </Col>
+                <Col>
+                    <Form.Label>Url</Form.Label>
+                    <Form.Control placeholder="Url" value={link.url} onChange={e => urlChange(e,link)}/>
+                </Col>
+            </Row>)}</Form.Group>)}
+        </Form>
     </Container>
 }
 
