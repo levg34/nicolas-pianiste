@@ -26,40 +26,39 @@ app.controller('carouselCtrl', function($scope,$http) {
 	$scope.loadData()
 })
 
-app.controller('bioCtrl', function($scope) {
+app.controller('bioCtrl', function($scope, $http) {
 	$scope.title = ''
 	$scope.subtitle = ''
 	$scope.paragraphs = []
 	$scope.loadData = function() {
-		$scope.title = 'Biographie'
-		$scope.subtitle = 'Pianiste, compositeur, arrangeur, enseignant'
-		$scope.paragraphs = [
-			'C’est bien la curiosité qui a guidé la vie musicale de Nicolas Dross. Lors de ses études de piano à Montpellier, il s’initie en autodidacte à la composition, puis prends des cours d’écriture dans le but d’être compositeur. Sa rencontre avec Denis Pascal lui fait prendre conscience de la richesse de la littérature pour piano, ainsi que l’exigence de l’interprétation d’un langage musical, et dès lors il se passionne pour ses études pianistiques. Il entre en 2015 au Conservatoire Supérieur de Paris, dans la classe de Denis Pascal.',
-			'Très sensible et à l’écoute, Nicolas est apprécié autant dans ses concerts soliste que dans ses multiples récitals de musique de chambre. En 2013, il remporte à la fois le concours interrégional de piano de Pennautier et le concours Les saisons de la voix à Gordes en duo avec la soprano Lalaïna Garreta. Il fait la rencontre de Jeff Cohen, qui lui ouvre les portes de l’interprétation dans l’accompagnement vocal. Il participe aussi à la création de diverses œuvres, notamment dans les Ecoles d’Art Américaines de Fontainebleau en 2016, véritable lieu de créativité et d’inspiration, où il crée l’électrique trio Speleology de Vicente Hanser Atria.'
-	    ]
+		$http.get('/biographie').then(response => {	
+			if (!response || !response.data) return	
+			const data = response.data
+			const {title, subtitle} = data.find(e => e.title)
+
+			$scope.title = title
+			$scope.subtitle = subtitle
+			$scope.paragraphs = data.filter(e => e.paragraph).map(e => e.paragraph)
+		}).catch(err => console.error(err))
 	}
 	$scope.loadData()
 })
 
-app.controller('studCtrl', function($scope) {
+app.controller('studCtrl', function($scope, $http) {
 	$scope.title = ''
 	$scope.awards = {all:[]}
 	$scope.paragraphs = []
 	$scope.loadData = function() {
-		$scope.title = 'Études'
-		$scope.paragraphs = [
-			'Issu d’une famille de mélomanes, Nicolas commence les cours de piano à 4 ans à l’école de musique de Clermont l’Hérault, dans la classe de Guilhem Puech. Après quelques années d’apprentissage, il est redirigé vers le Conservatoire à Rayonnement Régional de Montpellier, où il rentre à l’âge de 7 ans.',
-			'Commence alors une longue floraison dans cet établissement, en commençant par la classe de piano de Sophie Grattard qui lui permet de s’exprimer dans des styles très différents, le chœur et les classes de solfège (jusqu’au DEM avec Dominique Millet), puis dès le lycée les classes d’écriture et d’analyse de Bernard Maurin, et celles de musique de chambre avec Claire Stroll, Bernard Pozzera, et Michel Raynié. Initié à l’accompagnement et le jeu en orchestre dès le plus jeune âge par Guilhem Puech, Nicolas entre en cursus d’accompagnement chez Corinne Paoletti où il pratique réduction de quatuor, lecture à vue et accompagne les élèves chanteurs de Nicolas Domingues. Il étudie également la basse continue avec Alan Cahagne. En parallèle, il suit un baccalauréat '
-			     + 'Technique de la Musique et de la Danse, où sont dispensés cours d’Histoire de la musique, de Physique du son, de Littérature et d’Histoire de l’art entre autres (il l’obtient en 2012). C’est à cette période qu’il rencontre Denis Pascal, à l’occasion des master-classes organisées au sein du conservatoire.',
-			'Après sa remise de Diplôme d’Études Musicales, Nicolas tente différents concours et est admis en 2014 à la Haute École de Musique de Genève chez Sylvianne Deferne, où il entre en contact avec la méthode Jaques-Dalcroze et l’environnement d’une école supérieure. Il y suit quelques cours de musiques de chambre (James Alexander, Gui-Michel Caillat), de technique corporelle (Valerie Morand-Sanchez), rencontre Leontina Vaduva à Lausanne, et participe à une master-classes de lieder par Jeanne Roth et Gottlieb Wallisch. Il y crée, au sein de l’Ensemble contemporain de la Haute École de Musique de Genève, une œuvre de Loïc Silvestre sous la baguette de Pierre Bleuse.',
-			'Finalement reçu en 2015 au Conservatoire Supérieur de Paris, il y suit l’enseignement pointu de Denis Pascal, accompagné de ses assistants Sébastien Vichard et Varduhi Yeritsyan, des cours de lecture à vue avec Jonas Vitaud, d’harmonisation au clavier avec Isabelle Duha, ainsi qu’une année de master-classes sur piano anciens par Cyril Huvé. Il y est encouragé à continuer sa recherche dans le domaine corporel (avec les cours de technique Alexander par Agnès de Brunhoff), accompagnement (classe Mélodie et Lied par Jeff Cohen, précédemment rencontré au concours Les Saisons de la Voix à Gordes, ainsi que les classes d’accompagnement d’Ariane Jacob et de Philippe Biros au CRR), musique de chambre (classes d’Itamar GOLAN, Làszlo HADADY, David '
-			     + 'WALTER et Haruko UEDA), mais aussi érudition avec son entrée en cursus d’Écriture supérieur (Harmonie chez Fabien Waksman, écriture XXème chez Thomas Lacôte) et en Analyse théorique et appliquée (Claude Ledoux).',
-			'Actuellement titulaire d’un Master de piano et d’un Prix d’Harmonie et d’Écriture XXème, il continue ses études en écriture et en analyse.'
-	    ]
-		$scope.awards.title = 'Récompenses'
-		$scope.awards.all = [
-			//'test' TODO: href
-		]
+		$http.get('/studies').then(response => {	
+			if (!response || !response.data) return	
+			const data = response.data
+			const {title, awardsTitle} = data.find(e => e.title)
+
+			$scope.title = title
+			$scope.awards.title = awardsTitle
+			$scope.paragraphs = data.filter(e => e.paragraph).map(e => e.paragraph)
+			$scope.awards.all = data.filter(e => e.award).map(e => e.award)
+		}).catch(err => console.error(err))
 	}
 	$scope.loadData()
 })
