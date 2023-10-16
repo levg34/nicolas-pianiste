@@ -393,15 +393,15 @@ function Links(props) {
                     <Form.Control placeholder="Url" value={link.url} onChange={e => urlChange(e,link)}/>
                 </Col>
             </Row>)}
-            {(!links[`new_${type[0]}`]) && <Button className="mt-2" variant="outline-success" onClick={e => setLinks({
+            <Button className="mt-2" variant="outline-success" onClick={e => setLinks({
                 ...links,
-                [`new_${type[0]}`]: {
-                    _id: `new_${type[0]}`,
+                [`new_${type[0]}_${Object.keys(links).length}`]: {
+                    _id: `new_${type[0]}_${Object.keys(links).length}`,
                     name: '',
                     url: '',
                     type: type[0]
                 }
-            })}>{`Ajouter un lien "${type[1]}"`}</Button>}
+            })}>{`Ajouter un lien "${type[1]}"`}</Button>
             </Form.Group>)}
         </Form>
     </Container>
