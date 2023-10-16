@@ -612,6 +612,17 @@ function canRequest(ip, path) {
     return false
 }
 
+// Handle 404
+app.use(function(req, res) {
+    res.status(404).sendFile(__dirname + '/view/404.html')
+})
+  
+// Handle 500
+app.use(function(error, req, res, next) {
+    console.error(error)
+    res.status(500).sendFile(__dirname + '/view/500.html')
+})
+
 app.listen(port, () => {
     console.log(`Nicolapp listening at http://localhost:${port}`)
 })
