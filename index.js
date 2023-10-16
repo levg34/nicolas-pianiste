@@ -353,6 +353,22 @@ app.post('/admin/links', (req, res) => {
     }
 })
 
+app.post('/admin/carousel', (req, res) => {
+    const carousel = req.body
+
+    if (!carousel._id) {
+        db.carousel.insert(carousel, function (err, newDoc) {
+            if (err) res.status(500).json(err)
+            res.json(newDoc)
+        })
+    } else {
+        db.carousel.update({ _id: carousel._id }, carousel, {}, function (err, numReplaced) {
+            if (err) res.status(500).json({err})
+            res.json({ok:numReplaced})
+        })
+    }
+})
+
 function canRequest(ip, path) {
     if (path != '/message' && path != '/login' && (!knownIps[ip] || !knownIps[ip].blocked)) {
         return true
