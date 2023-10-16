@@ -477,7 +477,7 @@ function Concerts(props) {
             setSelectedConcert(newConcert)
         }}>Ajouter un concert</Button>}
         <hr ref={concertInfoRef}/>
-        {selectedConcert ? <ConcertEdit concert={selectedConcert} feedback={feedback} setConcert={setSelectedConcert} getConcerts={getConcerts}/>  : <p>Sélectionner un concert</p>}
+        <ConcertEdit concert={selectedConcert} feedback={feedback} setConcert={setSelectedConcert} getConcerts={getConcerts}/>
     </Container>
 }
 
@@ -688,7 +688,7 @@ function ConcertEdit(props) {
         }).catch(err => feedback.treatError(err))
     }
 
-    return <Tabs variant="pills">
+    return concert ? <Tabs variant="pills">
         <Tab eventKey="edit-concert" title="Éditer le concert">
             <ConcertInfo concert={concert} feedback={feedback} setConcert={setConcert} getConcerts={getConcerts}/>
         </Tab>
@@ -698,7 +698,7 @@ function ConcertEdit(props) {
         <Tab variant="danger" eventKey="delete-concert" title="Supprimer le concert" disabled={!concert._id || concert._id === 'new'}>
             <DeleteConcert concert={concert} feedback={feedback} getConcerts={getConcerts} occurrences={occurrences} getOccurences={getOccurences} setOccurrences={setOccurrences} deleteOccurence={deleteOccurence}/>
         </Tab>
-    </Tabs>
+    </Tabs> : <p>Sélectionner un concert</p>
 }
 
 function DeleteConcert(props) {
