@@ -6,6 +6,14 @@ const Datastore = require('nedb')
 const db = {}
 db.messages = new Datastore({ filename: 'data/datafile', autoload: true })
 
+const jwt = require('jsonwebtoken')
+const dotenv = require('dotenv')
+dotenv.config()
+
+function generateAccessToken(userData) {
+    return jwt.sign(userData, process.env.TOKEN_SECRET, { expiresIn: '30m' });
+}
+
 const knownIps = {}
 const MAX_REQUESTS = 5
 const RESET_TIME = 60*1000
@@ -13,7 +21,9 @@ const RESET_TIME = 60*1000
 app.use(function(req, res, next) {
     const ip = req.ip
     const path = req.path
-    if (canRequest(ip,path)) {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+    if (canRequest(ip,path,token)) {
         next()
     } else {
         res.status(401).json({
@@ -39,6 +49,17 @@ app.post('/message', (req, res) => {
         if (err) res.status(500).json(err)
         res.json(newDoc)
     })
+})
+
+app.post('/login', (req,res) => {
+    const userData = {
+        username: 'nicolas',
+        admin: 'true'
+    }
+
+    userData.token = generateAccessToken(userData)
+
+    res.json(userData)
 })
 
 app.get('/admin', (req, res) => {
@@ -79,9 +100,15 @@ app.post('/admin/message/delete/:id', (req, res) => {
     })
 })
 
-function canRequest(ip, path) {
+function canRequest(ip, path, token) {
     if (path.startsWith('/admin')) {
-        return false
+        if (token == null) return false
+        jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
+            console.log(err)
+            // if (err) return res.sendStatus(403)
+            // req.user = user
+            console.log(user)
+        })
     } else if (path != '/message' && (!knownIps[ip] || !knownIps[ip].blocked)) {
         return true
     } else if (!knownIps[ip]) {
