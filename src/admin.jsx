@@ -530,35 +530,84 @@ function ConcertInfo(props) {
             <Form.Label>Détails (facultatifs) : </Form.Label><br/>
             {(concert.details && concert.details.artists && concert.details.artists.length) && <Card body>
                 <Form.Label>Artistes :</Form.Label>
-                {concert.details.artists.map(artist => <Card key={artist.name+'-artist'} body>
+                {concert.details.artists.map((artist,artIndex) => <Card key={artist.name+'-artist-'+artIndex} body>
                     <Form.Group>
                         <Form.Label>Nom de l'artiste :</Form.Label>
-                        <Form.Control type="text" value={artist.name} onChange={e => setConcert({
-                            ...concert,
-                            // modified: true,
-                            // details: {
-                            //     ...concert.details,
-                            //     e.target.value
-                            // }
-                        })}/>
+                        <Form.Control type="text" value={artist.name} onChange={e => {
+                            const newArtists = [...concert.details.artists]
+                            newArtists[artIndex] = {
+                                ...newArtists[artIndex],
+                                name: e.target.value
+                            }
+                            setConcert({
+                                ...concert,
+                                modified: true,
+                                details: {
+                                    ...concert.details,
+                                    artists: newArtists
+                                }
+                            })
+                        }}/>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Instrument(s) de l'artiste :</Form.Label>
-                        <Form.Control type="text" value={artist.instrument} onChange={e => {}}/>
+                        <Form.Control type="text" value={artist.instrument} onChange={e => {
+                            const newArtists = [...concert.details.artists]
+                            newArtists[artIndex] = {
+                                ...newArtists[artIndex],
+                                instrument: e.target.value
+                            }
+                            setConcert({
+                                ...concert,
+                                modified: true,
+                                details: {
+                                    ...concert.details,
+                                    artists: newArtists
+                                }
+                            })
+                        }}/>
                     </Form.Group>
                 </Card>)}
             </Card>}
             <Button className="mt-2" variant="outline-secondary">Ajouter un artiste</Button>{' '}
             {(concert.details && concert.details.pieces && concert.details.pieces.length) && <Card body className="mt-2">
                 <Form.Label>Œuvres :</Form.Label>
-                {concert.details.pieces.map(piece => <Card key={piece.title+'-piece'} body>
+                {concert.details.pieces.map((piece,pIndex) => <Card key={piece.title+'-piece-'+pIndex} body>
                     <Form.Group>
                         <Form.Label>Titre de l'œuvre :</Form.Label>
-                        <Form.Control type="text" value={piece.title} onChange={e => {}}/>
+                        <Form.Control type="text" value={piece.title} onChange={e => {
+                            const newPieces = [...concert.details.pieces]
+                            newPieces[pIndex] = {
+                                ...newPieces[pIndex],
+                                title: e.target.value
+                            }
+                            setConcert({
+                                ...concert,
+                                modified: true,
+                                details: {
+                                    ...concert.details,
+                                    pieces: newPieces
+                                }
+                            })
+                        }}/>
                     </Form.Group>
                     <Form.Group>
                         <Form.Label>Compositeur :</Form.Label>
-                        <Form.Control type="text" value={piece.composer} onChange={e => {}}/>
+                        <Form.Control type="text" value={piece.composer} onChange={e => {
+                            const newPieces = [...concert.details.pieces]
+                            newPieces[pIndex] = {
+                                ...newPieces[pIndex],
+                                composer: e.target.value
+                            }
+                            setConcert({
+                                ...concert,
+                                modified: true,
+                                details: {
+                                    ...concert.details,
+                                    pieces: newPieces
+                                }
+                            })
+                        }}/>
                     </Form.Group>
                 </Card>)}
             </Card>}
