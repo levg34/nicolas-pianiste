@@ -12,6 +12,7 @@ db.carousel = new Datastore({ filename: 'data/carousel', autoload: true })
 db.links = new Datastore({ filename: 'data/links', autoload: true })
 db.biographie = new Datastore({ filename: 'data/biographie', autoload: true })
 db.studies = new Datastore({ filename: 'data/studies', autoload: true })
+db.concerts = new Datastore({ filename: 'data/concerts', autoload: true })
 
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
@@ -103,6 +104,13 @@ app.get('/biographie', (req, res) => {
 
 app.get('/studies', (req, res) => {
     db.studies.find({}).sort({index: 1}).exec(function (err, docs) {
+        if (err) res.status(500).json(err)
+        res.json(docs)
+    })
+})
+
+app.get('/concerts', (req, res) => {
+    db.concerts.find({}, function (err, docs) {
         if (err) res.status(500).json(err)
         res.json(docs)
     })
