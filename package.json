@@ -13,7 +13,7 @@
     "dev": "npm-run-all --parallel dev-server babel-watch",
     "start-server": "node index.js",
     "babel-build": "babel src --out-dir public/js --presets react-app/prod",
-    "babel-clean": "rimraf public/js/admin.js",
+    "babel-clean": "rimraf public/js/admin.js public/js/404.js public/js/500.js public/js/NicoCarousel.js",
     "start": "npm-run-all --sequential babel-clean babel-build start-server"
   },
   "repository": {
