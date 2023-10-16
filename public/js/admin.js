@@ -85,12 +85,20 @@ Se reconnecter ?`
             text,
             variant: 'danger'
         })
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        })
     }
 
     treatSuccess(success) {
         this.setAlert({
             variant: 'success',
             text: success
+        })
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
         })
         setTimeout(() => this.clear(),1500)
     }
