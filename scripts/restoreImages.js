@@ -34,6 +34,11 @@ const fulldata = {
 
 let directoryPath = path.join(__dirname, '../public/img/banner')
 
+db.images.remove({destination: 'img/banner/'}, { multi: true }, function (err, numRemoved) {
+    if (err) console.error(err)
+    console.log({numRemoved})
+})
+
 fs.readdir(directoryPath, function (err, files) {
 
     if (err) {
@@ -72,6 +77,11 @@ fs.readdir(directoryPath, function (err, files) {
 
 directoryPath = path.join(__dirname, '../public/img/concerts')
 
+db.images.remove({destination: 'img/concerts/'}, { multi: true }, function (err, numRemoved) {
+    if (err) console.error(err)
+    console.log({numRemoved})
+})
+
 fs.readdir(directoryPath, function (err, files) {
 
     if (err) {
@@ -109,6 +119,12 @@ fs.readdir(directoryPath, function (err, files) {
 })
 
 directoryPath = path.join(__dirname, '../public/img/banner/old')
+
+db.images.remove({destination: 'img/banner/old/'}, { multi: true }, function (err, numRemoved) {
+    if (err) console.error(err)
+    console.log({numRemoved})
+})
+
 
 fs.readdir(directoryPath, function (err, files) {
 
