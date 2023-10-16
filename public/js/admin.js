@@ -1,4 +1,4 @@
-const { Container, Jumbotron, Navbar, Nav, ListGroup, Row, Col, Card, ButtonGroup, Button, Form, Alert, Image } = ReactBootstrap
+const { Container, Jumbotron, Navbar, Nav, ListGroup, Row, Col, Card, ButtonGroup, Button, Form, Alert, Image, Toast } = ReactBootstrap
 const { useState, useEffect } = React
 
 function stringToColour(str) {
@@ -879,11 +879,25 @@ function Content(props) {
 
     const [activePage, setActivePage] = useState(startPage())
 
+    const [showToast, setShowToast] = useState(false)
+    const [toastData, setToastData] = useState({})
+
+    const checkToken = () => {
+        axios.get('/admin/tokenvalid').then(res => {
+            if (res.data && res.data.expMin && res.data.expMin < 6) {
+                setToastData(res.data)
+                setShowToast(true)
+            }
+        }).catch(err => feedback.treatError(err))
+    }
+
     useEffect(() => {
+        const interval = setInterval(checkToken,60*1000)
         window.addEventListener("hashchange", () => {
             setActivePage(startPage())
         }, false)
         return () => {
+            clearInterval(interval)
             window.removeEventListener("hashchange", () => {
                 setActivePage(startPage())
             }, false)
@@ -931,6 +945,18 @@ function Content(props) {
     return <Container fluid>
         <AlertFeedback alert={alert}/>
         {component}
+        <Container>
+        <Toast show={showToast} onClose={() => setShowToast(false)} style={{position: 'fixed',top: 10}} delay={9000} autohide>
+            <Toast.Header>
+                <strong className="mr-auto">Attention !</strong>
+                <small>{toastData.username}</small>
+            </Toast.Header>
+            <Toast.Body>
+                <p>Le token de session ne sera plus valide dans <strong>{Math.floor(toastData.expMin)}</strong> minutes.</p>
+                <p>Pensez à bien sauvegarder votre travail, ou vous déconnecter et vous reconnecter avant de continuer.</p>
+            </Toast.Body>
+        </Toast>
+        </Container>
     </Container>
 }
 
