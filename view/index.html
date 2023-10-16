@@ -471,84 +471,22 @@
     </ul>
   </div>
 
-  <div id="videos" class="bg-1">
+  <div id="videos" class="bg-1" ng-controller="videosCtrl">
     <div class="container">
       <h3 class="text-center">Vidéos</h3>
 
       <div class="row text-center">
-        <div class="col-sm-4">
+        <div ng-repeat="video in videos" class="col-sm-4">
           <div class="thumbnail">
-            <a target="_blank" href="https://youtube.com/playlist?list=PL4K1mNvjCpY0GerRJti2J-cT5l69bxJoo">
-            <img src="https://i.ytimg.com/vi/9hPrAWI_KOM/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLCpyo6_xdvY87vo7Gio1xn_NWUCcg" alt="Collaborations">
+            <a target="_blank" href="{{video.url}}">
+            <img src="{{video.img}}" alt="{{video.alt}}">
               <p>
-                <strong>Au CNSM</strong><br> <b>2015-2020</b>
+                <strong>{{video.title}}</strong><br> <b>{{video.subtitle}}</b>
               </p>
-              <p>Concerts qui ont rythmé mes études parisiennes.</p></a>
-          </div>
-        </div>
-        <div class="col-sm-4">
-          <div class="thumbnail">
-            <a target="_blank" href="https://youtube.com/playlist?list=PL4K1mNvjCpY06DOif7u9O5sfhQQYHMlpM">
-            <img src="https://i.ytimg.com/vi/VcQcHb-uppA/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLDTXebejHXeNo0masvEmUUoU4DGdQ" alt="Collaborations">
-              <p>
-                <strong>Confinement</strong><br> <b>2020</b>
-              </p>
-              <p>Enregistrements « faits-maison » dans le sud de la France.</p></a>
-          </div>
-        </div>
-        <div class="col-sm-4">
-          <div class="thumbnail">
-            <a target="_blank" href="https://vimeo.com/181230350"> <img src="https://i.vimeocdn.com/video/589738601_1280x720.jpg" alt="Liszt">
-              <p>
-                <strong>Liszt - Rapsodie hongroise no.6 (extrait)</strong><br> <b>Août 2016</b>
-              </p>
-              <p>Filmé dans la salle des colonnes du château de Fontainebleau, dans le cadre du court-métrage Hartz dirigé par Marie Cheignon</p>
-            </a>
-          </div>
-        </div>
-        <div class="col-sm-4">
-          <div class="thumbnail">
-            <a target="_blank" href="https://vimeo.com/disruptivefactory/nicolasdross-sonatek332-mozart"> <img src="https://i.vimeocdn.com/video/575512226_1280x720.jpg" alt="Mozart">
-              <p>
-                <strong>Mozart - Sonate K.332 (premier mouvement)</strong><br> <b>Janvier 2016</b>
-              </p>
-              <p>Test écran, filmé chez un particulier dans le cadre du court-métrage Hartz dirigé par Marie Cheignon</p></a>
-          </div>
-        </div>
-        <div class="col-sm-4">
-          <div class="thumbnail">
-            <a target="_blank" href="https://www.youtube.com/playlist?list=PL4K1mNvjCpY3_OrZDdAzg1727ZKHfihhJ">
-            <img src="https://i.ytimg.com/vi/L0A6eK5d-mo/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLC5k_hc7OAPBrMBjhq9ZDzzY46NdQ" alt="Concours">
-              <p>
-                <strong>Concours Alain Marinaro</strong><br> <b>Juillet 2015</b>
-              </p>
-              <p>Programme</p>
-              <ul style="text-align: left">
-                <li>Debussy - Image (2e cahier)</li>
-                <li>Gaussin - Tokyo City (vidéo indisponible pour droits d'auteurs)</li>
-                <li>Chopin - Scherzo no.4</li>
-                <li>Babadjanian - Capriccio</li>
+              <p>{{video.description}}</p>
+              <ul ng-if="video.list && video.list.length" style="text-align: left">
+                <li ng-repeat="el in video.list">{{el}}</li>
               </ul></a>
-          </div>
-        </div>
-        <div class="col-sm-4">
-          <div class="thumbnail">
-            <a target="_blank" href="https://www.youtube.com/playlist?list=PL4K1mNvjCpY0f3sxtjDDJv8FEnWpehWSP">
-            <img src="https://i.ytimg.com/vi/DJEaSn-Sv5o/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLDraBe6ffdDInlCQsB2Ujp9lmWzAQ" alt="14-15">
-              <p>
-                <strong>Extraits de concerts</strong><br> <b>2014-2015</b>
-              </p>
-              <p>Cassan 2014 - Beethoven, Debussy, Rachmaninov et 2015 - Brahms</p></a>
-          </div>
-        </div>
-        <div class="col-sm-4">
-          <div class="thumbnail">
-            <a target="_blank" href="https://www.youtube.com/playlist?list=PL4K1mNvjCpY0yU04ie-iKPf38Mu6U_VTM">
-            <img src="https://i.ytimg.com/vi/tOZOEMUPLjM/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLBq_0pajc85QbTiFIVuDuoN2JKu9g" alt="Collaborations">
-              <p>
-                <strong>Collaborations</strong><br> <b>divers</b>
-              </p>
-              <p>Collaboration avec compositeurs, chambristes etc…</p></a>
           </div>
         </div>
       </div>

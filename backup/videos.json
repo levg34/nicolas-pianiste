@@ -1,0 +1,70 @@
+[
+    {
+        "url": "https://youtube.com/playlist?list=PL4K1mNvjCpY0GerRJti2J-cT5l69bxJoo",
+        "title": "Au CNSM",
+        "subtitle": "2015-2020",
+        "img": "https://i.ytimg.com/vi/9hPrAWI_KOM/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLCpyo6_xdvY87vo7Gio1xn_NWUCcg",
+        "alt": "Collaborations",
+        "description": "Concerts qui ont rythmé mes études parisiennes.",
+        "list": []
+    },
+    {
+        "url": "https://youtube.com/playlist?list=PL4K1mNvjCpY06DOif7u9O5sfhQQYHMlpM",
+        "title": "Confinement",
+        "subtitle": "2020",
+        "img": "https://i.ytimg.com/vi/VcQcHb-uppA/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLDTXebejHXeNo0masvEmUUoU4DGdQ",
+        "alt": "Collaborations",
+        "description": "Enregistrements « faits-maison » dans le sud de la France.",
+        "list": []
+    },
+    {
+        "url": "https://vimeo.com/181230350",
+        "title": "Liszt - Rapsodie hongroise no.6 (extrait)",
+        "subtitle": "Août 2016",
+        "img": "https://i.vimeocdn.com/video/589738601_1280x720.jpg",
+        "alt": "Liszt",
+        "description": "Filmé dans la salle des colonnes du château de Fontainebleau, dans le cadre du court-métrage Hartz dirigé par Marie Cheignon",
+        "list": []
+    },
+    {
+        "url": "https://vimeo.com/disruptivefactory/nicolasdross-sonatek332-mozart",
+        "title": "Mozart - Sonate K.332 (premier mouvement)",
+        "subtitle": "Janvier 2016",
+        "img": "https://i.vimeocdn.com/video/575512226_1280x720.jpg",
+        "alt": "Mozart",
+        "description": "Test écran, filmé chez un particulier dans le cadre du court-métrage Hartz dirigé par Marie Cheignon",
+        "list": []
+    },
+    {
+        "url": "https://www.youtube.com/playlist?list=PL4K1mNvjCpY3_OrZDdAzg1727ZKHfihhJ",
+        "title": "Concours Alain Marinaro",
+        "subtitle": "Juillet 2015",
+        "img": "https://i.ytimg.com/vi/L0A6eK5d-mo/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLC5k_hc7OAPBrMBjhq9ZDzzY46NdQ",
+        "alt": "Concours",
+        "description": "Programme",
+        "list": [
+            "Debussy - Image (2e cahier)",
+            "Gaussin - Tokyo City (vidéo indisponible pour droits d'auteurs)",
+            "Chopin - Scherzo no.4",
+            "Babadjanian - Capriccio"
+        ]
+    },
+    {
+        "url": "https://www.youtube.com/playlist?list=PL4K1mNvjCpY0f3sxtjDDJv8FEnWpehWSP",
+        "title": "Extraits de concerts",
+        "subtitle": "2014-2015",
+        "img": "https://i.ytimg.com/vi/DJEaSn-Sv5o/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLDraBe6ffdDInlCQsB2Ujp9lmWzAQ",
+        "alt": "14-15",
+        "description": "Cassan 2014 - Beethoven, Debussy, Rachmaninov et 2015 - Brahms",
+        "list": []
+    },
+    {
+        "url": "https://www.youtube.com/playlist?list=PL4K1mNvjCpY0yU04ie-iKPf38Mu6U_VTM",
+        "title": "Collaborations",
+        "subtitle": "divers",
+        "img": "https://i.ytimg.com/vi/tOZOEMUPLjM/hqdefault.jpg?sqp=-oaymwEXCNACELwBSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLBq_0pajc85QbTiFIVuDuoN2JKu9g",
+        "alt": "Collaborations",
+        "description": "Collaboration avec compositeurs, chambristes etc…",
+        "list": []
+    }
+]
