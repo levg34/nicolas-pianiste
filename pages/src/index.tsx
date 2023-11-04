@@ -13,7 +13,7 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 
 render(
     () => (
-        <App headerImageUrl="https://nicolasdross.fr/uploads/15d0b22a39ff686e73991ef52d5c9d76" pageName="Duo d'Oro" />
+        <App />
     ),
     root!
 )
