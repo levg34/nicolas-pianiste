@@ -119,6 +119,10 @@ app.get('/pages', (req, res) => {
     })
 })
 
+app.get('/pages/:pageId', (req, res) => {
+    res.sendFile(__dirname + '/view/pages.html')
+})
+
 app.get('/carousel', (req, res) => {
     db.carousel.find({}).sort({active: -1}).exec(function (err, docs) {
         if (err) res.status(500).json(err)

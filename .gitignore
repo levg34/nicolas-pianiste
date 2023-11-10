@@ -16,3 +16,6 @@ public/js/NicoCarousel.js
 public/js/main.js
 public/js/unsubscribe.js
 uploads/
+
+public/assets
+view/pages.html
