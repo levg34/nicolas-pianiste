@@ -1,7 +1,6 @@
 import { Component, For, Show, createResource } from 'solid-js'
 import { Breadcrumb, Carousel, Col, Container, Row, Spinner, Stack } from 'solid-bootstrap'
 import Element from './elements/Element'
-import data from '../pages.json'
 import { prepareForDisplay } from './utils'
 import { useParams } from '@solidjs/router'
 
@@ -25,7 +24,8 @@ export interface Video {
 }
 
 const getPageData = async (pageId: string): Promise<PageData> => {
-    return data
+    const pageData = await fetch('/pages/'+pageId+'/data').then(data => data.json())
+    return pageData
 }
 
 const Page: Component<Props> = (props: Props) => {
