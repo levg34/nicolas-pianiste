@@ -34,6 +34,11 @@
           <li><a href="#studies">ÉTUDES</a></li>
           <li><a href="#tour">CONCERTS</a></li>
           <li><a href="#repertory">RÉPERTOIRE</a></li>
+          <li class="dropdown" ng-controller="pagesCtrl"><a ng-if="pages.length > 0" class="dropdown-toggle" data-toggle="dropdown" href="#">GROUPES <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li ng-repeat="page in pages"><a href="{{page.url}}">{{page.name}}</a></li>
+            </ul>
+          </li>
           <li><a href="#videos">VIDEOS</a></li>
           <li><a href="#contact">CONTACT</a></li>
           <li class="dropdown" ng-controller="linkCtrl"><a class="dropdown-toggle" data-toggle="dropdown" href="#">LIENS <span class="caret"></span>

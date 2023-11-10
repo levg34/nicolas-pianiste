@@ -205,3 +205,18 @@ app.controller('repertoryCtrl', function($scope,$http) {
 	}
 	$scope.loadData()
 })
+
+app.controller('pagesCtrl', function($scope,$http) {
+	const baseUrl = '/pages/'
+	$scope.pages = []
+	$scope.loadData = function() {
+		$http.get('/pages').then(response => {		
+			if (response && response.data && Array.isArray(response.data)) {
+				response.data.forEach(page => {
+					$scope.pages.push({...page, url: baseUrl + page.url})
+				})
+			}
+		}).catch(err => console.error(err))
+	}
+	$scope.loadData()
+})
