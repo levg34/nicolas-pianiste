@@ -127,7 +127,11 @@ app.get('/pages/:pageId/data', (req, res) => {
     const pageId = req.params.pageId
     db.pages.findOne({url: pageId}).sort({name: 1}).exec(function (err, docs) {
         if (err) res.status(500).json(err)
-        res.json(docs?.pageData ?? {error: 'No data found for pageId '+pageId})
+        if (!docs?.pageData) {
+            res.status(404).json({error: 'No data found for pageId '+pageId})
+            return
+        }
+        res.json(docs.pageData)
     })
 })
 
