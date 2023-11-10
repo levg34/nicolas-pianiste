@@ -208,28 +208,15 @@ app.controller('repertoryCtrl', function($scope,$http) {
 
 app.controller('pagesCtrl', function($scope,$http) {
 	const baseUrl = '/pages/'
-	$scope.pages = [
-		{
-			name: 'Duo d\'oro',
-			url: baseUrl + 'duo-doro'
-		},
-		{
-			name: 'Trio éphémère',
-			url: baseUrl + 'trio-etc'
-		},
-		{
-			name: 'La flûte en chantée',
-			url: baseUrl + 'flute-etc'
-		}
-	]
-	// $scope.loadData = function() {
-	// 	$http.get('/links').then(response => {		
-	// 		if (response && response.data && (response.data instanceof Array)) {
-	// 			response.data.forEach(link => {
-	// 				$scope[`${link.type ? link.type : 'other'}Links`].push(link)
-	// 			})
-	// 		}
-	// 	}).catch(err => console.error(err))
-	// }
-	// $scope.loadData()
+	$scope.pages = []
+	$scope.loadData = function() {
+		$http.get('/pages').then(response => {		
+			if (response && response.data && Array.isArray(response.data)) {
+				response.data.forEach(page => {
+					$scope.pages.push({...page, url: baseUrl + page.url})
+				})
+			}
+		}).catch(err => console.error(err))
+	}
+	$scope.loadData()
 })

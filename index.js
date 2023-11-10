@@ -34,6 +34,7 @@ db.newsletter = new Datastore({ filename: 'data/newsletter', autoload: true })
 db.newsletter.ensureIndex({ fieldName: 'email', unique: true }, function (err) {
     if (err) console.error(err)
 })
+db.pages = new Datastore({ filename: 'data/pages', autoload: true })
 
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
@@ -106,6 +107,13 @@ app.get('/unsubscribe', (req, res) => {
 
 app.get('/links', (req, res) => {
     db.links.find({}).sort({type: 1, name: 1}).exec(function (err, docs) {
+        if (err) res.status(500).json(err)
+        res.json(docs)
+    })
+})
+
+app.get('/pages', (req, res) => {
+    db.pages.find({}).sort({name: 1}).exec(function (err, docs) {
         if (err) res.status(500).json(err)
         res.json(docs)
     })
