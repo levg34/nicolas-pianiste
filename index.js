@@ -113,7 +113,7 @@ app.get('/links', (req, res) => {
 })
 
 app.get('/pages', (req, res) => {
-    db.pages.find({}).sort({name: 1}).exec(function (err, docs) {
+    db.pages.find({}, {name: 1, url: 1}).sort({name: 1}).exec(function (err, docs) {
         if (err) res.status(500).json(err)
         res.json(docs)
     })
