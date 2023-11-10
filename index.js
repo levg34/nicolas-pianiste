@@ -123,6 +123,14 @@ app.get('/pages/:pageId', (req, res) => {
     res.sendFile(__dirname + '/view/pages.html')
 })
 
+app.get('/pages/:pageId/data', (req, res) => {
+    const pageId = req.params.pageId
+    db.pages.findOne({url: pageId}).sort({name: 1}).exec(function (err, docs) {
+        if (err) res.status(500).json(err)
+        res.json(docs?.pageData ?? {error: 'No data found for pageId '+pageId})
+    })
+})
+
 app.get('/carousel', (req, res) => {
     db.carousel.find({}).sort({active: -1}).exec(function (err, docs) {
         if (err) res.status(500).json(err)
