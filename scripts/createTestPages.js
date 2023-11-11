@@ -4,7 +4,7 @@ const fakeData = [
         url: 'duo-doro',
         pageData: {
             "headerImageUrl": "https://nicolasdross.fr/uploads/15d0b22a39ff686e73991ef52d5c9d76",
-            "pageName": "Duo d'Oro",
+            // "pageName": "Duo d'Oro",
             "data": [
               { "text": ["paragraphe 1", "paragraphe 2"] },
               { "image": "https://placekitten.com/g/300/300" },
