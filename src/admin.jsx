@@ -1872,6 +1872,8 @@ function PageFormGroup(props) {
         const newItem = {}
         if (type === 'video') {
             newItem[type] = {url: '', thumbUrl: ''}
+        } else if (type === 'text') {
+            newItem[type] = ['']
         } else {
             newItem[type] = ''
         }
@@ -1896,6 +1898,45 @@ function PageFormGroup(props) {
         const temp = modifsData[index]
         modifsData[index] = modifsData[index + direction]
         modifsData[index + direction] = temp
+        setData(modifsData)
+        setPage({
+            ...page,
+            pageData: {
+                ...page.pageData,
+                data: modifsData
+            }
+        })
+    }
+
+    const addParagraph = (index) => {
+        const modifsData = [...data]
+        modifsData[index].text.push('')
+        setData(modifsData)
+        setPage({
+            ...page,
+            pageData: {
+                ...page.pageData,
+                data: modifsData
+            }
+        })
+    }
+
+    const removeParagraph = (index, subindex) => {
+        const modifsData = [...data]
+        modifsData[index].text.splice(subindex, 1)
+        setData(modifsData)
+        setPage({
+            ...page,
+            pageData: {
+                ...page.pageData,
+                data: modifsData
+            }
+        })
+    }
+
+    const setParagraph = (index, subindex, value) => {
+        const modifsData = [...data]
+        modifsData[index].text[subindex] = value
         setData(modifsData)
         setPage({
             ...page,
@@ -1931,9 +1972,18 @@ function PageFormGroup(props) {
                         <Form.Label>URL de la vignette</Form.Label>
                         <Form.Control type="text" placeholder="Entrez l'URL de la vignette" value={item[key].thumbUrl} onChange={e => setDataItem(index, {...item, [key]: {...item[key], thumbUrl: e.target.value}})}/>
                     </Form.Group>
+                </div> : key === 'text' ? <div>
+                    {item[key].map((paragraph, subindex) => <div key={subindex}>
+                        <Form.Group controlId={'text'+index+'-'+subindex}>
+                            <Form.Label>Paragraphe {subindex+1}</Form.Label>
+                            <Form.Control type="text" placeholder="Entrez le texte" value={paragraph} onChange={e => setParagraph(index, subindex, e.target.value)}/>
+                        </Form.Group>
+                        <Button variant="outline-danger" onClick={e => removeParagraph(index, subindex)}>Supprimer le paragraphe</Button>
+                    </div>)}
+                    <Button variant="outline-info" onClick={e => addParagraph(index)}>Ajouter un paragraphe</Button>
                 </div> : <Form.Group controlId={key+index}>
-                    <Form.Label>{key === 'text' ? 'Texte' : 'Image'}</Form.Label>
-                    <Form.Control type="text" placeholder={key === 'text' ? 'Entrez le texte' : 'Entrez l\'URL de l\'image'} value={item[key]} onChange={e => setDataItem(index, {...item, [key]: e.target.value})}/>
+                    <Form.Label>Image</Form.Label>
+                    <Form.Control type="text" placeholder="Entrez l\'URL de l\'image" value={item[key]} onChange={e => setDataItem(index, {...item, [key]: e.target.value})}/>
                 </Form.Group>}
             </div>)}
             <ButtonGroup>
