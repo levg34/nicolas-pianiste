@@ -1870,7 +1870,7 @@ function PageFormGroup(props) {
 
     const addDataItem = (type) => {
         const newItem = {}
-        newItem[type] = ''
+        newItem[type] = type === 'video' ? {url:'',thumbUrl:''} : ''
         setData([...data, newItem])
     }
 
@@ -1947,7 +1947,7 @@ function Pages(props) {
     const [pages, setPages] = useState([])
 
     const getPages = () => {
-        axios.get('/pages').then(res => {
+        axios.get('/pages?full=true').then(res => {
             setPages(res.data)
         }).catch(err => feedback.treatError(err))
     }
