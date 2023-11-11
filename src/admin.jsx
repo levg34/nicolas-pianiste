@@ -1853,7 +1853,7 @@ function PageFormGroup(props) {
     const page = props.page
     const setPage = props.setPage
 
-    const [data, setData] = useState(page.pageData ? page.pageData.data : undefined)
+    const [data, setData] = useState(page.pageData ? page.pageData.data : [])
 
     const setDataItem = (index, item) => {
         const modifsData = [...data]
@@ -1870,7 +1870,11 @@ function PageFormGroup(props) {
 
     const addDataItem = (type) => {
         const newItem = {}
-        newItem[type] = type === 'video' ? {url:'',thumbUrl:''} : ''
+        if (type === 'video') {
+            newItem[type] = {url: '', thumbUrl: ''}
+        } else {
+            newItem[type] = ''
+        }
         setData([...data, newItem])
     }
 
@@ -1918,10 +1922,19 @@ function PageFormGroup(props) {
         <Form.Label>Données de la page</Form.Label>
         {data && data.map((item, index) => <div key={index}>
             {Object.keys(item).map(key => <div key={key}>
-                <Form.Group controlId={key+index}>
-                    <Form.Label>{key === 'text' ? 'Texte' : key === 'image' ? 'Image' : 'Vidéo'}</Form.Label>
-                    <Form.Control type="text" placeholder={key === 'text' ? 'Entrez le texte' : key === 'image' ? 'Entrez l\'URL de l\'image' : 'Entrez l\'URL de la vidéo'} value={item[key]} onChange={e => setDataItem(index, {...item, [key]: e.target.value})}/>
-                </Form.Group>
+                {key === 'video' ? <div>
+                    <Form.Group controlId={'videoUrl'+index}>
+                        <Form.Label>URL de la vidéo</Form.Label>
+                        <Form.Control type="text" placeholder="Entrez l'URL de la vidéo" value={item[key].url} onChange={e => setDataItem(index, {...item, [key]: {...item[key], url: e.target.value}})}/>
+                    </Form.Group>
+                    <Form.Group controlId={'videoThumbUrl'+index}>
+                        <Form.Label>URL de la vignette</Form.Label>
+                        <Form.Control type="text" placeholder="Entrez l'URL de la vignette" value={item[key].thumbUrl} onChange={e => setDataItem(index, {...item, [key]: {...item[key], thumbUrl: e.target.value}})}/>
+                    </Form.Group>
+                </div> : <Form.Group controlId={key+index}>
+                    <Form.Label>{key === 'text' ? 'Texte' : 'Image'}</Form.Label>
+                    <Form.Control type="text" placeholder={key === 'text' ? 'Entrez le texte' : 'Entrez l\'URL de l\'image'} value={item[key]} onChange={e => setDataItem(index, {...item, [key]: e.target.value})}/>
+                </Form.Group>}
             </div>)}
             <ButtonGroup>
                 <Button variant="outline-danger" onClick={e => removeDataItem(index)}>Supprimer</Button>
