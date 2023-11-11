@@ -35,6 +35,9 @@ db.newsletter.ensureIndex({ fieldName: 'email', unique: true }, function (err) {
     if (err) console.error(err)
 })
 db.pages = new Datastore({ filename: 'data/pages', autoload: true })
+db.pages.ensureIndex({ fieldName: 'url', unique: true }, function (err) {
+    if (err) console.error(err)
+})
 
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
@@ -113,12 +116,12 @@ app.get('/links', (req, res) => {
 })
 
 app.get('/pages', (req, res) => {
-    db.pages.find({}, {name: 1, url: 1}).sort({name: 1}).exec(function (err, docs) {
+    const full = req.query.full
+    db.pages.find({}, full ? undefined : {name: 1, url: 1}).sort({name: 1}).exec(function (err, docs) {
         if (err) res.status(500).json(err)
         res.json(docs)
     })
 })
-
 app.get('/pages/:pageId', (req, res) => {
     res.sendFile(__dirname + '/view/pages.html')
 })
@@ -686,6 +689,31 @@ app.post('/admin/extract_newsletter', async (req, res) => {
         console.error(error)
         res.status(500).json({error})
     }
+})
+
+app.post('/admin/page', (req, res) => {
+    const page = req.body
+
+    if (!page._id) {
+        db.pages.insert(page, function (err, newDoc) {
+            if (err) res.status(500).json(err)
+            res.json(newDoc)
+        })
+    } else {
+        db.pages.update({ _id: page._id }, page, {}, function (err, numReplaced) {
+            if (err) res.status(500).json({err})
+            res.json({ok:numReplaced})
+        })
+    }
+})
+
+app.delete('/admin/page/:id', (req, res) => {
+    const pageId = req.params.id
+
+    db.pages.remove({ _id: pageId }, {}, function (err, numRemoved) {
+        if (err) res.status(500).json({err})
+        res.json({removed:numRemoved})
+    })
 })
 
 app.get('/admin/tokenvalid', (req, res) => {
