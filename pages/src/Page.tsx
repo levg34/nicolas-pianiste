@@ -7,24 +7,24 @@ import { useParams } from '@solidjs/router'
 type Props = {}
 
 export interface PageData {
-    headerImageUrl: string;
-    pageName:       string;
-    data:           Datum[];
+    headerImageUrl: string
+    pageName: string
+    data: Datum[]
 }
 
 export interface Datum {
-    text?:  string[];
-    image?: string;
-    video?: Video;
+    text?: string[]
+    image?: string
+    video?: Video
 }
 
 export interface Video {
-    url:      string;
-    thumbUrl: string;
+    url: string
+    thumbUrl: string
 }
 
 const getPageData = async (pageId: string): Promise<PageData> => {
-    const pageData = await fetch('/pages/'+pageId+'/data').then(data => data.json())
+    const pageData = await fetch('/pages/' + pageId + '/data').then((data) => data.json())
     return pageData
 }
 
@@ -55,14 +55,18 @@ const Page: Component<Props> = (props: Props) => {
                                     <Element element={elements[0]} />
                                 </Col>
                                 <Col sm>
-                                    <Element element={elements[1]} />
+                                    <Show when={elements[1]}>
+                                        <Element element={elements[1]} />
+                                    </Show>
                                 </Col>
                             </Row>
                             <hr />
                         </>
                     )}
                 </For>
-                <Show when={pageData.loading}><Spinner animation="border" variant="primary" /></Show>
+                <Show when={pageData.loading}>
+                    <Spinner animation="border" variant="primary" />
+                </Show>
                 <Show when={pageData.error}>Error: {pageData.error}</Show>
                 <Breadcrumb>
                     <Breadcrumb.Item href="/">Accueil</Breadcrumb.Item>
