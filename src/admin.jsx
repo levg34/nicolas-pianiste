@@ -1906,7 +1906,7 @@ function PageFormGroup(props) {
         })
     }
 
-    return <div>
+    return <Card body className="mt-2">
         <Form.Group controlId="name">
             <Form.Label>Nom de la page</Form.Label>
             <Form.Control type="text" placeholder="Entrez le nom de la page" value={page.name} onChange={e => setPage({...page, name: e.target.value})}/>
@@ -1951,7 +1951,7 @@ function PageFormGroup(props) {
         <Form.Group controlId="deleted">
             <Form.Check type="checkbox" label="Supprimer la page" checked={page.deleted} onChange={e => setPage({...page, deleted: e.target.checked})}/>
         </Form.Group>
-    </div>
+    </Card>
 }
 
 function Pages(props) {
