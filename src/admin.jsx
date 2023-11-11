@@ -46,6 +46,7 @@ function Header(props) {
                 <Nav.Link onClick={() => setActivePage('videos')}>Vidéos</Nav.Link>
                 <Nav.Link onClick={() => setActivePage('links')}>Liens</Nav.Link>
                 <Nav.Link onClick={() => setActivePage('newsletter')}>Newsletter</Nav.Link>
+                <Nav.Link onClick={() => setActivePage('pages')}>Pages</Nav.Link>
             </Nav>
             <Nav className="ml-auto">
                 <Nav.Link onClick={disconnect}><Button variant="info">Se déconnecter</Button></Nav.Link>
@@ -1848,6 +1849,190 @@ function Newsletter(props) {
     </Container>
 }
 
+function PageFormGroup(props) {
+    const page = props.page
+    const setPage = props.setPage
+
+    const [data, setData] = useState(page.pageData ? page.pageData.data : undefined)
+
+    const setDataItem = (index, item) => {
+        const modifsData = [...data]
+        modifsData[index] = item
+        setData(modifsData)
+        setPage({
+            ...page,
+            pageData: {
+                ...page.pageData,
+                data: modifsData
+            }
+        })
+    }
+
+    const addDataItem = (type) => {
+        const newItem = {}
+        newItem[type] = ''
+        setData([...data, newItem])
+    }
+
+    const removeDataItem = (index) => {
+        const modifsData = [...data]
+        modifsData.splice(index, 1)
+        setData(modifsData)
+        setPage({
+            ...page,
+            pageData: {
+                ...page.pageData,
+                data: modifsData
+            }
+        })
+    }
+
+    const moveDataItem = (index, direction) => {
+        const modifsData = [...data]
+        const temp = modifsData[index]
+        modifsData[index] = modifsData[index + direction]
+        modifsData[index + direction] = temp
+        setData(modifsData)
+        setPage({
+            ...page,
+            pageData: {
+                ...page.pageData,
+                data: modifsData
+            }
+        })
+    }
+
+    return <div>
+        <Form.Group controlId="name">
+            <Form.Label>Nom de la page</Form.Label>
+            <Form.Control type="text" placeholder="Entrez le nom de la page" value={page.name} onChange={e => setPage({...page, name: e.target.value})}/>
+        </Form.Group>
+        <Form.Group controlId="url">
+            <Form.Label>URL de la page</Form.Label>
+            <Form.Control type="text" placeholder="Entrez l'URL de la page" value={page.url} onChange={e => setPage({...page, url: e.target.value})}/>
+        </Form.Group>
+        <Form.Group controlId="headerImage">
+            <Form.Label>Image d'en-tête</Form.Label>
+            <Form.Control type="text" placeholder="Entrez l'URL de l'image d'en-tête" value={page.pageData ? page.pageData.headerImageUrl : ''} onChange={e => setPage({...page, pageData: {...page.pageData, headerImageUrl: e.target.value}})}/>
+        </Form.Group>
+        <Form.Label>Données de la page</Form.Label>
+        {data && data.map((item, index) => <div key={index}>
+            {Object.keys(item).map(key => <div key={key}>
+                <Form.Group controlId={key+index}>
+                    <Form.Label>{key === 'text' ? 'Texte' : key === 'image' ? 'Image' : 'Vidéo'}</Form.Label>
+                    <Form.Control type="text" placeholder={key === 'text' ? 'Entrez le texte' : key === 'image' ? 'Entrez l\'URL de l\'image' : 'Entrez l\'URL de la vidéo'} value={item[key]} onChange={e => setDataItem(index, {...item, [key]: e.target.value})}/>
+                </Form.Group>
+            </div>)}
+            <ButtonGroup>
+                <Button variant="outline-danger" onClick={e => removeDataItem(index)}>Supprimer</Button>
+                {index > 0 && <Button variant="outline-secondary" onClick={e => moveDataItem(index, -1)}>Monter</Button>}
+                {index < data.length - 1 && <Button variant="outline-secondary" onClick={e => moveDataItem(index, 1)}>Descendre</Button>}
+            </ButtonGroup>
+            <hr/>
+        </div>)}
+        <ButtonGroup>
+            <Button variant="outline-info" onClick={e => addDataItem('text')}>Ajouter du texte</Button>
+            <Button variant="outline-info" onClick={e => addDataItem('image')}>Ajouter une image</Button>
+            <Button variant="outline-info" onClick={e => addDataItem('video')}>Ajouter une vidéo</Button>
+        </ButtonGroup>
+        <Form.Group controlId="deleted">
+            <Form.Check type="checkbox" label="Supprimer la page" checked={page.deleted} onChange={e => setPage({...page, deleted: e.target.checked})}/>
+        </Form.Group>
+    </div>
+}
+
+function Pages(props) {
+    const feedback = props.feedback
+
+    const [pages, setPages] = useState([])
+
+    const getPages = () => {
+        axios.get('/pages').then(res => {
+            setPages(res.data)
+        }).catch(err => feedback.treatError(err))
+    }
+
+    const [updated, setUpdated] = useState({})
+
+    const markUpdated = index => {
+        setUpdated({
+            ...updated,
+            [index]: (updated[index] !== undefined) ? (updated[index]+1) : 1
+        })
+    }
+
+    const setPage = (index, page) => {
+        const modifsPage = [...pages]
+        modifsPage[index] = page
+        setPages(modifsPage)
+        markUpdated(index)
+    }
+
+    useEffect(getPages,[])
+
+    const savePage = page => {
+        feedback.clear()
+        axios.post('/admin/page', page).then(res => {
+            console.log(res)
+            feedback.treatSuccess('Modifications effectuées !')
+            getPages()
+            setUpdated(Object.keys(pages).reduce((acc,curr) => {
+                return {
+                    ...acc,
+                    [curr]: 0
+                }
+            },{}))
+        }).catch(err => feedback.treatError(err))
+    }
+
+    const deletePage = page => {
+        feedback.clear()
+        axios.delete('/admin/page/'+page._id).then(res => {
+            console.log(res)
+            feedback.treatSuccess('Modifications effectuées !')
+            getPages()
+            setUpdated(Object.keys(pages).reduce((acc,curr) => {
+                return {
+                    ...acc,
+                    [curr]: 0
+                }
+            },{}))
+        }).catch(err => feedback.treatError(err))
+    }
+    
+    return <Container>
+        <Form onSubmit={e => {
+            e.preventDefault()
+            Object.entries(updated).filter(e => e[1]).forEach(e => {
+                const page = pages[e[0]]
+                if (page.deleted) {
+                    deletePage(page)
+                } else {
+                    delete page.deleted
+                    savePage(page)
+                }
+            })
+        }}>
+            {pages.map((page, index) => <PageFormGroup key={page._id ? page._id : index} page={page} setPage={setPage.bind(null,index)}/>)}
+            <Button className="mt-2" variant="outline-info" onClick={e => {
+                const newPage = {
+                    name: '',
+                    url: '',
+                    pageData: {
+                        headerImageUrl: '',
+                        data: []
+                    }
+                }
+                setPages([...pages,newPage])
+            }}>Ajouter une page</Button>
+            <hr/>
+            <Button variant="primary" type="submit">
+                Valider
+            </Button>
+        </Form>
+    </Container>
+}
+
 function Content(props) {
     const startPage = () => window.location.hash ? window.location.hash.replace('#','') : 'messages'
 
@@ -1916,6 +2101,9 @@ function Content(props) {
             break
         case 'newsletter':
             component = <Newsletter feedback={feedback}/>
+            break
+        case 'pages':
+            component = <Pages feedback={feedback}/>
             break
         default:
             component = <Container>
