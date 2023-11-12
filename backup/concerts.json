@@ -272,5 +272,26 @@
             }
         ],
         "type": "Solo"
+    },
+    "extractedConcert": {
+        "name": "Participation en tant que compositeur",
+        "type": "Composition",
+        "details":{
+            "pieces":[
+                {
+                    "title": "Piano Orchestra",
+                    "composer": "Nicolas Dross"
+                }
+            ]
+        },
+        "occs":[
+            {
+                "date": "2019-04-07",
+                "time": "15:00",
+                "place": "cité de la musique",
+                "city": "Paris",
+                "irUrl": "https://philharmoniedeparis.fr/fr/activite/concert-performance/19353-piano-orchestra"
+            }
+        ]
     }
 }
