@@ -134,7 +134,10 @@
             {{occ.date | date:'dd/MM/yyyy'}} : {{occ.place}}, {{occ.city}} <span ng-show="state(occ)=='on'">
               <span class="label label-success">À venir</span> <span ng-show="occ.irUrl" class="label "><a target="_blank" href="{{occ.irUrl}}">infos réservation</a></span> <span class="label " ng-if="occ.info"><a href="" data-placement="bottom" data-toggle="popover" data-trigger="hover" title="{{occ.date | date:'dd/MM/yyyy'}}" data-content="{{occ.info}}">plus d'info...</a></span>
             </span>
-            <span ng-show="state(occ)=='off'" class="label label-warning">Terminé</span>
+            <span ng-show="state(occ)=='off'">
+              <span ng-show="state(occ)=='off'" class="label label-warning">Terminé</span>
+              <span ng-if="occ.photosUrl" class="label "><a target="_blank" href="{{occ.photosUrl}}">photos</a></span>
+            </span>
             <span ng-show="state(occ)=='cancel'" class="label label-danger">Annulé</span>
           </li>
         </ul>
@@ -160,7 +163,10 @@
             {{occ.date | date:'dd/MM/yyyy'}} : {{occ.place}}, {{occ.city}} <span ng-show="state(occ)=='on'">
               <span class="label label-success">À venir</span> <span ng-show="occ.irUrl" class="label "><a target="_blank" href="{{occ.irUrl}}">infos réservation</a></span> <span class="label " ng-if="occ.info"><a href="" data-placement="bottom" data-toggle="popover" data-trigger="hover" title="{{occ.date | date:'dd/MM/yyyy'}}" data-content="{{occ.info}}">plus d'info...</a></span>
             </span>
-            <span ng-show="state(occ)=='off'" class="label label-warning">Terminé</span>
+            <span ng-show="state(occ)=='off'">
+              <span ng-show="state(occ)=='off'" class="label label-warning">Terminé</span>
+              <span ng-if="occ.photosUrl" class="label "><a target="_blank" href="{{occ.photosUrl}}">photos</a></span>
+            </span>
             <span ng-show="state(occ)=='cancel'" class="label label-danger">Annulé</span>
           </li>
         </ul>
@@ -233,7 +239,10 @@
             {{occ.date | date:'dd/MM/yyyy'}} : {{occ.place}}, {{occ.city}} <span ng-show="state(occ)=='on'">
               <span class="label label-success">À venir</span> <span ng-show="occ.irUrl" class="label "><a target="_blank" href="{{occ.irUrl}}">infos réservation</a></span> <span class="label " ng-if="occ.info"><a href="" data-placement="bottom" data-toggle="popover" data-trigger="hover" title="{{occ.date | date:'dd/MM/yyyy'}}" data-content="{{occ.info}}">plus d'info...</a></span>
             </span>
-            <span ng-show="state(occ)=='off'" class="label label-warning">Terminé</span>
+            <span ng-show="state(occ)=='off'">
+              <span ng-show="state(occ)=='off'" class="label label-warning">Terminé</span>
+              <span ng-if="occ.photosUrl" class="label "><a target="_blank" href="{{occ.photosUrl}}">photos</a></span>
+            </span>
             <span ng-show="state(occ)=='cancel'" class="label label-danger">Annulé</span>
           </li>
         </ul>
@@ -270,7 +279,10 @@
             {{occ.date | date:'dd/MM/yyyy'}} : {{occ.place}}, {{occ.city}} <span ng-show="state(occ)=='on'">
               <span class="label label-success">À venir</span> <span ng-show="occ.irUrl" class="label "><a target="_blank" href="{{occ.irUrl}}">infos réservation</a></span> <span class="label " ng-if="occ.info"><a href="" data-placement="bottom" data-toggle="popover" data-trigger="hover" title="{{occ.date | date:'dd/MM/yyyy'}}" data-content="{{occ.info}}">plus d'info...</a></span>
             </span>
-            <span ng-show="state(occ)=='off'" class="label label-warning">Terminé</span>
+            <span ng-show="state(occ)=='off'">
+              <span ng-show="state(occ)=='off'" class="label label-warning">Terminé</span>
+              <span ng-if="occ.photosUrl" class="label "><a target="_blank" href="{{occ.photosUrl}}">photos</a></span>
+            </span>
             <span ng-show="state(occ)=='cancel'" class="label label-danger">Annulé</span>
           </li>
         </ul>
@@ -335,7 +347,10 @@
             {{occ.date | date:'dd/MM/yyyy'}} : {{occ.place}}, {{occ.city}} <span ng-show="state(occ)=='on'">
               <span class="label label-success">À venir</span> <span ng-show="occ.irUrl" class="label "><a target="_blank" href="{{occ.irUrl}}">infos réservation</a></span> <span class="label " ng-if="occ.info"><a href="" data-placement="bottom" data-toggle="popover" data-trigger="hover" title="{{occ.date | date:'dd/MM/yyyy'}}" data-content="{{occ.info}}">plus d'info...</a></span>
             </span>
-            <span ng-show="state(occ)=='off'" class="label label-warning">Terminé</span>
+            <span ng-show="state(occ)=='off'">
+              <span ng-show="state(occ)=='off'" class="label label-warning">Terminé</span>
+              <span ng-if="occ.photosUrl" class="label "><a target="_blank" href="{{occ.photosUrl}}">photos</a></span>
+            </span>
             <span ng-show="state(occ)=='cancel'" class="label label-danger">Annulé</span>
           </li>
         </ul>
@@ -438,7 +453,10 @@
             {{occ.date | date:'dd/MM/yyyy'}} : {{occ.place}}, {{occ.city}} <span ng-show="state(occ)=='on'">
               <span class="label label-success">À venir</span> <span ng-show="occ.irUrl" class="label "><a target="_blank" href="{{occ.irUrl}}">infos réservation</a></span> <span class="label " ng-if="occ.info"><a href="" data-placement="bottom" data-toggle="popover" data-trigger="hover" title="{{occ.date | date:'dd/MM/yyyy'}}" data-content="{{occ.info}}">plus d'info...</a></span>
             </span>
-            <span ng-show="state(occ)=='off'" class="label label-warning">Terminé</span>
+            <span ng-show="state(occ)=='off'">
+              <span ng-show="state(occ)=='off'" class="label label-warning">Terminé</span>
+              <span ng-if="occ.photosUrl" class="label "><a target="_blank" href="{{occ.photosUrl}}">photos</a></span>
+            </span>
             <span ng-show="state(occ)=='cancel'" class="label label-danger">Annulé</span>
           </li>
         </ul>
