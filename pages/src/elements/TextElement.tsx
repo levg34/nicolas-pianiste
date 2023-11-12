@@ -1,4 +1,4 @@
-import { For, Match, Switch, createResource } from 'solid-js'
+import { For } from 'solid-js'
 
 type Props = {
     paragraphs: string[]
