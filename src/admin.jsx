@@ -905,6 +905,12 @@ function Carousel(props) {
         setImageModal(true)
     }
 
+    function sortCarousel(a, b) {
+        if (a.active) return -1
+        if (b.active) return 1
+        return a.index - b.index
+    }
+
     return <Container>
         <Form onSubmit={submitForm}>
             <Row>
@@ -919,7 +925,7 @@ function Carousel(props) {
                 </Col>
             </Row>
             <hr/>
-            {Object.values(data).map(carouselElement => <Form.Group key={carouselElement._id}>
+            {Object.values(data).sort(sortCarousel).map(carouselElement => <Form.Group key={carouselElement._id}>
                 <Row>
                     <Col>
                         <Form.Control placeholder={carouselElement.title !== undefined ? 'Titre' : 'Image principale'} value={carouselElement.title} onChange={e => {
@@ -932,23 +938,39 @@ function Carousel(props) {
                                 }
                             })
                         }} disabled={carouselElement.title === undefined}/>
-                        {(carouselElement.title && !(carouselElement._id && carouselElement._id.startsWith('new'))) ? !carouselElement.deleted ? <Button className="mt-2" variant="danger" onClick={e => {
-                            setData({
-                                ...data,
-                                [carouselElement._id]: {
-                                    ...carouselElement,
-                                    deleted: true
-                                }
-                            })
-                        }}>Supprimer</Button> : <Alert className="mt-2" variant="warning"><strong>Attention !</strong> cet élément sera supprimé après validation. <Alert.Link onClick={e => {
-                            setData({
-                                ...data,
-                                [carouselElement._id]: {
-                                    ...carouselElement,
-                                    deleted: false
-                                }
-                            })
-                        }}>Annuler</Alert.Link> ?</Alert> : ''}
+                        <Row>
+                            <Col sm>
+                            {(carouselElement.title && !(carouselElement._id && carouselElement._id.startsWith('new'))) ? !carouselElement.deleted ? <Button className="mt-2" variant="danger" onClick={e => {
+                                setData({
+                                    ...data,
+                                    [carouselElement._id]: {
+                                        ...carouselElement,
+                                        deleted: true
+                                    }
+                                })
+                            }}>Supprimer</Button> : <Alert className="mt-2" variant="warning"><strong>Attention !</strong> cet élément sera supprimé après validation. <Alert.Link onClick={e => {
+                                setData({
+                                    ...data,
+                                    [carouselElement._id]: {
+                                        ...carouselElement,
+                                        deleted: false
+                                    }
+                                })
+                            }}>Annuler</Alert.Link> ?</Alert> : ''}
+                            </Col>
+                            <Col>
+                            {!carouselElement.active && <Form.Control className='d-flex mt-2' type="number" value={carouselElement.index !== undefined ? carouselElement.index : 0} onChange={e => {
+                                setData({
+                                    ...data,
+                                    [carouselElement._id]: {
+                                        ...carouselElement,
+                                        modified: true,
+                                        index: e.target.value
+                                    }
+                                })
+                            }}/>}
+                            </Col>
+                        </Row>
                     </Col>
                     <Col>
                         <Form.Control as="textarea" rows={3} placeholder={carouselElement.description !== undefined ? 'Description' : ''} value={carouselElement.description} onChange={e => {
