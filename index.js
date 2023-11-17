@@ -139,7 +139,7 @@ app.get('/pages/:pageId/data', (req, res) => {
 })
 
 app.get('/carousel', (req, res) => {
-    db.carousel.find({}).sort({active: -1}).exec(function (err, docs) {
+    db.carousel.find({}).sort({active: -1, index: 1}).exec(function (err, docs) {
         if (err) res.status(500).json(err)
         res.json(docs)
     })
