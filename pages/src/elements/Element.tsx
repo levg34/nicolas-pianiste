@@ -2,11 +2,13 @@ import { Match, Switch } from 'solid-js'
 import TextElement from './TextElement'
 import ImageElement from './ImageElement'
 import VideoElement from './VideoElement'
+import MarkdownElement from './MarkdownElement'
 
 export enum ElementType {
     TEXT,
     IMAGE,
-    VIDEO
+    VIDEO,
+    MARKDOWN
 }
 
 type VideoType = {
@@ -14,7 +16,7 @@ type VideoType = {
     thumbUrl: string
 }
 
-type ElementInterface = Record<'text' | 'image' | 'video', string[] | string | VideoType>
+type ElementInterface = Record<'text' | 'image' | 'video' | 'markdown', string[] | string | VideoType>
 
 type Props = {
     element: ElementInterface
@@ -35,6 +37,9 @@ export default (props: Props) => (
                     url={(props.element.video as VideoType).url}
                     thumbUrl={(props.element.video as VideoType).thumbUrl}
                 />
+            </Match>
+            <Match when={Object.keys(props.element).includes('markdown')}>
+                <MarkdownElement markdown={props.element.markdown as string} />
             </Match>
         </Switch>
     </div>
