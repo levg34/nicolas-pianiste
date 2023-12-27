@@ -1875,7 +1875,11 @@ function PageFormGroup(props) {
     const page = props.page
     const setPage = props.setPage
 
-    const [data, setData] = useState((page.pageData && page.pageData.data) ? page.pageData.data : [])
+    const transformPageData = (pageData) => {
+        return pageData.map(pe => pe.text ? {markdown: pe.text.join('\n\n'), legacy_text: pe.text} : pe)
+    }
+
+    const [data, setData] = useState((page.pageData && page.pageData.data) ? transformPageData(page.pageData.data) : [])
 
     const setDataItem = (index, item) => {
         const modifsData = [...data]
@@ -2008,10 +2012,10 @@ function PageFormGroup(props) {
                         <Form.Label>Contenu markdown</Form.Label>
                         <Form.Control as="textarea" rows={3} value={item[key]} onChange={e => setDataItem(index, {...item, [key]: e.target.value})}/>
                     </Form.Group>
-                </div> : <Form.Group controlId={key+index}>
+                </div> : (key === 'image' && <Form.Group controlId={key+index}>
                     <Form.Label>Image</Form.Label>
                     <Form.Control type="text" placeholder="Entrez l\'URL de l\'image" value={item[key]} onChange={e => setDataItem(index, {...item, [key]: e.target.value})}/>
-                </Form.Group>}
+                </Form.Group>)}
             </div>)}
             <ButtonGroup>
                 <Button variant="outline-danger" onClick={e => removeDataItem(index)}>Supprimer</Button>
@@ -2021,10 +2025,10 @@ function PageFormGroup(props) {
             <hr/>
         </div>)}
         <ButtonGroup>
-            <Button variant="outline-info" onClick={e => addDataItem('text')}>Ajouter du texte</Button>
+            <Button variant="outline-info" onClick={e => addDataItem('markdown')}>Ajouter du texte</Button>
             <Button variant="outline-info" onClick={e => addDataItem('image')}>Ajouter une image</Button>
             <Button variant="outline-info" onClick={e => addDataItem('video')}>Ajouter une vidéo</Button>
-            <Button variant="outline-info" onClick={e => addDataItem('markdown')}>Ajouter du texte (markdown)</Button>
+            <Button style={{display: 'none'}} disabled variant="outline-info" onClick={e => addDataItem('text')}>Ajouter du texte (legacy)</Button>
         </ButtonGroup>
         <Form.Group controlId="deleted">
             <Form.Check type="checkbox" label="Supprimer la page" checked={page.deleted} onChange={e => setPage({...page, deleted: e.target.checked})}/>
