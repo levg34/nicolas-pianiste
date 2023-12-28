@@ -35,6 +35,16 @@ const Page: Component<Props> = (props: Props) => {
 
     const [pageData] = createResource(pageId, getPageData)
 
+    function getFontColor() {
+        const bgColor = pageData()?.bgColor
+        if (!bgColor) return '#000000'
+        var color = bgColor.charAt(0) === '#' ? bgColor.substring(1, 7) : bgColor
+        var r = parseInt(color.substring(0, 2), 16) // Red
+        var g = parseInt(color.substring(2, 4), 16) // Green
+        var b = parseInt(color.substring(4, 6), 16) // Blue
+        return r * 0.299 + g * 0.587 + b * 0.114 > 186 ? '#000000' : '#FFFFFF'
+    }
+
     return (
         <Stack style="background-color: black">
             <Carousel controls={false} indicators={false}>
@@ -47,7 +57,7 @@ const Page: Component<Props> = (props: Props) => {
                     </div>
                 </Carousel.Item>
             </Carousel>
-            <Container style={`background-color: ${pageData()?.bgColor ?? 'lightgrey'}`} class="mt-3 pt-2">
+            <Container style={`background-color: ${pageData()?.bgColor ?? 'lightgrey'}; color: ${getFontColor()}`} class="mt-3 pt-2">
                 <For each={prepareForDisplay(pageData()?.data ?? [])}>
                     {(elements) => (
                         <>
