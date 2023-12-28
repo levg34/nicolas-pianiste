@@ -1,4 +1,5 @@
 import { SolidMarkdown } from 'solid-markdown'
+import remarkGfm from 'remark-gfm'
 import './MarkdownElement.css'
 
 type Props = {
@@ -8,7 +9,7 @@ type Props = {
 export default (props: Props) => {
     return (
         <div class="markdown-content">
-            <SolidMarkdown children={props.markdown}/>
+            <SolidMarkdown remarkPlugins={[remarkGfm]} children={props.markdown}/>
         </div>
     )
 }
