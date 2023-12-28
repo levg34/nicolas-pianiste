@@ -1993,7 +1993,7 @@ function PageFormGroup(props) {
             <InputGroup>
                 <Form.Control type="color" value={page.bgColor} onChange={e => setPage({...page, bgColor: e.target.value})}/>
                 <InputGroup.Append>
-                    <Button variant="outline-secondary" onClick={() => setPage({...page, bgColor: undefined})}>Supprimer la couleur de fond</Button>
+                    <Button variant="outline-secondary" onClick={() => setPage({...page, bgColor: undefined})}>Supprimer</Button>
                 </InputGroup.Append>
             </InputGroup>
              : <Button variant="outline-secondary" onClick={() => setPage({...page, bgColor: '#d3d3d3'})}>Ajouter une couleur de fond</Button>}
