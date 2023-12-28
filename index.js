@@ -134,7 +134,7 @@ app.get('/pages/:pageId/data', (req, res) => {
             res.status(404).json({error: 'No data found for pageId '+pageId})
             return
         }
-        res.json({...docs.pageData, pageName: docs.name})
+        res.json({...docs.pageData, pageName: docs.name, bgColor: docs.bgColor})
     })
 })
 

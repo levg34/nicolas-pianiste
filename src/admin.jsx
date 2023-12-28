@@ -1986,6 +1986,19 @@ function PageFormGroup(props) {
             <Form.Label>Image d'en-tête</Form.Label>
             <Form.Control type="text" placeholder="Entrez l'URL de l'image d'en-tête" value={page.pageData ? page.pageData.headerImageUrl : ''} onChange={e => setPage({...page, pageData: {...page.pageData, headerImageUrl: e.target.value}})}/>
         </Form.Group>
+        <Form.Group controlId="bgColor">
+            <Form.Label>Couleur de fond</Form.Label>
+            <div>
+            {page.bgColor ? 
+            <InputGroup>
+                <Form.Control type="color" value={page.bgColor} onChange={e => setPage({...page, bgColor: e.target.value})}/>
+                <InputGroup.Append>
+                    <Button variant="outline-secondary" onClick={() => setPage({...page, bgColor: undefined})}>Supprimer la couleur de fond</Button>
+                </InputGroup.Append>
+            </InputGroup>
+             : <Button variant="outline-secondary" onClick={() => setPage({...page, bgColor: '#d3d3d3'})}>Ajouter une couleur de fond</Button>}
+             </div>
+        </Form.Group>
         <Form.Label>Données de la page</Form.Label>
         {data && data.map((item, index) => <div key={index}>
             {Object.keys(item).map(key => <div key={key}>
