@@ -10,6 +10,7 @@ export interface PageData {
     headerImageUrl: string
     pageName: string
     data: Datum[]
+    bgColor?: string
 }
 
 export interface Datum {
@@ -46,7 +47,7 @@ const Page: Component<Props> = (props: Props) => {
                     </div>
                 </Carousel.Item>
             </Carousel>
-            <Container style="background-color: lightgrey" class="mt-3 pt-2">
+            <Container style={`background-color: ${pageData()?.bgColor ?? 'lightgrey'}`} class="mt-3 pt-2">
                 <For each={prepareForDisplay(pageData()?.data ?? [])}>
                     {(elements) => (
                         <>
