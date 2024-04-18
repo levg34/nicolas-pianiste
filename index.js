@@ -1,10 +1,13 @@
 const express = require('express')
+const cors = require('cors')
 const app = express()
 app.set('trust proxy', 'loopback')
 const helmet = require("helmet")
 app.use(helmet({
     contentSecurityPolicy: false
 }))
+app.use(cors())
+app.options('*', cors())
 
 const axios = require('axios')
 
