@@ -7,7 +7,7 @@ app.use(helmet({
     contentSecurityPolicy: false
 }))
 const corsWithOptions = cors({
-    origin: ['*.nicolasdross.fr', 'nicolasdross.fr']
+    origin: process.env.ALLOWED_ORIGINS?.split(',') ?? '*'
 })
 app.use(corsWithOptions)
 app.options('*', corsWithOptions)
