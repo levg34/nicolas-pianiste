@@ -2,11 +2,11 @@
 
 name: CI-test
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the prod branch
-  push:
-    branches: [ dev ]
+  # push:
+  #   branches: [ dev ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -23,7 +23,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-      
+
       - name: Deploy on remote server
         uses: appleboy/ssh-action@v0.1.4
         with:

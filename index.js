@@ -129,10 +129,11 @@ app.get('/pages', (req, res) => {
     })
 })
 app.get('/pages/:pageId', (req, res) => {
-    if (req.query.legacy) {
+    const PAGES_URL = process.env.PAGES_URL
+    if (req.query.legacy || !PAGES_URL) {
         res.sendFile(__dirname + '/view/pages.html')
     } else {
-        res.redirect(process.env.PAGES_URL + req.params.pageId)
+        res.redirect(PAGES_URL + req.params.pageId)
     }
 })
 
