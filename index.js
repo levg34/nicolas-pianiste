@@ -6,8 +6,11 @@ const helmet = require("helmet")
 app.use(helmet({
     contentSecurityPolicy: false
 }))
-app.use(cors())
-app.options('*', cors())
+const corsWithOptions = cors({
+    origin: ['*.nicolasdross.fr', 'nicolasdross.fr']
+})
+app.use(corsWithOptions)
+app.options('*', corsWithOptions)
 
 const axios = require('axios')
 
