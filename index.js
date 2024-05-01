@@ -129,7 +129,11 @@ app.get('/pages', (req, res) => {
     })
 })
 app.get('/pages/:pageId', (req, res) => {
-    res.sendFile(__dirname + '/view/pages.html')
+    if (req.query.legacy) {
+        res.sendFile(__dirname + '/view/pages.html')
+    } else {
+        res.redirect(process.env.PAGES_URL + req.params.pageId)
+    }
 })
 
 app.get('/pages/:pageId/data', (req, res) => {
