@@ -1,5 +1,7 @@
 const express = require('express')
 const cors = require('cors')
+const dotenv = require('dotenv')
+dotenv.config()
 const app = express()
 app.set('trust proxy', 'loopback')
 const helmet = require("helmet")
@@ -7,7 +9,7 @@ app.use(helmet({
     contentSecurityPolicy: false
 }))
 const corsWithOptions = cors({
-    origin: process.env.ALLOWED_ORIGINS?.split(',') ?? '*'
+    origin: process.env.ALLOWED_ORIGINS?.split(',') ?? []
 })
 app.use(corsWithOptions)
 app.options('*', corsWithOptions)
@@ -46,8 +48,6 @@ db.pages.ensureIndex({ fieldName: 'url', unique: true }, function (err) {
 })
 
 const jwt = require('jsonwebtoken')
-const dotenv = require('dotenv')
-dotenv.config()
 const port = process.env.APP_PORT || 3000
 
 const bcrypt = require('bcrypt')
