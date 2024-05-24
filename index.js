@@ -106,6 +106,10 @@ app.use(express.static(__dirname + '/public'))
 
 app.use(express.json())
 
+app.get('/healthcheck', (req, res) => {
+    res.json({ok: 'API services operational'})
+})
+
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/view/index.html')
 })
