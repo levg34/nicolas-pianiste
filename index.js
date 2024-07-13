@@ -111,7 +111,15 @@ app.get('/healthcheck', (req, res) => {
 })
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/view/index.html')
+    const isLegacy = req.query.legacy === 'true'
+    const BETA_URL = process.env.BETA_URL
+
+    if (isLegacy || !BETA_URL) {
+        res.sendFile(__dirname + '/view/index.html')
+    } else {
+        // Redirect to beta
+        res.redirect(BETA_URL)
+    }
 })
 
 app.get('/unsubscribe', (req, res) => {
