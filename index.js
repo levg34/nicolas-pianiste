@@ -277,25 +277,32 @@ app.put('/unsubscribe/:email', (req, res) => {
 
 app.post('/message', (req, res) => {
     const message = req.body
-    message.ip = req.ip
+    message.ip = message.checkbots ?? req.ip
     message.date = new Date().toISOString()
-    db.messages.insert(message, function (err, newDoc) {
-        if (err) res.status(500).json(err)
-        sendEmail(newDoc).then(res => console.log(res?.data)).catch(err => console.log(err))
-        res.json(newDoc)
-        axios.get(`http://ip-api.com/json/${message.ip}`).then(response => {
-            if (response.data) {
-                const ipInfos = response.data
-                if (ipInfos && ipInfos.status !== 'fail') {
-                    db.messages.update({ _id: newDoc._id }, { $set: { ipInfos } }, {}, function () {
-                        if (err) console.error(err)
-                    })
+    if (message.honey) {
+        res.status(403).json({ko: 'Forbidden'})
+        console.log({ip: message.checkbots, honey: message.honey})
+    } else {
+        delete message.honey
+        delete message.checkbots
+        db.messages.insert(message, function (err, newDoc) {
+            if (err) res.status(500).json(err)
+            sendEmail(newDoc).then(res => console.log(res?.data)).catch(err => console.log(err))
+            res.json(newDoc)
+            axios.get(`http://ip-api.com/json/${message.ip}`).then(response => {
+                if (response.data) {
+                    const ipInfos = response.data
+                    if (ipInfos && ipInfos.status !== 'fail') {
+                        db.messages.update({ _id: newDoc._id }, { $set: { ipInfos } }, {}, function () {
+                            if (err) console.error(err)
+                        })
+                    }
                 }
-            }
-        }).catch(err => {
-            console.error(err)
+            }).catch(err => {
+                console.error(err)
+            })
         })
-    })
+    }
 })
 
 app.post('/newsletter', (req, res) => {
