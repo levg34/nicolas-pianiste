@@ -5,9 +5,12 @@ dotenv.config()
 const app = express()
 app.set('trust proxy', 'loopback')
 const helmet = require("helmet")
-app.use(helmet({
-    contentSecurityPolicy: false
-}))
+app.use(
+    helmet({
+        contentSecurityPolicy: false,
+        crossOriginResourcePolicy: false
+    })
+)
 const corsWithOptions = cors({
     origin: process.env.ALLOWED_ORIGINS?.split(',') ?? []
 })
