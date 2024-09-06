@@ -102,8 +102,6 @@ app.use(function(req, res, next) {
     }
 })
 
-app.use(express.static(__dirname + '/public'))
-
 app.use(express.json())
 
 app.get('/healthcheck', (req, res) => {
@@ -221,6 +219,21 @@ app.get('/images', (req, res) => {
 app.get('/uploads/:filename', (req, res) => {
     const options = {
         root: path.join(__dirname, 'uploads'),
+        headers: {
+            'x-timestamp': Date.now(),
+            'x-sent': true
+        }
+    }
+
+    const fileName = req.params.filename
+    res.sendFile(fileName, options, function (err) {
+        if (err) console.log(err)
+    })
+})
+
+app.get('/img/:filename', (req, res) => {
+    const options = {
+        root: path.join(__dirname, 'img'),
         headers: {
             'x-timestamp': Date.now(),
             'x-sent': true
