@@ -22,6 +22,7 @@
   },
   "homepage": "nicolasdross.com",
   "dependencies": {
+    "@seald-io/nedb": "^4.0.4",
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
@@ -30,8 +31,7 @@
     "helmet": "^7.1.0",
     "image-size": "^1.1.1",
     "jsonwebtoken": "^9.0.2",
-    "multer": "^1.4.5-lts.1",
-    "nedb": "^1.8.0"
+    "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.4"

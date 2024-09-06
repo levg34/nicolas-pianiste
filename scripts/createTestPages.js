@@ -30,7 +30,7 @@ const fakeData = [
     }
 ]
 
-const Datastore = require('nedb')
+const Datastore = require('@seald-io/nedb')
 const db = {}
 db.pages = new Datastore({ filename: 'data/pages', autoload: true })
 

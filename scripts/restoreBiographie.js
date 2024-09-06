@@ -1,4 +1,4 @@
-const Datastore = require('nedb')
+const Datastore = require('@seald-io/nedb')
 const db = {}
 db.biographie = new Datastore({ filename: 'data/biographie', autoload: true })
 
