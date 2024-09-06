@@ -1,4 +1,5 @@
 const express = require('express')
+const pino = require('pino-http')()
 const cors = require('cors')
 const dotenv = require('dotenv')
 dotenv.config()
@@ -63,6 +64,8 @@ function generateAccessToken(userData) {
 const knownIps = {}
 const MAX_REQUESTS = 5
 const RESET_TIME = 60*1000
+
+app.use(pino)
 
 app.use(function(req, res, next) {
     const ip = req.ip
