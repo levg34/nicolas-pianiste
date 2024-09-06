@@ -227,22 +227,38 @@ app.get('/uploads/:filename', (req, res) => {
 
     const fileName = req.params.filename
     res.sendFile(fileName, options, function (err) {
-        if (err) console.log(err)
+        if (err) {
+            console.log(err)
+            res.status(500).send({ error: 'Error sending file' })
+        }
     })
 })
 
-app.get('/img/:filename', (req, res) => {
-    const options = {
-        root: path.join(__dirname, 'img'),
-        headers: {
-            'x-timestamp': Date.now(),
-            'x-sent': true
-        }
-    }
+app.get('/img/*', (req, res) => {
+    const imagePath = req.params[0]
+    const fullPath = path.join(__dirname, 'img', imagePath)
 
-    const fileName = req.params.filename
-    res.sendFile(fileName, options, function (err) {
-        if (err) console.log(err)
+    // Check if the file exists
+    fs.access(fullPath, fs.constants.F_OK, (err) => {
+        if (err) {
+            // File doesn't exist
+            return res.status(404).send({error: 'Image not found'})
+        }
+
+        // File exists, send it
+        const options = {
+            headers: {
+                'x-timestamp': Date.now(),
+                'x-sent': true
+            }
+        }
+
+        res.sendFile(fullPath, options, function (err) {
+            if (err) {
+                console.log(err)
+                res.status(500).send({error: 'Error sending file'})
+            }
+        })
     })
 })
 
