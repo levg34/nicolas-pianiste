@@ -111,19 +111,8 @@ app.get('/healthcheck', (req, res) => {
 })
 
 app.get('/', (req, res) => {
-    const isLegacy = req.query.legacy === 'true'
-    const BETA_URL = process.env.BETA_URL
-
-    if (isLegacy || !BETA_URL) {
-        res.sendFile(__dirname + '/view/index.html')
-    } else {
-        // Redirect to beta
-        res.redirect(BETA_URL)
-    }
-})
-
-app.get('/unsubscribe', (req, res) => {
-    res.sendFile(__dirname + '/view/unsubscribe.html')
+    const FRONTEND_URL = process.env.FRONTEND_URL
+    res.redirect(FRONTEND_URL)
 })
 
 app.get('/links', (req, res) => {
@@ -139,14 +128,6 @@ app.get('/pages', (req, res) => {
         if (err) res.status(500).json(err)
         res.json(docs)
     })
-})
-app.get('/pages/:pageId', (req, res) => {
-    const PAGES_URL = process.env.PAGES_URL
-    if (req.query.legacy || !PAGES_URL) {
-        res.sendFile(__dirname + '/view/pages.html')
-    } else {
-        res.redirect(PAGES_URL + req.params.pageId)
-    }
 })
 
 app.get('/pages/:pageId/data', (req, res) => {
@@ -379,7 +360,7 @@ app.post('/login', (req,res) => {
 })
 
 app.get('/admin', (req, res) => {
-    res.sendFile(__dirname + '/view/admin.html')
+    res.redirect(process.env.ADMIN_URL)
 })
 
 app.get('/admin/messages', (req, res) => {
@@ -817,13 +798,13 @@ function canRequest(ip, path) {
 
 // Handle 404
 app.use(function(req, res) {
-    res.status(404).sendFile(__dirname + '/view/404.html')
+    res.status(404).json({error: 'Not found'})
 })
   
 // Handle 500
 app.use(function(error, req, res, next) {
     console.error(error)
-    res.status(500).sendFile(__dirname + '/view/500.html')
+    res.status(500).json({error: 'Server error'})
 })
 
 app.listen(port, () => {
