@@ -388,10 +388,6 @@ app.post('/login', (req,res) => {
     })
 })
 
-app.get('/admin', (req, res) => {
-    res.redirect(process.env.ADMIN_URL)
-})
-
 app.get('/admin/messages', (req, res) => {
     db.messages.find({}).sort({date: -1}).exec(function (err, docs) {
         if (err) res.status(500).json(err)
