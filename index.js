@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const dotenv = require('dotenv')
 dotenv.config()
+const logger = require('pino')()
 const app = express()
 app.set('trust proxy', 'loopback')
 const helmet = require("helmet")
@@ -31,7 +32,7 @@ const db = {}
 db.messages = new Datastore({ filename: 'data/messages', autoload: true })
 db.users = new Datastore({ filename: 'data/users', autoload: true })
 db.users.ensureIndex({ fieldName: 'username', unique: true }, function (err) {
-    if (err) console.error(err)
+    if (err) logger.error(err)
 })
 db.carousel = new Datastore({ filename: 'data/carousel', autoload: true })
 db.links = new Datastore({ filename: 'data/links', autoload: true })
@@ -43,11 +44,11 @@ db.repertory = new Datastore({ filename: 'data/repertory', autoload: true })
 db.images = new Datastore({ filename: 'data/images', autoload: true })
 db.newsletter = new Datastore({ filename: 'data/newsletter', autoload: true })
 db.newsletter.ensureIndex({ fieldName: 'email', unique: true }, function (err) {
-    if (err) console.error(err)
+    if (err) logger.error(err)
 })
 db.pages = new Datastore({ filename: 'data/pages', autoload: true })
 db.pages.ensureIndex({ fieldName: 'url', unique: true }, function (err) {
-    if (err) console.error(err)
+    if (err) logger.error(err)
 })
 
 const jwt = require('jsonwebtoken')
@@ -231,7 +232,7 @@ app.get('/uploads/:filename', (req, res) => {
     const fileName = req.params.filename
     res.sendFile(fileName, options, function (err) {
         if (err) {
-            console.log(err)
+            logger.error(err)
             res.status(500).send({ error: 'Error sending file' })
         }
     })
@@ -258,7 +259,7 @@ app.get('/img/*', (req, res) => {
 
         res.sendFile(fullPath, options, function (err) {
             if (err) {
-                console.log(err)
+                logger.error(err)
                 res.status(500).send({error: 'Error sending file'})
             }
         })
@@ -293,27 +294,34 @@ app.post('/message', (req, res) => {
     message.ip = message.checkbots ?? req.ip
     message.date = new Date().toISOString()
     if (message.honey) {
-        res.status(403).json({ko: 'Forbidden'})
-        console.log({ip: message.checkbots, honey: message.honey})
+        logger.warn({ipfield: message.checkbots, honey: message.honey, ip: req.ip})
+        res.status(403).json({error: 'Forbidden'})
+    } else if (!message.name || !message.email || !message.message) {
+        res.status(400).json({ error: 'Missing fields in request' })
     } else {
         delete message.honey
         delete message.checkbots
         db.messages.insert(message, function (err, newDoc) {
             if (err) res.status(500).json(err)
-            sendEmail(newDoc).then(res => console.log(res?.data)).catch(err => console.log(err))
+            sendEmail(newDoc)
+                .then((res) => logger.info(res?.data))
+                .catch((err) => logger.error(err))
             res.json(newDoc)
-            axios.get(`http://ip-api.com/json/${message.ip}`).then(response => {
-                if (response.data) {
-                    const ipInfos = response.data
-                    if (ipInfos && ipInfos.status !== 'fail') {
-                        db.messages.update({ _id: newDoc._id }, { $set: { ipInfos } }, {}, function () {
-                            if (err) console.error(err)
-                        })
+            axios
+                .get(`http://ip-api.com/json/${message.ip}`)
+                .then((response) => {
+                    if (response.data) {
+                        const ipInfos = response.data
+                        if (ipInfos && ipInfos.status !== 'fail') {
+                            db.messages.update({ _id: newDoc._id }, { $set: { ipInfos } }, {}, function () {
+                                if (err) logger.error(err)
+                            })
+                        }
                     }
-                }
-            }).catch(err => {
-                console.error(err)
-            })
+                })
+                .catch((err) => {
+                    logger.error(err)
+                })
         })
     }
 })
@@ -330,12 +338,12 @@ app.post('/newsletter', (req, res) => {
                 const ipInfos = response.data
                 if (ipInfos && ipInfos.status !== 'fail') {
                     db.newsletter.update({ _id: newDoc._id }, { $set: { ipInfos } }, {}, function () {
-                        if (err) console.error(err)
+                        if (err) logger.error(err)
                     })
                 }
             }
         }).catch(err => {
-            console.error(err)
+            logger.error(err)
         })
     })
 })
@@ -359,9 +367,9 @@ app.post('/login', (req,res) => {
 
             if (!userData.password) {
                 bcrypt.hash(password, saltRounds, function(err, hash) {
-                    if (err) console.error(err)
+                    if (err) logger.error(err)
                     db.users.update({ _id: userData._id }, { $set: { password: hash } }, {}, function(err) {
-                        if (err) console.error(err)
+                        if (err) logger.error(err)
                     })
                 })
                 userData.token = generateAccessToken(userData)
@@ -710,7 +718,7 @@ app.post('/admin/newsletter', (req, res) => {
     sendNewsletter({to, message, html}).then(_res => {
         res.json(_res)
     }).catch(err => {
-        console.error(err)
+        logger.error(err)
         res.status(500).json({error: err})
     })
 })
@@ -718,14 +726,14 @@ app.post('/admin/newsletter', (req, res) => {
 app.post('/admin/extract_newsletter', async (req, res) => {
     if (!process.env.NEWSLETTER_HOOK) {
         res.status(500).json('No NEWSLETTER_HOOK')
-        console.error('No NEWSLETTER_HOOK')
+        logger.error('No NEWSLETTER_HOOK')
     }
 
     try {
         const response = await axios.post(process.env.NEWSLETTER_HOOK, req.body)
         res.json(response.data)
     } catch (error) {
-        console.error(error)
+        logger.error(error)
         res.status(500).json({error})
     }
 })
@@ -831,12 +839,12 @@ app.use(function(req, res) {
   
 // Handle 500
 app.use(function(error, req, res, next) {
-    console.error(error)
+    logger.error(error)
     res.status(500).json({error: 'Server error'})
 })
 
 app.listen(port, () => {
-    console.log(`Nicolapp listening at http://localhost:${port}`)
+    logger.info(`Nicolapp listening at http://localhost:${port}`)
 })
 
 function sendEmail({name, email, message}) {
