@@ -293,8 +293,8 @@ app.post('/message', (req, res) => {
     const message = req.body
     message.ip = message.checkbots ?? req.ip
     message.date = new Date().toISOString()
-    if (message.honey) {
-        logger.warn({ipfield: message.checkbots, honey: message.honey, ip: req.ip})
+    if (message.honey || !message.checkbots) {
+        logger.warn({ botdetection: true, server_ip: req.ip, ...message, message: 'DELETED' })
         res.status(403).json({error: 'Forbidden'})
     } else if (!message.name || !message.email || !message.message) {
         res.status(400).json({ error: 'Missing fields in request' })
