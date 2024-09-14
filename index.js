@@ -26,6 +26,7 @@ const path = require('path')
 const sizeOf = require('image-size')
 
 const fs = require('fs')
+const net = require('net')
 
 const Datastore = require('@seald-io/nedb')
 const db = {}
@@ -293,7 +294,7 @@ app.post('/message', (req, res) => {
     const message = req.body
     message.ip = message.checkbots ?? req.ip
     message.date = new Date().toISOString()
-    if (message.honey || !message.checkbots) {
+    if (message.honey || !message.checkbots || net.isIP(message.checkbots) === 0) {
         logger.warn({ botdetection: true, server_ip: req.ip, ...message, message: 'DELETED' })
         res.status(403).json({error: 'Forbidden'})
     } else if (!message.name || !message.email || !message.message) {
